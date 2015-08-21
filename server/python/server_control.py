@@ -1,4 +1,4 @@
-# Main controller of the relay server
+# Main controller of the chatroom server
 
 import sys
 
@@ -12,7 +12,7 @@ def main():
     args = parser.parse_args()
     # https://docs.python.org/3.5/howto/argparse.html
 
-    # s = server.RelayServer()
+    # s = server.ChatroomServer()
 
 
 if __name__ == '__main__':

@@ -1,14 +1,19 @@
-# tcp-relay
+# tcp-chatroom
 
+Note: this project is *still* under development.
 
+Client and server programs for an Internet chatroom system are implemented 
+using various programming languages, based on TCP and following 
+[SCRP](protocol/SCRP.md) (Stupid Chat Room Protocol, a lightweight 
+communication protocol developed for chatroom applications).
 
 # Usage
 
 
 
-# Architecture
+# TODO
 
-
+- Data encryption
 
 # License
 
