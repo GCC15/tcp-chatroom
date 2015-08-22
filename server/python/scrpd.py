@@ -1,10 +1,9 @@
-# Main controller of the chatroom server
+# Main controller of the SCRP server
 
 import sys
+import os
 
 import argparse
-
-import server
 
 
 def main():
@@ -12,7 +11,7 @@ def main():
     args = parser.parse_args()
     # https://docs.python.org/3.5/howto/argparse.html
 
-    # s = server.ChatroomServer()
+    # s = scrp_server.ChatroomServer()
 
 
 if __name__ == '__main__':

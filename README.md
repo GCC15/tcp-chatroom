@@ -7,13 +7,8 @@ using various programming languages, based on TCP and following
 [SCRP](protocol/SCRP.md) (Stupid Chat Room Protocol, a lightweight 
 communication protocol developed for chatroom applications).
 
-# Usage
 
 
-
-# TODO
-
-- Data encryption
 
 # License
 
