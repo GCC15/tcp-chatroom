@@ -1,8 +1,8 @@
 This is the specification of SCRP (Stupid Chat Room Protocol), a lightweight 
 application-layer communication protocol used in the project tcp-chatroom 
-developed by Zhang NS.
+developed by Zhang NS and Zifan Li.
 
-Author: Zhang NS
+Author: Zhang NS and Zifan Li
 
 Revision: 0.0.1
 
