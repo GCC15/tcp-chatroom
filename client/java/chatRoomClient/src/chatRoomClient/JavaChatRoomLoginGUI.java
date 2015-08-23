@@ -20,27 +20,33 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
-public class JavaChatRoomClientGUI extends JFrame{
-    JPanel panel1 = new JPanel();
-    JPanel panel2 = new JPanel();
-    JButton button1 = new JButton("Send");
-    JTextArea textarea = new JTextArea(20,40);
-    JTextField textfield = new JTextField(40);
-    public JavaChatRoomClientGUI(){
-        super("Chat room client");
-        setLayout(new BorderLayout());
-        panel1.add(textarea);
-        panel2.setLayout(new FlowLayout());
-        panel2.add(textfield);
-        panel2.add(button1);
-        add(panel1, BorderLayout.CENTER);
-        add(panel2,BorderLayout.SOUTH);
-        setSize(500, 500);
+public class JavaChatRoomLoginGUI extends JFrame {
+    JLabel label1 = new JLabel("Server IP: ");
+    JLabel label2 = new JLabel("Port: ");
+    JLabel label3 = new JLabel("User ID: ");
+    JLabel label4 = new JLabel("User Password: ");
+    JTextField textfield1 = new JTextField(20);
+    JTextField textfield2 = new JTextField(20);
+    JTextField textfield3 = new JTextField(20);
+    JTextField textfield4= new JTextField(20);
+    JButton button1 = new JButton("Login");
+    public JavaChatRoomLoginGUI(){
+        super("Chat room login");
+        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        setSize(400, 250);
+        add(label1);
+        add(textfield1);
+        add(label2);
+        add(textfield2);
+        add(label3);
+        add(textfield3);
+        add(label4);
+        add(textfield4);
+        add(button1);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
     public static void main(String[] args) {
-	    SwingUtilities.invokeLater(JavaChatRoomClientGUI::new);
+        SwingUtilities.invokeLater(JavaChatRoomLoginGUI::new);
     }
 }
