@@ -1,5 +1,7 @@
 {
   "var": "var",
   "server.log": "server.log",
-  "server.db": "server.db"
+  "server.db": "server.db",
+  "server_port": 12015,
+  "tcp_listen_backlog": 5
 }

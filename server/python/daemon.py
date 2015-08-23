@@ -1,4 +1,4 @@
-# SCRP server daemon process
+"""SCRP server daemon process"""
 
 import socket
 import scrp_server

@@ -1,5 +1,3 @@
-"""
-This package provides a `Server` class.
-"""
+"""This package provides a `Server` class"""
 
 from .server import Server
