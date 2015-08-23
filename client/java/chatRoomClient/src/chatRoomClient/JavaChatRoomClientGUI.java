@@ -22,13 +22,27 @@ import javax.swing.*;
 
 
 public class JavaChatRoomClientGUI extends JFrame{
+    JPanel panel1 = new JPanel();
+    JPanel panel2 = new JPanel();
+    JButton button1 = new JButton("Send");
+    TextArea textarea = new TextArea(20,40);
+    TextField textfield = new TextField(40);
     public JavaChatRoomClientGUI(){
-        setLayout(new FlowLayout());
-        setTitle("Chat Room");
-        setSize(1000, 500);
+        super("Chat room client");
+        setLayout(new BorderLayout());
+        panel1.add(textarea);
+        panel2.setLayout(new FlowLayout());
+        panel2.add(textfield);
+        panel2.add(button1);
+        add(panel1, BorderLayout.CENTER);
+        add(panel2,BorderLayout.SOUTH);
+        setSize(500, 500);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
     public static void main(String[] args) {
-	    new JavaChatRoomClientGUI();
+	    SwingUtilities.invokeLater(()->{
+            new JavaChatRoomClientGUI();
+        });
     }
 }
