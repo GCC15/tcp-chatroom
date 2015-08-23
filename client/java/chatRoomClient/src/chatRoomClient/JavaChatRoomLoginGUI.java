@@ -25,27 +25,29 @@ public class JavaChatRoomLoginGUI extends JFrame {
     JLabel label2 = new JLabel("Port: ");
     JLabel label3 = new JLabel("User ID: ");
     JLabel label4 = new JLabel("User Password: ");
-    JTextField textfield1 = new JTextField(20);
-    JTextField textfield2 = new JTextField(20);
-    JTextField textfield3 = new JTextField(20);
-    JTextField textfield4= new JTextField(20);
+    JTextField textField1 = new JTextField(20);
+    JTextField textField2 = new JTextField(20);
+    JTextField textField3 = new JTextField(20);
+    JTextField textField4= new JTextField(20);
     JButton button1 = new JButton("Login");
-    public JavaChatRoomLoginGUI(){
+
+    public JavaChatRoomLoginGUI() {
         super("Chat room login");
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         setSize(400, 250);
         add(label1);
-        add(textfield1);
+        add(textField1);
         add(label2);
-        add(textfield2);
+        add(textField2);
         add(label3);
-        add(textfield3);
+        add(textField3);
         add(label4);
-        add(textfield4);
+        add(textField4);
         add(button1);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(JavaChatRoomLoginGUI::new);
     }

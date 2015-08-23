@@ -25,14 +25,15 @@ public class JavaChatRoomClientGUI extends JFrame{
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
     JButton button1 = new JButton("Send");
-    JTextArea textarea = new JTextArea(20,40);
-    JTextField textfield = new JTextField(40);
-    public JavaChatRoomClientGUI(){
+    JTextArea textArea = new JTextArea(20,40);
+    JTextField textField = new JTextField(40);
+
+    public JavaChatRoomClientGUI() {
         super("Chat room client");
         setLayout(new BorderLayout());
-        panel1.add(textarea);
+        panel1.add(textArea);
         panel2.setLayout(new FlowLayout());
-        panel2.add(textfield);
+        panel2.add(textField);
         panel2.add(button1);
         add(panel1, BorderLayout.CENTER);
         add(panel2,BorderLayout.SOUTH);
@@ -40,6 +41,7 @@ public class JavaChatRoomClientGUI extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
+
     public static void main(String[] args) {
 	    SwingUtilities.invokeLater(JavaChatRoomClientGUI::new);
     }
