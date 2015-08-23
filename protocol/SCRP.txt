@@ -3,81 +3,153 @@ application-layer communication protocol used in the project tcp-chatroom
 developed by Zhang NS and Zifan Li.
 
 Author: Zhang NS and Zifan Li
+All Right Reserved.
 
-Revision: 0.0.1
+Version: 0.0.1
+Revision: 23 Aug 2015
 
 Status: Under development
 
+
 1. Concepts
 
-  1.1 Server
-
-    1.1.1 Server nickname
-
-    1.1.3 Server time
-
-  1.2 Client
-
-    1.2.1 Client nickname
-
-    1.2.2 Client time
-
-  1.3 User
-
-    1.3.1 User ID
-
-    1.3.2 User password
-
-    1.3.3 User nickname
-
-    1.3.4 User description
-
-  2. Room
-
-    2.1 Room ID
-
-    2.2 Room name
-
-    2.3 Room description
-
-    2.4 Room admin
-
-  1.2 Message
-
-    1.2.1 Message ID
-    
-    1.2.2 Message Room
-    
-    1.2.1 Message time
-    
-    1.2.2 Message sender
-
-
-2. Status code
-
-| Code | Meaning |
-| ---- | ------- |
-| 900  | Success |
-| 901  | Fail    |
-| 998  | Bad     |
-| 999  | Error   |
-
-  2.1 900 Success
-
-    The 
-
-  2.2 901 Fail
-
-    
-
-  2.3 998 Bad
+  1.1 SCRP System
   
-    
+    An SCRP system consists of one server and zero or more clients.
+
+  1.2 Server
   
-  2.4 999 Error
-  
+    The server is a compter program which handles requests from clients and 
+    manages users, messages, and chatrooms.
+
+    1.2.1 Server nickname
     
+      A short human-readable name of the server.
 
+    1.2.2 Server time
+    
+      The current timestamp of the server.
+      
+    1.2.3 Server protocol version
+    
+      The version of SCRP followed by the server.
 
+  1.3 Client
 
-# Method
+    A client is a computer program, usually with a UI. It receives inputs from 
+    a human and communicates with the server accordingly.
+  
+    1.3.1 Client nickname
+    
+      A short human-readable name of the client.
+
+    1.3.2 Client time
+    
+      The current timestamp of the client.
+      
+    1.3.3 Client protocol version
+    
+      The version of SCRP followed by the client.
+
+  1.4 User
+  
+    A user chats in zero or more chatrooms.
+
+    1.4.1 User ID
+    
+      The identifier of the user.
+
+    1.4.2 User password
+    
+      The login credential of the user.
+
+    1.4.3 User nickname
+    
+      A short human-readable name of the user.
+
+    1.4.4 User information
+    
+      The information of the user.
+      
+    1.4.5 User description
+    
+      The description of the user.
+      
+    1.4.6 User registration time
+    
+      The server time when the user registered on the server.
+
+  1.5 Room
+
+    A room consists of one or more user. Users send messages in the room.
+  
+    1.5.1 Room ID
+    
+      The identifier of the room.
+
+    1.5.2 Room nickname
+    
+      A short human-readable name of the room.
+
+    1.5.3 Room description
+    
+      The description of the room.
+
+    1.5.4 Room admin
+    
+      A special type of user in the room. A room has one or more admins.
+
+  1.6 Message
+  
+    A message is what a user sends into a room. All other users in the same 
+    room can see the message.
+
+    1.6.1 Message ID
+    
+      The identifier of the message.
+    
+    1.6.2 Message Room ID
+    
+      The Room ID of the room in which the message was sent.
+    
+    1.6.3 Message time
+    
+      The server time when the mesaage was recieved by the server.
+    
+    1.6.4 Message sender
+    
+      The user who sent the message.
+
+2. Request method
+
+  2.1 LOG_IN
+  
+  2.2 LOG_OFF
+  
+  2.3 GET_TIME
+  
+  2.4 CHANGE_PASS
+  
+  2.5 CREATE_ROOM
+  
+  2.6 REMOVE_ROOM
+  
+  2.7 REMOVE_USER
+
+3. Response Status code
+
+  3.1 900 Success
+
+    The request was processed successfully.
+
+  3.2 901 Fail
+
+    The request was not processed successfully.
+
+  3.3 998 Bad
+  
+    The request was not understood and was ignored.
+  
+  3.4 999 Error
+  
+    An unexpected error occured when processing the request.
