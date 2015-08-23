@@ -1,3 +1,8 @@
-.idea/
 __pycache__/
 *.py[cod]
+
+# PyCharm project files
+.idea/
+
+# Variable data, e.g. logging files, temporary files, and database files
+var/

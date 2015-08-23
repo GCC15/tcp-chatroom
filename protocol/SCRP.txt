@@ -3,7 +3,7 @@ application-layer communication protocol used in the project tcp-chatroom
 developed by Zhang NS and Zifan Li.
 
 Author: Zhang NS and Zifan Li
-All Right Reserved.
+All Rights Reserved.
 
 Version: 0.0.1
 Revision: 23 Aug 2015

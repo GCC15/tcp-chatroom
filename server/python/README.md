@@ -2,7 +2,7 @@
 
 A Python implementation of the chatroom server.
 
-Under development.
+*Under development.*
 
 # Requirements
 
@@ -19,7 +19,7 @@ Under development.
 2. Start the server
 
   ```
-  python scrpd.py start
+  python scrpd.py start --port=[PORT]
   ```
 
 3. Stop the server
