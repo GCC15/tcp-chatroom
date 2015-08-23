@@ -36,7 +36,7 @@ public class JavaChatRoomClientGUI extends JFrame{
         panel2.add(textField);
         panel2.add(button1);
         add(panel1, BorderLayout.CENTER);
-        add(panel2,BorderLayout.SOUTH);
+        add(panel2, BorderLayout.SOUTH);
         setSize(500, 500);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);

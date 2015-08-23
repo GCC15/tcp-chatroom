@@ -28,7 +28,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
     JTextField textField1 = new JTextField(20);
     JTextField textField2 = new JTextField(20);
     JTextField textField3 = new JTextField(20);
-    JTextField textField4= new JTextField(20);
+    JTextField textField4 = new JTextField(20);
     JButton button1 = new JButton("Login");
 
     public JavaChatRoomLoginGUI() {
