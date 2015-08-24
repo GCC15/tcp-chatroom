@@ -26,12 +26,12 @@ public class JavaChatRoomClientGUI extends JFrame{
     JPanel panel2 = new JPanel();
     JButton button1 = new JButton("Send");
     JTextArea textArea = new JTextArea(20,40);
-    JTextField textField = new JTextField(40);
+    JTextField textField = new JTextField(30);
 
     public JavaChatRoomClientGUI() {
         super("Chat room client");
         setLayout(new BorderLayout());
-        panel1.add(textArea);
+        panel1.add(new JScrollPane(textArea));
         panel2.setLayout(new FlowLayout());
         panel2.add(textField);
         panel2.add(button1);
