@@ -20,7 +20,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class JavaChatRoomLoginGUI extends JFrame {
+
+public class JavaChatRoomRegisterGUI extends JFrame{
     JLabel label1 = new JLabel("Server IP: ");
     JLabel label2 = new JLabel("Port: ");
     JLabel label3 = new JLabel("User ID: ");
@@ -29,11 +30,10 @@ public class JavaChatRoomLoginGUI extends JFrame {
     JTextField textField2 = new JTextField(20);
     JTextField textField3 = new JTextField(20);
     JTextField textField4 = new JTextField(20);
-    JButton button1 = new JButton("Login");
-    JButton button2 = new JButton("Go to register page");
+    JButton button1 = new JButton("Register");
 
-    public JavaChatRoomLoginGUI() {
-        super("Chat room login");
+    public JavaChatRoomRegisterGUI(){
+        super("Chat room register");
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         setSize(400, 250);
         add(label1);
@@ -45,20 +45,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
         add(label4);
         add(textField4);
         add(button1);
-        button2.addActionListener(new RegisterAction());
-        add(button2);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(JavaChatRoomLoginGUI::new);
-    }
-}
-
-class RegisterAction implements ActionListener{
-    @Override
-    public void actionPerformed(ActionEvent e){
-        SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
     }
 }
