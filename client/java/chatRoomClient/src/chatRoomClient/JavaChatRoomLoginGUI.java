@@ -45,7 +45,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
         add(label4);
         add(textField4);
         add(button1);
-        button2.addActionListener(new RegisterAction());
+        button2.addActionListener(new RegisterActionListener());
         add(button2);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -54,11 +54,12 @@ public class JavaChatRoomLoginGUI extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(JavaChatRoomLoginGUI::new);
     }
-}
 
-class RegisterAction implements ActionListener{
-    @Override
-    public void actionPerformed(ActionEvent e){
-        SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
+    private static class RegisterActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
+        }
     }
+
 }

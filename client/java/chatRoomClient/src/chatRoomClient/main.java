@@ -23,8 +23,8 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-        //SwingUtilities.invokeLater(JavaChatRoomClientGUI::new);
+//        SwingUtilities.invokeLater(JavaChatRoomClientGUI::new);
         SwingUtilities.invokeLater(JavaChatRoomLoginGUI::new);
-        //SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
+//        SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
     }
 }

@@ -21,7 +21,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class JavaChatRoomRegisterGUI extends JFrame{
+public class JavaChatRoomRegisterGUI extends JFrame {
     JLabel label1 = new JLabel("Server IP: ");
     JLabel label2 = new JLabel("Port: ");
     JLabel label3 = new JLabel("User ID: ");
@@ -32,7 +32,7 @@ public class JavaChatRoomRegisterGUI extends JFrame{
     JTextField textField4 = new JTextField(20);
     JButton button1 = new JButton("Register");
 
-    public JavaChatRoomRegisterGUI(){
+    public JavaChatRoomRegisterGUI() {
         super("Chat room register");
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         setSize(400, 250);
