@@ -20,15 +20,25 @@ import sys
 import os
 import socket
 
-import argparse
-
 
 def main():
-    parser = argparse.ArgumentParser()
-    args = parser.parse_args()
-    # https://docs.python.org/3.5/howto/argparse.html
+    if len(sys.argv) != 2:
+        print_usage_and_exit()
+    action = sys.argv[1]
+    if action == 'status':
+        pass
+        # s = scrp_server.ChatroomServer()
+    elif action == 'start':
+        pass
+    elif action == 'stop':
+        pass
+    else:
+        print_usage_and_exit()
 
-    # s = scrp_server.ChatroomServer()
+
+def print_usage_and_exit():
+    print('Usage: <python> {} [status|start|stop]'.format(sys.argv[0]))
+    sys.exit(1)
 
 
 if __name__ == '__main__':

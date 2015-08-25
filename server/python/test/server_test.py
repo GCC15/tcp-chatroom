@@ -16,7 +16,7 @@ def main():
         print('[Main] Connection established with {}'.format(address))
         cht = ClientHandlerThread(client_socket)
         print('[Main] Starting ClientHandlerThread {}'
-              .format(cht.getName()))
+              .format(cht.name))
         cht.start()
 
 
@@ -31,9 +31,9 @@ class ClientHandlerThread(threading.Thread):
 
     def run(self):
         data = self.__s.recv(self.__recv_buffersize)
-        print('[{}] Received {}'.format(self.getName(), len(data)))
+        print('[{}] Received {}'.format(self.name, len(data)))
         time.sleep(random.random())
-        print('[{}] Sent {}'.format(self.getName(), self.__s.send(data * self.__k)))
+        print('[{}] Sent {}'.format(self.name, self.__s.send(data * self.__k)))
         self.__s.close()
 
 

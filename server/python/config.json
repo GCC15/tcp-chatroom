@@ -2,6 +2,7 @@
   "var": "var",
   "server.log": "server.log",
   "server.db": "server.db",
-  "server_port": 12015,
+  "server_port": 42015,
+  "control_port": 42016,
   "tcp_listen_backlog": 5
 }

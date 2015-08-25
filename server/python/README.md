@@ -6,23 +6,29 @@ A Python implementation of the chatroom server.
 
 # Requirements
 
+- A host with a public IP address
+
 - Python 3
 
 # Usage
 
-1. Check server status
+1. Configure
+
+  [config.json](config.json)
+
+2. Check server status
 
   ```
   python scrpd.py status
   ```
 
-2. Start the server
+3. Start the server
 
   ```
-  python scrpd.py start --port=[PORT]
+  python scrpd.py start
   ```
 
-3. Stop the server
+4. Stop the server
 
   ```
   python scrpd.py stop
