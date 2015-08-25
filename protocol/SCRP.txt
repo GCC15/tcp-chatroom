@@ -1,12 +1,11 @@
-This is the specification of SCRP (Stupid Chat Room Protocol), a lightweight 
-application-layer communication protocol used in the project tcp-chatroom 
-developed by Zhang NS and Zifan Li.
+This is the specification of SCRP (Stupid Chat Room Protocol), a lightweight
+application-layer communication protocol used in the project tcp-chatroom.
 
-Author: Zhang NS and Zifan Li
+Author: Zhang NS, Zifan Li, Zichao Li
 All Rights Reserved.
 
 Version: 0.0.1
-Revision: 23 Aug 2015
+Revision: 25 Aug 2015
 
 Status: Under development
 
@@ -14,126 +13,182 @@ Status: Under development
 1. Concepts
 
   1.1 SCRP System
-  
+
     An SCRP system consists of one server and zero or more clients.
 
   1.2 Server
-  
-    The server is a compter program which handles requests from clients and 
-    manages users, messages, and chatrooms.
 
-    1.2.1 Server nickname
-    
-      A short human-readable name of the server.
+    The server is a compter program which handles requests from clients, and
+    manages users, messages, chatrooms, and their interactions.
 
-    1.2.2 Server time
-    
-      The current timestamp of the server.
-      
-    1.2.3 Server protocol version
-    
-      The version of SCRP followed by the server.
+    1.2.1 Server nickname (Unicode string)
+
+      A short human-readable name of the server, e.g. "My Awesome Server".
+
+    1.2.2 Server version (ASCII string)
+
+      The version of the server, e.g. "1.0.0".
+
+    1.2.3 Server description (Unicode string)
+
+      A description of the server.
+
+    1.2.4 Server protocol version (ASCII string)
+
+      The version of SCRP followed by the server, e.g. "1.0.0".
+
+    1.2.5 Server time (integer)
+
+      The current timestamp as seen from the server.
+
+    1.2.6 Server uptime (integer)
+
+      The timestamp when the server started running.
+
+    1.2.7 Number of users (integer)
+
+    1.2.8 Max number of users (integer)
+
+      The maxumum number of users since the server started.
+
+    1.2.9 Number of online users (integer)
+
+    1.2.10 Max number of online users (integer)
+
+      The maximum number of online users since the server started.
+
+    1.2.11 Number of rooms (integer)
+
+    1.2.12 Max number of rooms (integer)
+
+      The maximum number of rooms since the server started.
+
+    1.2.13 Number of messages received (integer)
+
+    1.2.14 Number of messages sent (integer)
+
+    1.2.15 Amount of raw data received in bytes (integer)
+
+      The interpretation of "raw data" can be implementation-dependent.
+
+    1.2.16 Amount of raw data sent in bytes (integer)
+
+      The interpretation of "raw data" can be implementation-dependent.
 
   1.3 Client
 
-    A client is a computer program, usually with a UI. It receives inputs from 
-    a human and communicates with the server accordingly.
-  
-    1.3.1 Client nickname
-    
-      A short human-readable name of the client.
+    A client is a computer program, usually with a UI. It receives inputs from
+    a human (a user) and communicates with the server accordingly.
 
-    1.3.2 Client time
-    
-      The current timestamp of the client.
-      
-    1.3.3 Client protocol version
-    
-      The version of SCRP followed by the client.
+    1.3.1 Client nickname (Unicode string)
+
+      A short human-readable name of the client, e.g. "My Awesome Client".
+
+    1.3.2 Client version (ASCII string)
+
+      The version of the client, e.g. "1.0.0".
+
+    1.3.3 Client description (Unicode string)
+
+      A description of the client.
+
+    1.3.4 Client protocol version (ASCII string)
+
+      The version of SCRP followed by the client, e.g. "1.0.0".
+
+    1.3.5 Client time (integer)
+
+      The current timestamp as seen from the client.
 
   1.4 User
-  
-    A user chats in zero or more chatrooms.
 
-    1.4.1 User ID
-    
-      The identifier of the user.
+    A user chats (a) with its friends privately, and (b) in chatrooms.
 
-    1.4.2 User password
-    
-      The login credential of the user.
+    1.4.1 User ID (ASCII string)
 
-    1.4.3 User nickname
-    
-      A short human-readable name of the user.
+      The identifier of the user, e.g. "john_42". It is valid if and only if (a)
+      1 <= length <= 16, (b) it only contains alphanumeric characters
+      (case-sentivive) and/or underscore(s), and (c) it is unique.
 
-    1.4.4 User information
-    
-      The information of the user.
-      
-    1.4.5 User description
-    
+    1.4.2 User password (ASCII string)
+
+      The login credential of the user, e.g. "my_very_secure_password". It is
+      valid if and only if (a) 6 <= length <= 64, and (b) it only contains
+      printable ASCII characters excepts DEL, i.e. ASCII code 32 - 126 (0x20 -
+      0x7E).
+
+    1.4.3 User nickname (Unicode string)
+
+      A short human-readable name of the user, e.g. "John Doe". It is valid if
+      and only if 1 <= length <= 16.
+
+    1.4.4 User description (Unicode string)
+
       The description of the user.
-      
-    1.4.6 User registration time
-    
+
+    1.4.5 User registration time (integer)
+
       The server time when the user registered on the server.
+      
+    1.4.6 Friends (collection of user)
+    
+      A set of zero or more other users.
 
   1.5 Room
 
     A room consists of one or more user. Users send messages in the room.
-  
+
     1.5.1 Room ID
-    
+
       The identifier of the room.
 
     1.5.2 Room nickname
-    
+
       A short human-readable name of the room.
 
     1.5.3 Room description
-    
+
       The description of the room.
 
     1.5.4 Room admin
-    
+
       A special type of user in the room. A room has one or more admins.
 
   1.6 Message
-  
-    A message is what a user sends into a room. All other users in the same 
+
+    A message is what a user sends into a room. All other users in the same
     room can see the message.
 
     1.6.1 Message ID
-    
+
       The identifier of the message.
-    
+
     1.6.2 Message Room ID
-    
+
       The Room ID of the room in which the message was sent.
-    
+
     1.6.3 Message time
-    
+
       The server time when the mesaage was recieved by the server.
-    
+
     1.6.4 Message sender
-    
+
       The user who sent the message.
 
 2. Request method
 
   2.1 LOG_IN
-  
+
   2.2 LOG_OFF
-  
+
   2.3 GET_TIME
-  
+
   2.4 CHANGE_PASS
-  
+
   2.5 CREATE_ROOM
-  
+
   2.6 REMOVE_ROOM
-  
+
   2.7 REMOVE_USER
 
 3. Response Status code
@@ -147,9 +202,9 @@ Status: Under development
     The request was not processed successfully.
 
   3.3 998 Bad
-  
+
     The request was not understood and was ignored.
-  
+
   3.4 999 Error
-  
+
     An unexpected error occured when processing the request.

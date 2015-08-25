@@ -12,23 +12,23 @@ A Python implementation of the chatroom server.
 
 # Usage
 
-1. Configure
+- Configure
 
   [config.json](config.json)
 
-2. Check server status
+- Check server status
 
   ```
   python scrpd.py status
   ```
 
-3. Start the server
+- Start the server
 
   ```
   python scrpd.py start
   ```
 
-4. Stop the server
+- Stop the server
 
   ```
   python scrpd.py stop
