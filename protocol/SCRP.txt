@@ -114,8 +114,7 @@ Status: Under development
 
       The login credential of the user, e.g. "my_very_secure_password". It is
       valid if and only if (a) 6 <= length <= 64, and (b) it only contains
-      printable ASCII characters excepts DEL, i.e. ASCII code 32 - 126 (0x20 -
-      0x7E).
+      printable ASCII characters, i.e. ASCII code 32 - 126 (0x20 - 0x7E).
 
     1.4.3 User nickname (Unicode string)
 
@@ -195,11 +194,11 @@ Status: Under development
 
   3.1 900 Success
 
-    The request was processed successfully.
+    The requested action was performed successfully.
 
   3.2 901 Fail
 
-    The request was not processed successfully.
+    The requested action was not performed successfully.
 
   3.3 998 Bad
 
