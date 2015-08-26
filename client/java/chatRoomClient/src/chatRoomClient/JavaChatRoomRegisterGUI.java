@@ -16,37 +16,67 @@
 
 package chatRoomClient;
 
-import java.awt.*;
-import java.awt.event.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class JavaChatRoomRegisterGUI extends JFrame {
-    JLabel label1 = new JLabel("Server IP: ");
-    JLabel label2 = new JLabel("Port: ");
-    JLabel label3 = new JLabel("User ID: ");
-    JLabel label4 = new JLabel("User Password: ");
-    JTextField textField1 = new JTextField(20);
-    JTextField textField2 = new JTextField(20);
-    JTextField textField3 = new JTextField(20);
-    JTextField textField4 = new JTextField(20);
-    JButton button1 = new JButton("Sign Up");
+    final JLabel labelServer = new JLabel("Server IP: ");
+    final JLabel labelPort = new JLabel("Port: ");
+    final JLabel labelID = new JLabel("User ID: ");
+    final JLabel labelPassword = new JLabel("User Password: ");
+    final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
+    final JTextField textFieldServer = new JTextField(20);
+    final JTextField textFieldPort = new JTextField(20);
+    final JTextField textFieldID = new JTextField(20);
+    final JTextField textFieldPassword = new JTextField(20);
+    final JTextField textFieldConfirmPwd = new JTextField(20);
+    final JButton buttonSignup = new JButton("Sign Up");
 
     public JavaChatRoomRegisterGUI() {
-        super("Chat room sign up");
+        super("Chat room Sign Up");
         setResizable(false);
-        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);
-        add(label1);
-        add(textField1);
-        add(label2);
-        add(textField2);
-        add(label3);
-        add(textField3);
-        add(label4);
-        add(textField4);
-        add(button1);
+        JPanel panelServer = new JPanel();
+        addComponentToPanel(panelServer, labelServer, textFieldServer);
+        add(panelServer);
+        JPanel panelPort = new JPanel();
+        addComponentToPanel(panelPort, labelPort, textFieldPort);
+        add(panelPort);
+        JPanel panelID = new JPanel();
+        addComponentToPanel(panelID, labelID, textFieldID);
+        add(panelID);
+        JPanel panelPassword = new JPanel();
+        addComponentToPanel(panelPassword, labelPassword, textFieldPassword);
+        add(panelPassword);
+        JPanel panelConfirmPwd = new JPanel();
+        addComponentToPanel(panelConfirmPwd, labelConfirmPwd, textFieldConfirmPwd);
+        add(panelConfirmPwd);
+        JPanel panelButton = new JPanel();
+        panelButton.setLayout(new FlowLayout());
+        buttonSignup.addActionListener(new SignUpActionListener());
+        panelButton.add(buttonSignup);
+        add(panelButton);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void addComponentToPanel(JPanel panel, JLabel label,
+                                     JTextField textField) {
+        panel.setLayout(new FlowLayout());
+        panel.add(label);
+        panel.add(textField);
+    }
+
+    private static class SignUpActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -24,16 +24,16 @@ import javax.swing.*;
 
 public class JavaChatRoomLoginGUI extends JFrame {
 
-    JLabel labelServer = new JLabel("Server IP: ");
-    JLabel labelPort = new JLabel("Port: ");
-    JLabel labelID = new JLabel("User ID: ");
-    JLabel labelPassword = new JLabel("User Password: ");
-    JTextField textFieldServer = new JTextField(20);
-    JTextField textFieldPort = new JTextField(20);
-    JTextField textFieldID = new JTextField(20);
-    JTextField textFieldPassword = new JTextField(20);
-    JButton buttonLogin = new JButton("Log In");
-    JButton buttonSignup = new JButton("Sign Up");
+    final JLabel labelServer = new JLabel("Server IP: ");
+    final JLabel labelPort = new JLabel("Port: ");
+    final JLabel labelID = new JLabel("User ID: ");
+    final JLabel labelPassword = new JLabel("User Password: ");
+    final JTextField textFieldServer = new JTextField(20);
+    final JTextField textFieldPort = new JTextField(20);
+    final JTextField textFieldID = new JTextField(20);
+    final JTextField textFieldPassword = new JTextField(20);
+    final JButton buttonLogin = new JButton("Log In");
+    final JButton buttonSignup = new JButton("Sign Up");
 
     public JavaChatRoomLoginGUI() {
         super("Chat room log in");
@@ -47,14 +47,14 @@ public class JavaChatRoomLoginGUI extends JFrame {
         addComponentToPanel(panelPort, labelPort, textFieldPort);
         add(panelPort);
         JPanel panelID = new JPanel();
-        addComponentToPanel(panelID,labelID,textFieldID);
+        addComponentToPanel(panelID, labelID, textFieldID);
         add(panelID);
         JPanel panelPassword = new JPanel();
-        addComponentToPanel(panelPassword,labelPassword,textFieldPassword);
+        addComponentToPanel(panelPassword, labelPassword, textFieldPassword);
         add(panelPassword);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
-        buttonSignup.addActionListener(new SignupActionListener());
+        buttonSignup.addActionListener(new SignUpActionListener());
         panelButton.add(buttonSignup);
         buttonLogin.addActionListener(new LoginActionListener());
         panelButton.add(buttonLogin);
@@ -70,7 +70,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
         panel.add(textField);
     }
 
-    private static class SignupActionListener implements ActionListener {
+    private static class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
