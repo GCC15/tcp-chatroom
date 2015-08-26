@@ -27,8 +27,8 @@ import java.awt.event.ActionListener;
 public class JavaChatRoomRegisterGUI extends JFrame {
     final JLabel labelServer = new JLabel("Server IP: ");
     final JLabel labelPort = new JLabel("Port: ");
-    final JLabel labelID = new JLabel("User ID: ");
-    final JLabel labelPassword = new JLabel("User Password: ");
+    final JLabel labelID = new JLabel("New ID: ");
+    final JLabel labelPassword = new JLabel("New Password: ");
     final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
@@ -38,7 +38,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     final JButton buttonSignup = new JButton("Sign Up");
 
     public JavaChatRoomRegisterGUI() {
-        super("Chat room Sign Up");
+        super("Chat Room Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);

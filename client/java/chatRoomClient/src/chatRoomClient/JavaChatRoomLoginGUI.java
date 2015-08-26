@@ -26,8 +26,8 @@ public class JavaChatRoomLoginGUI extends JFrame {
 
     final JLabel labelServer = new JLabel("Server IP: ");
     final JLabel labelPort = new JLabel("Port: ");
-    final JLabel labelID = new JLabel("User ID: ");
-    final JLabel labelPassword = new JLabel("User Password: ");
+    final JLabel labelID = new JLabel("ID: ");
+    final JLabel labelPassword = new JLabel("Password: ");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
@@ -36,7 +36,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
     final JButton buttonSignup = new JButton("Sign Up");
 
     public JavaChatRoomLoginGUI() {
-        super("Chat room log in");
+        super("Chat Room Log In");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);

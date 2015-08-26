@@ -29,7 +29,7 @@ public class JavaChatRoomClientGUI extends JFrame {
     JTextArea textField = new JTextArea(5, 30); // TODO
 
     public JavaChatRoomClientGUI() {
-        super("Chat room client");
+        super("Chat Room Client");
         setResizable(false);
         setLayout(new BorderLayout());
         panel1.add(new JScrollPane(textArea));
