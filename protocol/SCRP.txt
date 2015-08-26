@@ -1,11 +1,11 @@
 This is the specification of SCRP (Stupid Chat Room Protocol), a lightweight
-application-layer communication protocol used in the project tcp-chatroom.
+application-layer communication protocol used in the project tcp-chatroom (https://github.com/GCC15/tcp-chatroom).
 
-Author: Zhang NS, Zifan Li, Zichao Li
+Author: Zhang NS (https://github.com/zhangns), Zifan Li (https://github.com/LiZifan), Zichao Li (https://github.com/kenathe)
 All Rights Reserved.
 
-Version: 0.0.1
-Revision: 25 Aug 2015
+Version: 0.0.2
+Revision: 27 Aug 2015
 
 Status: Under development
 
@@ -18,7 +18,7 @@ Status: Under development
 
   1.2 Server
 
-    The server is a compter program which handles requests from clients, and
+    The server is a computer program which handles requests from clients, and
     manages users, messages, chatrooms, and their interactions.
 
     1.2.1 Server nickname (Unicode string)
@@ -49,7 +49,7 @@ Status: Under development
 
     1.2.8 Max number of users (integer)
 
-      The maxumum number of users since the server started.
+      The maximum number of users since the server started.
 
     1.2.9 Number of online users (integer)
 
@@ -108,7 +108,7 @@ Status: Under development
 
       The identifier of the user, e.g. "john_42". It is valid if and only if (a)
       1 <= length <= 16, (b) it only contains alphanumeric characters
-      (case-sentivive) and/or underscore(s), and (c) it is unique.
+      (case-sensitive) and/or underscore(s), and (c) it is unique.
 
     1.4.2 User password (ASCII string)
 
@@ -156,7 +156,7 @@ Status: Under development
   1.6 Message
 
     A message is what a user sends into a room. All other users in the same
-    room can see the message.
+    room at the time the message was sent can see the message.
 
     1.6.1 Message ID
 
@@ -168,7 +168,7 @@ Status: Under development
 
     1.6.3 Message time
 
-      The server time when the mesaage was recieved by the server.
+      The server time when the message was received by the server.
 
     1.6.4 Message sender
 
@@ -176,19 +176,29 @@ Status: Under development
 
 2. Request method
 
-  2.1 LOG_IN
+  2.1 SIGN_UP
 
-  2.2 LOG_OFF
+  2.2 LOG_IN
 
-  2.3 GET_TIME
+  2.3 LOG_OFF
 
-  2.4 CHANGE_PASS
+  2.4 DELETE_ACC
 
-  2.5 CREATE_ROOM
+  2.5 CHANGE_PASS
+  
+  2.6 GET_TIME
 
-  2.6 REMOVE_ROOM
+  2.7 CREATE_ROOM
 
-  2.7 REMOVE_USER
+  2.8 REMOVE_ROOM
+
+  2.9 REMOVE_USER
+  
+  2.10 SET_ADMIN
+
+  2.11 ADD_FRIEND
+
+  2.12 REMOVE_FRIEND
 
 3. Response Status code
 
@@ -206,4 +216,4 @@ Status: Under development
 
   3.4 999 Error
 
-    An unexpected error occured when processing the request.
+    An unexpected error occurred when processing the request.

@@ -36,7 +36,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     final JButton buttonSignUp = new JButton("Sign Up");
 
     public JavaChatRoomRegisterGUI() {
-        super("Chat Room Sign Up");
+        super("Chatroom Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);

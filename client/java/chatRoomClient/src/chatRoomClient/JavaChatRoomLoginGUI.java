@@ -34,7 +34,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
     final JButton buttonSignUp = new JButton("Sign Up");
 
     public JavaChatRoomLoginGUI() {
-        super("Chat Room Log In");
+        super("Chatroom Log In");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);
