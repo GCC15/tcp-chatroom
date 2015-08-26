@@ -29,11 +29,11 @@ public class JavaChatRoomLoginGUI extends JFrame {
     JTextField textField2 = new JTextField(20);
     JTextField textField3 = new JTextField(20);
     JTextField textField4 = new JTextField(20);
-    JButton button1 = new JButton("Login");
-    JButton button2 = new JButton("Go to register page");
+    JButton button1 = new JButton("Log In");
+    JButton button2 = new JButton("Sign Up");
 
     public JavaChatRoomLoginGUI() {
-        super("Chat room login");
+        super("Chat room log in");
         setResizable(false);
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         setSize(400, 250);

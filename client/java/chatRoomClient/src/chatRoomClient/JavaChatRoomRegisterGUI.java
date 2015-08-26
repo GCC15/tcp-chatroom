@@ -30,10 +30,10 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     JTextField textField2 = new JTextField(20);
     JTextField textField3 = new JTextField(20);
     JTextField textField4 = new JTextField(20);
-    JButton button1 = new JButton("Register");
+    JButton button1 = new JButton("Sign Up");
 
     public JavaChatRoomRegisterGUI() {
-        super("Chat room register");
+        super("Chat room sign up");
         setResizable(false);
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         setSize(400, 250);
