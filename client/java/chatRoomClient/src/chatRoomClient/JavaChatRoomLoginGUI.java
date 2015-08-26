@@ -16,8 +16,6 @@
 
 package chatRoomClient;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -32,8 +30,8 @@ public class JavaChatRoomLoginGUI extends JFrame {
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
     final JTextField textFieldPassword = new JTextField(20);
-    final JButton buttonLogin = new JButton("Log In");
-    final JButton buttonSignup = new JButton("Sign Up");
+    final JButton buttonLogIn = new JButton("Log In");
+    final JButton buttonSignUp = new JButton("Sign Up");
 
     public JavaChatRoomLoginGUI() {
         super("Chat Room Log In");
@@ -54,10 +52,10 @@ public class JavaChatRoomLoginGUI extends JFrame {
         add(panelPassword);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
-        buttonSignup.addActionListener(new SignUpActionListener());
-        panelButton.add(buttonSignup);
-        buttonLogin.addActionListener(new LoginActionListener());
-        panelButton.add(buttonLogin);
+        buttonSignUp.addActionListener(new SignUpActionListener());
+        panelButton.add(buttonSignUp);
+        buttonLogIn.addActionListener(new LoginActionListener());
+        panelButton.add(buttonLogIn);
         add(panelButton);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
@@ -80,7 +78,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
     private static class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
 

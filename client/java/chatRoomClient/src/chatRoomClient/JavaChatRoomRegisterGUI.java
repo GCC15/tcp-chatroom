@@ -16,8 +16,6 @@
 
 package chatRoomClient;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -35,7 +33,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     final JTextField textFieldID = new JTextField(20);
     final JTextField textFieldPassword = new JTextField(20);
     final JTextField textFieldConfirmPwd = new JTextField(20);
-    final JButton buttonSignup = new JButton("Sign Up");
+    final JButton buttonSignUp = new JButton("Sign Up");
 
     public JavaChatRoomRegisterGUI() {
         super("Chat Room Sign Up");
@@ -59,8 +57,8 @@ public class JavaChatRoomRegisterGUI extends JFrame {
         add(panelConfirmPwd);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
-        buttonSignup.addActionListener(new SignUpActionListener());
-        panelButton.add(buttonSignup);
+        buttonSignUp.addActionListener(new SignUpActionListener());
+        panelButton.add(buttonSignUp);
         add(panelButton);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -76,7 +74,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     private static class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
 }
