@@ -21,6 +21,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class JavaChatRoomLoginGUI extends JFrame {
+<<<<<<< HEAD
     JLabel labelServer = new JLabel("Server IP: ");
     JLabel labelPort = new JLabel("Port: ");
     JLabel labelID = new JLabel("User ID: ");
@@ -31,9 +32,21 @@ public class JavaChatRoomLoginGUI extends JFrame {
     JTextField textFieldPassword = new JTextField(20);
     JButton button1 = new JButton("Login");
     JButton button2 = new JButton("Go to register page");
+=======
+    JLabel label1 = new JLabel("Server IP: ");
+    JLabel label2 = new JLabel("Port: ");
+    JLabel label3 = new JLabel("User ID: ");
+    JLabel label4 = new JLabel("User Password: ");
+    JTextField textField1 = new JTextField(20);
+    JTextField textField2 = new JTextField(20);
+    JTextField textField3 = new JTextField(20);
+    JTextField textField4 = new JTextField(20);
+    JButton button1 = new JButton("Log In");
+    JButton button2 = new JButton("Sign Up");
+>>>>>>> origin/master
 
     public JavaChatRoomLoginGUI() {
-        super("Chat room login");
+        super("Chat room log in");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);
