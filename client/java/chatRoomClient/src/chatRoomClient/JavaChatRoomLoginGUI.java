@@ -36,9 +36,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
         super("Chat room login");
         setResizable(false);
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
-        setSize(350, 250);
-        JScrollBar scrollBar = new JScrollBar(JScrollBar.HORIZONTAL);
-        textField4.add(scrollBar);
+        setSize(400, 250);
         add(label1);
         add(textField1);
         add(label2);
