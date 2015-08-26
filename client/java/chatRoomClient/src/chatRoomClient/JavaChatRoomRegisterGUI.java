@@ -34,6 +34,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
 
     public JavaChatRoomRegisterGUI() {
         super("Chat room register");
+        setResizable(false);
         setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
         setSize(400, 250);
         add(label1);
@@ -45,7 +46,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
         add(label4);
         add(textField4);
         add(button1);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 }

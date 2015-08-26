@@ -30,6 +30,7 @@ public class JavaChatRoomClientGUI extends JFrame {
 
     public JavaChatRoomClientGUI() {
         super("Chat room client");
+        setResizable(false);
         setLayout(new BorderLayout());
         panel1.add(new JScrollPane(textArea));
         panel2.setLayout(new FlowLayout());
@@ -38,7 +39,7 @@ public class JavaChatRoomClientGUI extends JFrame {
         add(panel1, BorderLayout.CENTER);
         add(panel2, BorderLayout.SOUTH);
         setSize(500, 500);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 
