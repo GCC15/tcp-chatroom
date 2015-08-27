@@ -1,7 +1,8 @@
 {
   "server_nickname": "Python SCRP Server",
   "server_version": "0.0.1",
-  "server_description": "https://github.com/GCC15/tcp-chatroom/tree/master/server/python",
+  "server_description":
+    "https://github.com/GCC15/tcp-chatroom/tree/master/server/python",
   "server_protocol_version": "0.0.2",
   
   "var_dir": "var",
@@ -10,5 +11,6 @@
   
   "server_port": 42015,
   "control_port": 42016,
-  "tcp_listen_backlog": 5
+  "tcp_listen_backlog": 5,
+  "db_timeout": 5
 }
