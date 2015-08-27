@@ -225,30 +225,30 @@ Status: Under development
 
   Each type of error has an error number, a name, and a description.
 
-  3.1 900 SUCCESS
+  900 SUCCESS
 
      The requested action was performed without errors.
 
-  3.2 901 USER_ALREADY_EXISTS
+  901 USER_ALREADY_EXISTS
 
     User ID already exists.
 
-  3.3 902 INVALID_USER_ID
+  902 INVALID_USER_ID
 
     The user ID is invalid in format.
 
-  3.4 903 INVALID_USER_PASS
+  903 INVALID_USER_PASS
 
     The user password is invalid.
 
-  3.10 950 WRONG_LOG_IN
+  950 WRONG_LOG_IN
 
     The user ID and the user password do not match.
 
-  3.20 998 BAD_REQUEST
+  998 BAD_REQUEST
 
     The request was not understood and was ignored.
 
-  3.21 999 UNKNOWN
+  999 UNKNOWN
 
     An unexpected error occurred.
