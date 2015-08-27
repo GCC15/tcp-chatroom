@@ -1,10 +1,9 @@
 """
 Low-level abstraction of the database
-A queue is used to ensure that DB operations are performed in the same thread.
+Perform DB operations in the same thread.
 """
 
 import threading
-import queue
 import os
 import sqlite3
 
@@ -14,29 +13,40 @@ import config as cfg
 class _ManagerThread(threading.Thread):
     def __init__(self):
         super().__init__(name='DBManagerThread', daemon=True)
+
         var_dir = cfg.get('var_dir')
         cfg.make_dirs(var_dir)
         db_file = cfg.get('db_file')
-        self._db_file_path = os.path.join(var_dir, db_file)
-        # Store the result of the last task
-        self._result = None
-        # Task queue
-        self._q = queue.Queue()
+        self.__db_file_path = os.path.join(var_dir, db_file)
+
+        self.__func = None
+        self.__result = None
+
+        # Synchronization
+        self.__exec_lock = threading.Lock()
+        self.__task_event = threading.Event()
+        self.__result_event = threading.Event()
 
     def run(self):
-        conn = sqlite3.connect(self._db_file_path)
+        conn = sqlite3.connect(self.__db_file_path)
         while True:
-            func, event = self._q.get()
-            self._result = func(conn.cursor())
+            self.__task_event.wait()
+            # Block
+            self.__task_event.clear()
+            # noinspection PyCallingNonCallable
+            self.__result = self.__func(conn.cursor())
             conn.commit()
-            self._q.task_done()
-            event.set()
+            self.__result_event.set()
 
     def execute(self, func):
-        event = threading.Event()
-        self._q.put((func, event))
-        event.wait()
-        return self._result
+        with self.__exec_lock:
+            # Only one thread can enter the block at the same time
+            self.__func = func
+            self.__task_event.set()
+            self.__result_event.wait()
+            # Block
+            self.__result_event.clear()
+            return self.__result
 
 
 _mt = _ManagerThread()
