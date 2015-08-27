@@ -1,6 +1,4 @@
-"""
-Configurations and generic file system operations
-"""
+"""Configurations and generic file system operations"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #

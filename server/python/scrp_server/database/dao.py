@@ -1,6 +1,10 @@
-"""Data access object"""
+"""
+Data access object
+High-level abstraction of the database
+"""
 
 from . import db_adapter
+from . import names
 
 
 def main():
@@ -16,6 +20,7 @@ def main():
 
     # Save (commit) the changes
     db_adapter.commit()
+
 
 if __name__ == '__main__':
     main()

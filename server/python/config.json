@@ -2,7 +2,7 @@
   "server_nickname": "Python SCRP Server",
   "server_version": "0.0.1",
   "server_description": "https://github.com/GCC15/tcp-chatroom/tree/master/server/python",
-  "server_protocol_version": "0.0.1",
+  "server_protocol_version": "0.0.2",
   
   "var_dir": "var",
   "log_file": "server.log",

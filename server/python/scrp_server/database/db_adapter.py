@@ -1,3 +1,5 @@
+"""Low-level abstraction of the database"""
+
 import os
 import sqlite3
 
