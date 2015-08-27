@@ -1,3 +1,7 @@
+"""
+Configurations and generic file system operations
+"""
+
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,3 +33,9 @@ _config_dict = _load_config_dict()
 
 def get(key):
     return _config_dict[key]
+
+
+def make_dirs(directory):
+    """Create a directory and its parents, if necessary"""
+    if not os.path.exists(directory):
+        os.makedirs(directory)

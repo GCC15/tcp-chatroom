@@ -27,7 +27,6 @@ def main():
     action = sys.argv[1]
     if action == 'status':
         pass
-        # s = scrp_server.ChatroomServer()
     elif action == 'start':
         pass
     elif action == 'stop':
