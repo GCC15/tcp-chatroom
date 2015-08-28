@@ -8,29 +8,37 @@ various programming languages for different platforms. The
 
 # Features
 
-  - Implementation-independent communication protocol
+- Implementation-independent protocol
 
-  - User accounts
-  
-  - Friend list
-  
-  - Private message & group chat
-  
-  - Chat history roaming
-  
-  - Unicode characters
-  
-  - (TBD) Hyperlinks in messages  
-  
-  - (TBD) Secure transmission based on TLS
+- Easy integration with automated scripts, e.g. chat bots, information services.
+
+- User accounts
+
+- Friend list
+
+- Private & group communication
+
+- Public & private rooms
+
+- Chat history roaming
+
+- Unicode support
+
+- (TBD) Rich text messages
+
+- (TBD) Secure transmission based on TLS
 
 # Client
 
-  - [ ] [Java](client/java)
+- [ ] [Java](client/java)
+
+- [ ] [Android](client/android)
 
 # Server
 
-  - [ ] [Python](server/python)
+- [ ] [Python](server/python)
+
+- [ ] [Java](server/java)
 
 # License
 
