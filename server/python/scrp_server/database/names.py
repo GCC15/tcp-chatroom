@@ -1,4 +1,4 @@
-"""String Constants for the SQLite database"""
+"""String constants for the SQLite database"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
@@ -22,14 +22,14 @@ COL_USER_ID = 'id'
 COL_USER_PASS = 'pass'
 COL_USER_SALT = 'salt'
 COL_USER_SIGN_UP_TIME = 'sign_up_time'
-COL_USER_NICKNAME = 'nickname'
-COL_USER_DESC = 'description'
+COL_USER_NICKNAME = 'name'
+COL_USER_DESC = 'desc'
 
 # Rooms
 TBL_ROOM = 'room'
 COL_ROOM_ID = 'id'
-COL_ROOM_NICKNAME = 'nickname'
-COL_ROOM_DESC = 'description'
+COL_ROOM_NICKNAME = 'name'
+COL_ROOM_DESC = 'desc'
 
 # Friendships
 TBL_FRIENDSHIP = 'friendship'
@@ -37,13 +37,15 @@ COL_FRIEND_L = 'user_l'
 COL_FRIEND_R = 'user_r'
 
 # Messages
-TBL_MSG = 'message'
+TBL_MSG = 'msg'
 COL_MSG_ID = 'id'
 COL_MSG_TIME = 'time'
+COL_MSG_CONTENT = 'content'
+COL_MSG_SENDER = 'sender'
+COL_MSG_ROOM = 'room'
 
 # Friend requests
 TBL_FRIEND_REQ = 'friend_req'
 COL_FRIEND_REQ_TIME = 'time'
 COL_FRIEND_REQ_FROM = 'user_from'
 COL_FRIEND_REQ_TO = 'user_to'
-
