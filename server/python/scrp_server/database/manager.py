@@ -50,7 +50,7 @@ class _ManagerThread(threading.Thread):
             # Block
             self.__task_event.clear()
             # noinspection PyCallingNonCallable
-            self.__result = self.__func(conn.cursor())
+            self.__result = self.__func(conn.cursor)
             conn.commit()
             self.__result_event.set()
 
@@ -70,7 +70,7 @@ _mt.start()
 
 
 def execute(func):
-    """func receives one Cursor argument"""
+    """func receives a cursor factory function () -> Cursor as the argument"""
     return _mt.execute(func)
 
 
@@ -78,9 +78,10 @@ def main(i):
     """For testing"""
     print('{} WAITING IN {}'.format(i, threading.current_thread().name))
 
-    def task(c):
+    def task(cursor_factory):
         print('{} RUNNING IN {}'.format(i, threading.current_thread().name))
         time.sleep(random.random())
+        c = cursor_factory()
         c.execute('SELECT -{}'.format(i))
         ret = c.fetchall()
         print('{} RETURNING'.format(i))
