@@ -34,7 +34,7 @@ various programming languages for different platforms. The
 
 - [ ] [Android](client/android)
 
-- [ ] [iOS](client/iOS)
+- [ ] [iOS](client/ios)
 
 # Server
 
