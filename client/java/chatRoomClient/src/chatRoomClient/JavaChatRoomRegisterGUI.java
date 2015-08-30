@@ -154,11 +154,12 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            isServerIPValid();
-            isPortValid();
-            isIDValid();
-            isPasswordValid();
+            labelMessage.setText("");
             isConfirmPwdValid();
+            isPasswordValid();
+            isIDValid();
+            isPortValid();
+            isServerIPValid();
         }
     }
 }

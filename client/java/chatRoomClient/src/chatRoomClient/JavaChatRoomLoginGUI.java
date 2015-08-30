@@ -26,6 +26,7 @@ public class JavaChatRoomLoginGUI extends JFrame {
     final JLabel labelPort = new JLabel("Port: ");
     final JLabel labelID = new JLabel("ID: ");
     final JLabel labelPassword = new JLabel("Password: ");
+    JLabel labelMessage = new JLabel("");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
@@ -57,6 +58,10 @@ public class JavaChatRoomLoginGUI extends JFrame {
         buttonLogIn.addActionListener(new LoginActionListener());
         panelButton.add(buttonLogIn);
         add(panelButton);
+        JPanel panelMessage = new JPanel();
+        panelMessage.setLayout(new FlowLayout());
+        panelMessage.add(labelMessage);
+        add(panelMessage);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -68,18 +73,84 @@ public class JavaChatRoomLoginGUI extends JFrame {
         panel.add(textField);
     }
 
-    private static class SignUpActionListener implements ActionListener {
+    private boolean isServerIPValid() {
+        String serverIP = textFieldServer.getText();
+        if (true) {
+            return true;
+        } else {
+            labelMessage.setText("Server IP is not valid");
+            return false;
+        }
+    }
+
+    private boolean isPortValid() {
+        String Port = textFieldPort.getText();
+        if (true) {
+            return true;
+        } else {
+            labelMessage.setText("Port is not valid");
+            return false;
+        }
+    }
+
+    private boolean isIDValid() {
+        String ID = textFieldID.getText();
+        int length = ID.length();
+        if (length < 1 || length > 16) {
+            labelMessage.setText("ID length is not valid");
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            if (!Character.isLetterOrDigit(ID.charAt(i))) {
+                labelMessage.setText("ID contains invalid characters");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private boolean isPasswordValid() {
+        String password = textFieldPassword.getText();
+        int length = password.length();
+        if (length < 6 || length > 64) {
+            labelMessage.setText("Password length is not valid");
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            if (!Character.isLetterOrDigit(password.charAt(i))) {
+                labelMessage.setText("Password contains invalid characters");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean doesIDPwdMatch(){
+        if (true) {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
         }
     }
 
-    private static class LoginActionListener implements ActionListener {
+    private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new UnsupportedOperationException();
+            labelMessage.setText("");
+            doesIDPwdMatch();
+            isPasswordValid();
+            isIDValid();
+            isPortValid();
+            isServerIPValid();
         }
     }
-
 }
