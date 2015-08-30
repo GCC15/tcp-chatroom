@@ -35,7 +35,7 @@ public class JavaLoginGUI extends JFrame {
     final JButton buttonSignUp = new JButton("Sign Up");
 
     public JavaLoginGUI() {
-        super("Chatroom Log In");
+        super("Log In");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(400, 250);
@@ -138,7 +138,7 @@ public class JavaLoginGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            SwingUtilities.invokeLater(JavaRegisterGUI::new);
+            SwingUtilities.invokeLater(JavaSignUpGUI::new);
         }
     }
 

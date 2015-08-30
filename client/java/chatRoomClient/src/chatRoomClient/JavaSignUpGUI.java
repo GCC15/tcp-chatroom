@@ -22,7 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class JavaRegisterGUI extends JFrame {
+public class JavaSignUpGUI extends JFrame {
     final JLabel labelServer = new JLabel("Server IP: ");
     final JLabel labelPort = new JLabel("Port: ");
     final JLabel labelID = new JLabel("New ID: ");
@@ -36,8 +36,8 @@ public class JavaRegisterGUI extends JFrame {
     final JTextField textFieldConfirmPwd = new JTextField(20);
     final JButton buttonSignUp = new JButton("Sign Up");
 
-    public JavaRegisterGUI() {
-        super("Chatroom Sign Up");
+    public JavaSignUpGUI() {
+        super("Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         setSize(500, 250);

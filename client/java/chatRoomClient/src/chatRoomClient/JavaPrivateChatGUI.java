@@ -16,13 +16,33 @@
 
 package chatRoomClient;
 
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
+public class JavaPrivateChatGUI extends JFrame{
+    JPanel panel1 = new JPanel();
+    JPanel panel2 = new JPanel();
+    JButton button1 = new JButton("Send");
+    JTextArea textArea = new JTextArea(20, 40);
+    JTextArea textField = new JTextArea(5, 30); // TODO
 
-public class Main {
+    public JavaPrivateChatGUI(){
+        super("Private chat");
+        setResizable(false);
+        setLayout(new BorderLayout());
+        panel1.add(new JScrollPane(textArea));
+        panel2.setLayout(new FlowLayout());
+        panel2.add(textField);
+        panel2.add(button1);
+        add(panel1, BorderLayout.CENTER);
+        add(panel2, BorderLayout.SOUTH);
+        setSize(500, 500);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setVisible(true);
+    }
+
     public static void main(String[] args) {
-//        SwingUtilities.invokeLater(JavaChatRoomGUI::new);
-        SwingUtilities.invokeLater(JavaLoginGUI::new);
-//        SwingUtilities.invokeLater(JavaSignUpGUI::new);
+        SwingUtilities.invokeLater(JavaChatRoomGUI::new);
     }
 }
