@@ -1,6 +1,6 @@
 """
 Low-level abstraction of the database
-Perform DB operations in the same thread.
+Perform DB operations synchronously in the same thread.
 """
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
