@@ -17,7 +17,7 @@ Status: Under development
 
 1. Concepts
 
-  In this section abstract concepts and related quantities are defined.
+  Abstract concepts and related quantities are defined in this section.
 
   1.1 SCRP system
 
@@ -122,7 +122,7 @@ Status: Under development
 
   1.4 User
 
-    A user chats (a) with one of its friends, and (b) in a room.
+    A user chats (a) with its friends, and (b) in rooms.
 
     User ID (ASCII string)
 
@@ -151,6 +151,13 @@ Status: Under development
     Friends (collection of user)
     
       Each user has zero or more friends.
+
+    Rooms (collection of room)
+    
+      Each user belongs to zero or more rooms.
+    
+    Last activity time (uint32)
+      The server time of the last time the user logged off from the server.
 
   1.5 Room
 
@@ -183,19 +190,23 @@ Status: Under development
       ROOM_ACCESS_PASSWORD
 
       ROOM_ACCESS_PERMISSION
+    
+    Room creator (user)
+      Creator of the room. Room creator has the highest authority in the room.
 
     Room admin (user)
 
-      A special type of user in the room. A room has one or more admins.
+      A special type of user in the room appointed by the room creator.
+      A room has zero or more admins.
 
   1.6 Message
 
-    A message is what a user sends into a room. All other users in the same
+    Messages are what users send in a room. All other users in the same
     room at the time the message was sent can see the message.
 
     Message ID
 
-      The identifier of the message.
+      The identifier of the message. It is unique among all messages. 
 
     Message Room ID
 
@@ -209,11 +220,17 @@ Status: Under development
 
       The user who sent the message.
 
+    Message receiver
+
+      The users who received the message.
+
 2. Request
 
   Requests are what a client sends to the server. A request consists of
 
-    (a) A serial number
+    (a) A serial number (uint32)
+    (b) A method 
+    (c) Other fields dependent on the method
 
   2.1 SIGN_UP
 
@@ -253,50 +270,59 @@ Status: Under development
   
   2.10 SET_ADMIN
 
-  2.11 ADD_FRIEND
+  2.11 REMOVE_ADMIN
 
-  2.12 REMOVE_FRIEND
+  2.12 ADD_FRIEND
+
+  2.13 REMOVE_FRIEND
+  
+  2.14 ENTER_ROOM
+
+  2.15 CHANGE_ROOM_ACCESS
+
 
 3. Response
 
   Each type of error has an error number, a name, and a description.
 
-  900 SUCCESS
+  900 SUCCESS (All requests)
 
-     The requested action was performed without errors.
+    The requested action was performed without errors.
 
-  901 USER_ALREADY_EXISTS
+  901 USER_ALREADY_EXISTS (SIGN_UP)
 
     User ID already exists.
 
-  902 INVALID_USER_ID
+  902 INVALID_USER_ID (SIGN_UP)
 
     The format of the user ID is invalid.
+    Note: The client should check the format of user Id first, 
+    and ideally the client should never receive this response.
 
-  903 INVALID_USER_PASS
+  903 INVALID_USER_PASS (SIGN_UP)
 
     The user password is invalid.
 
-  905 INVALID_ROOM_ID
+  905 INVALID_ROOM_ID (CREATE_ROOM)
 
     The format of the room ID is invalid.
 
-  910 ROOM_ALREADY_EXISTS
+  910 ROOM_ALREADY_EXISTS (CREATE_ROOM)
 
     Room ID already exists.
 
-  950 WRONG_LOG_IN
+  950 WRONG_LOG_IN (LOG_IN)
 
     The user ID and the user password do not match.
 
-  951 TOO_MANY_WRONG_LOGIN
+  951 TOO_MANY_WRONG_LOGIN (LOG_IN)
 
     Wrong login attempts are too often.
 
-  998 BAD_REQUEST
+  998 BAD_REQUEST (All requests)
 
     The request was not understood and was ignored.
 
-  999 UNKNOWN
+  999 UNKNOWN (All requests)
 
     An unexpected error occurred.
