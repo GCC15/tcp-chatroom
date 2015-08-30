@@ -21,14 +21,14 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-public class JavaChatRoomClientGUI extends JFrame {
+public class JavaChatRoomGUI extends JFrame {
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
     JButton button1 = new JButton("Send");
     JTextArea textArea = new JTextArea(20, 40);
     JTextArea textField = new JTextArea(5, 30); // TODO
 
-    public JavaChatRoomClientGUI() {
+    public JavaChatRoomGUI() {
         super("Chat Room Client");
         setResizable(false);
         setLayout(new BorderLayout());
@@ -44,6 +44,6 @@ public class JavaChatRoomClientGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(JavaChatRoomClientGUI::new);
+        SwingUtilities.invokeLater(JavaChatRoomGUI::new);
     }
 }

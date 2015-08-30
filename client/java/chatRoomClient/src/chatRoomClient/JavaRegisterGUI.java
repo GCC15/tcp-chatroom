@@ -16,29 +16,31 @@
 
 package chatRoomClient;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class JavaChatRoomLoginGUI extends JFrame {
 
+public class JavaRegisterGUI extends JFrame {
     final JLabel labelServer = new JLabel("Server IP: ");
     final JLabel labelPort = new JLabel("Port: ");
-    final JLabel labelID = new JLabel("ID: ");
-    final JLabel labelPassword = new JLabel("Password: ");
+    final JLabel labelID = new JLabel("New ID: ");
+    final JLabel labelPassword = new JLabel("New Password: ");
+    final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
     JLabel labelMessage = new JLabel("");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
     final JTextField textFieldPassword = new JTextField(20);
-    final JButton buttonLogIn = new JButton("Log In");
+    final JTextField textFieldConfirmPwd = new JTextField(20);
     final JButton buttonSignUp = new JButton("Sign Up");
 
-    public JavaChatRoomLoginGUI() {
-        super("Chatroom Log In");
+    public JavaRegisterGUI() {
+        super("Chatroom Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        setSize(400, 250);
+        setSize(500, 250);
         JPanel panelServer = new JPanel();
         addComponentToPanel(panelServer, labelServer, textFieldServer);
         add(panelServer);
@@ -51,18 +53,16 @@ public class JavaChatRoomLoginGUI extends JFrame {
         JPanel panelPassword = new JPanel();
         addComponentToPanel(panelPassword, labelPassword, textFieldPassword);
         add(panelPassword);
+        JPanel panelConfirmPwd = new JPanel();
+        addComponentToPanel(panelConfirmPwd, labelConfirmPwd, textFieldConfirmPwd);
+        add(panelConfirmPwd);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
         buttonSignUp.addActionListener(new SignUpActionListener());
         panelButton.add(buttonSignUp);
-        buttonLogIn.addActionListener(new LoginActionListener());
-        panelButton.add(buttonLogIn);
+        panelButton.add(labelMessage);
         add(panelButton);
-        JPanel panelMessage = new JPanel();
-        panelMessage.setLayout(new FlowLayout());
-        panelMessage.add(labelMessage);
-        add(panelMessage);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 
@@ -93,6 +93,16 @@ public class JavaChatRoomLoginGUI extends JFrame {
         }
     }
 
+
+    private boolean isIDUnique() {
+        if (true) {
+            return true;
+        } else {
+            labelMessage.setText("ID is not unique");
+            return false;
+        }
+    }
+
     private boolean isIDValid() {
         String ID = textFieldID.getText();
         int length = ID.length();
@@ -105,6 +115,10 @@ public class JavaChatRoomLoginGUI extends JFrame {
                 labelMessage.setText("ID contains invalid characters");
                 return false;
             }
+        }
+        if (!isIDUnique()) {
+            labelMessage.setText("ID is not unique");
+            return false;
         }
         return true;
     }
@@ -126,11 +140,13 @@ public class JavaChatRoomLoginGUI extends JFrame {
         return true;
     }
 
-    private boolean doesIDPwdMatch(){
-        if (true) {
+    private boolean isConfirmPwdValid() {
+        String confirmPwd = textFieldConfirmPwd.getText();
+        String password = textFieldPassword.getText();
+        if (password.equals(confirmPwd)) {
             return true;
-        }
-        else{
+        } else {
+            labelMessage.setText("Confirmed password is not identical to the password");
             return false;
         }
     }
@@ -138,15 +154,8 @@ public class JavaChatRoomLoginGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            SwingUtilities.invokeLater(JavaChatRoomRegisterGUI::new);
-        }
-    }
-
-    private class LoginActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
             labelMessage.setText("");
-            doesIDPwdMatch();
+            isConfirmPwdValid();
             isPasswordValid();
             isIDValid();
             isPortValid();
