@@ -28,6 +28,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
     final JLabel labelID = new JLabel("New ID: ");
     final JLabel labelPassword = new JLabel("New Password: ");
     final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
+    JLabel labelMessage = new JLabel("");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
@@ -39,7 +40,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
         super("Chatroom Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        setSize(400, 250);
+        setSize(500, 250);
         JPanel panelServer = new JPanel();
         addComponentToPanel(panelServer, labelServer, textFieldServer);
         add(panelServer);
@@ -59,6 +60,7 @@ public class JavaChatRoomRegisterGUI extends JFrame {
         panelButton.setLayout(new FlowLayout());
         buttonSignUp.addActionListener(new SignUpActionListener());
         panelButton.add(buttonSignUp);
+        panelButton.add(labelMessage);
         add(panelButton);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -71,10 +73,92 @@ public class JavaChatRoomRegisterGUI extends JFrame {
         panel.add(textField);
     }
 
-    private static class SignUpActionListener implements ActionListener {
+    private boolean isServerIPValid() {
+        String serverIP = textFieldServer.getText();
+        if (true) {
+            return true;
+        } else {
+            labelMessage.setText("Server IP is not valid");
+            return false;
+        }
+    }
+
+    private boolean isPortValid() {
+        String Port = textFieldPort.getText();
+        if (true) {
+            return true;
+        } else {
+            labelMessage.setText("Port is not valid");
+            return false;
+        }
+    }
+
+
+    private boolean isIDUnique() {
+        if (true) {
+            return true;
+        } else {
+            labelMessage.setText("ID is not unique");
+            return false;
+        }
+    }
+
+    private boolean isIDValid() {
+        String ID = textFieldID.getText();
+        int length = ID.length();
+        if (length < 1 || length > 16) {
+            labelMessage.setText("ID length is not valid");
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            if (!Character.isLetterOrDigit(ID.charAt(i))) {
+                labelMessage.setText("ID contains invalid characters");
+                return false;
+            }
+        }
+        if (!isIDUnique()) {
+            labelMessage.setText("ID is not unique");
+            return false;
+        }
+        return true;
+    }
+
+
+    private boolean isPasswordValid() {
+        String password = textFieldPassword.getText();
+        int length = password.length();
+        if (length < 6 || length > 64) {
+            labelMessage.setText("Password length is not valid");
+            return false;
+        }
+        for (int i = 0; i < length; i++) {
+            if (!Character.isLetterOrDigit(password.charAt(i))) {
+                labelMessage.setText("Password contains invalid characters");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isConfirmPwdValid() {
+        String confirmPwd = textFieldConfirmPwd.getText();
+        String password = textFieldPassword.getText();
+        if (password.equals(confirmPwd)) {
+            return true;
+        } else {
+            labelMessage.setText("Confirmed password is not identical to the password");
+            return false;
+        }
+    }
+
+    private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            throw new UnsupportedOperationException();
+            isServerIPValid();
+            isPortValid();
+            isIDValid();
+            isPasswordValid();
+            isConfirmPwdValid();
         }
     }
 }
