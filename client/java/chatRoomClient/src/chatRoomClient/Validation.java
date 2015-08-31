@@ -18,6 +18,9 @@
 
 package chatRoomClient;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public final class Validation {
 
     private Validation() {
@@ -82,7 +85,9 @@ public final class Validation {
         if (length < 1 || length > 16) {
             throw new InvalidIdLengthException();
         }
-        // TODO: use regex to find invalid char
+        if (!id.matches("//w")){
+            throw new InvalidIdCharException();
+        }
     }
 
 
@@ -91,7 +96,9 @@ public final class Validation {
         if (length < 6 || length > 64) {
             throw new InvalidPwdLengthException();
         }
-        // TODO: use regex to find invalid char
+        if (!password.matches("[ -~]")){
+            throw new InvalidPwdCharException();
+        }
     }
 
     public static void checkPasswordConfirm(String password, String passwordConfirm) throws ValidationException {

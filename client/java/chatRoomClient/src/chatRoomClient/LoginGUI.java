@@ -87,7 +87,6 @@ public class LoginGUI extends JFrame {
                 Validation.checkPassword(textFieldPassword.getText());
             } catch (Validation.ValidationException exp) {
                 Utils.showMessageDialog(exp.getMessage());
-                return;
             }
             // TODO
         }

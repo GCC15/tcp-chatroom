@@ -24,8 +24,6 @@ import java.awt.event.ActionListener;
 
 public class SignUpGUI extends JFrame {
 
-    // TODO: password should be hidden in the UI!
-
     final JLabel labelServer = new JLabel("Server host: ");
     final JLabel labelPort = new JLabel("Port: ");
     final JLabel labelID = new JLabel("New ID: ");
@@ -34,8 +32,9 @@ public class SignUpGUI extends JFrame {
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
-    final JTextField textFieldPassword = new JTextField(20);
-    final JTextField textFieldConfirmPwd = new JTextField(20);
+    JPasswordField PwdFieldPwd = new JPasswordField(20);
+    JPasswordField PwdFieldConfirmPwd = new JPasswordField(20);
+    ;
     final JButton buttonSignUp = new JButton("Sign Up");
 
     public SignUpGUI() {
@@ -53,10 +52,12 @@ public class SignUpGUI extends JFrame {
         addComponentToPanel(panelID, labelID, textFieldID);
         add(panelID);
         JPanel panelPassword = new JPanel();
-        addComponentToPanel(panelPassword, labelPassword, textFieldPassword);
+        PwdFieldPwd.setEchoChar('*');
+        PwdFieldConfirmPwd.setEchoChar('*');
+        addComponentToPanel(panelPassword, labelPassword, PwdFieldPwd);
         add(panelPassword);
         JPanel panelConfirmPwd = new JPanel();
-        addComponentToPanel(panelConfirmPwd, labelConfirmPwd, textFieldConfirmPwd);
+        addComponentToPanel(panelConfirmPwd, labelConfirmPwd, PwdFieldConfirmPwd);
         add(panelConfirmPwd);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
@@ -81,8 +82,9 @@ public class SignUpGUI extends JFrame {
             try {
                 Validation.checkPort(textFieldPort.getText());
                 Validation.checkId(textFieldID.getText());
-                Validation.checkPassword(textFieldPassword.getText());
-                Validation.checkPasswordConfirm(textFieldPassword.getText(), textFieldConfirmPwd.getText());
+                Validation.checkPassword(new String(PwdFieldPwd.getPassword()));
+                Validation.checkPasswordConfirm(new String (PwdFieldPwd.getPassword())
+                        , new String (PwdFieldConfirmPwd.getPassword()));
             } catch (Validation.ValidationException exp) {
                 Utils.showMessageDialog(exp.getMessage());
             }
