@@ -85,7 +85,7 @@ public final class Validation {
         if (length < 1 || length > 16) {
             throw new InvalidIdLengthException();
         }
-        if (!id.matches("//w")){
+        if (!id.matches("^[a-zA-Z0-9_]*$")){
             throw new InvalidIdCharException();
         }
     }
@@ -96,7 +96,7 @@ public final class Validation {
         if (length < 6 || length > 64) {
             throw new InvalidPwdLengthException();
         }
-        if (!password.matches("[ -~]")){
+        if (!password.matches("^[ -~]*$")){
             throw new InvalidPwdCharException();
         }
     }
