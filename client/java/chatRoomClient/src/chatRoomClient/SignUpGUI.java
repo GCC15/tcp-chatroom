@@ -16,28 +16,33 @@
 
 package chatRoomClient;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class JavaLoginGUI extends JFrame {
+
+public class SignUpGUI extends JFrame {
+
+    // TODO: password should be hidden in the UI!
 
     final JLabel labelServer = new JLabel("Server host: ");
     final JLabel labelPort = new JLabel("Port: ");
-    final JLabel labelID = new JLabel("ID: ");
-    final JLabel labelPassword = new JLabel("Password: ");
+    final JLabel labelID = new JLabel("New ID: ");
+    final JLabel labelPassword = new JLabel("New Password: ");
+    final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
     final JTextField textFieldPassword = new JTextField(20);
-    final JButton buttonLogIn = new JButton("Log In");
+    final JTextField textFieldConfirmPwd = new JTextField(20);
     final JButton buttonSignUp = new JButton("Sign Up");
 
-    public JavaLoginGUI() {
-        super("Log In");
+    public SignUpGUI() {
+        super("Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        setSize(400, 250);
+        setSize(500, 250);
         JPanel panelServer = new JPanel();
         addComponentToPanel(panelServer, labelServer, textFieldServer);
         add(panelServer);
@@ -50,14 +55,15 @@ public class JavaLoginGUI extends JFrame {
         JPanel panelPassword = new JPanel();
         addComponentToPanel(panelPassword, labelPassword, textFieldPassword);
         add(panelPassword);
+        JPanel panelConfirmPwd = new JPanel();
+        addComponentToPanel(panelConfirmPwd, labelConfirmPwd, textFieldConfirmPwd);
+        add(panelConfirmPwd);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
         buttonSignUp.addActionListener(new SignUpActionListener());
         panelButton.add(buttonSignUp);
-        buttonLogIn.addActionListener(new LoginActionListener());
-        panelButton.add(buttonLogIn);
         add(panelButton);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setVisible(true);
     }
 
@@ -72,19 +78,17 @@ public class JavaLoginGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            SwingUtilities.invokeLater(JavaSignUpGUI::new);
-        }
-    }
-
-    private class LoginActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JavaValidation.isServerIPValid(textFieldServer.getText());
-            JavaValidation.isPortValid(textFieldPort.getText());
-            JavaValidation.isIDValid(textFieldID.getText());
-            JavaValidation.isPasswordValid(textFieldPassword.getText());
-            JavaValidation.doesIDPwdMatch(textFieldID.getText(),
-                    textFieldPassword.getText());
+            try {
+                Validation.checkPort(textFieldPort.getText());
+                Validation.checkId(textFieldID.getText());
+                Validation.checkPassword(textFieldPassword.getText());
+            } catch (Validation.ValidationException exp) {
+                Utils.showMessageDialog(exp.getMessage());
+                return;
+            }
+            if (!textFieldConfirmPwd.getText().equals(textFieldPassword.getText())) {
+                Utils.showMessageDialog(Strings.INVALID_PWD_CONFIRM);
+            }
         }
     }
 }

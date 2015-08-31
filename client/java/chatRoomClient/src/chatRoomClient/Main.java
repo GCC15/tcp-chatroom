@@ -21,8 +21,8 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) {
-//        SwingUtilities.invokeLater(JavaChatRoomGUI::new);
-        SwingUtilities.invokeLater(JavaLoginGUI::new);
-//        SwingUtilities.invokeLater(JavaSignUpGUI::new);
+//        SwingUtilities.invokeLater(ChatRoomGUI::new);
+        SwingUtilities.invokeLater(LoginGUI::new);
+//        SwingUtilities.invokeLater(SignUpGUI::new);
     }
 }
