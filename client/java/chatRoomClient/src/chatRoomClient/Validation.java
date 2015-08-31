@@ -59,6 +59,12 @@ public final class Validation {
         }
     }
 
+    public static final class InvalidPwdConfirmException extends ValidationException {
+        public InvalidPwdConfirmException() {
+            super(Strings.INVALID_PWD_CONFIRM);
+        }
+    }
+
     public static void checkPort(String port) throws ValidationException {
         int portNum;
         try {
@@ -86,6 +92,12 @@ public final class Validation {
             throw new InvalidPwdLengthException();
         }
         // TODO: use regex to find invalid char
+    }
+
+    public static void checkPasswordConfirm(String password, String passwordConfirm) throws ValidationException {
+        if (!password.equals(passwordConfirm)) {
+            throw new InvalidPwdConfirmException();
+        }
     }
 
 }

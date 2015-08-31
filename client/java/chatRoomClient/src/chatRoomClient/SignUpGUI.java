@@ -82,13 +82,11 @@ public class SignUpGUI extends JFrame {
                 Validation.checkPort(textFieldPort.getText());
                 Validation.checkId(textFieldID.getText());
                 Validation.checkPassword(textFieldPassword.getText());
+                Validation.checkPasswordConfirm(textFieldPassword.getText(), textFieldConfirmPwd.getText());
             } catch (Validation.ValidationException exp) {
                 Utils.showMessageDialog(exp.getMessage());
-                return;
             }
-            if (!textFieldConfirmPwd.getText().equals(textFieldPassword.getText())) {
-                Utils.showMessageDialog(Strings.INVALID_PWD_CONFIRM);
-            }
+
         }
     }
 }
