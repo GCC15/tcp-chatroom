@@ -20,14 +20,14 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class JavaPrivateChatGUI extends JFrame{
+public class JavaPrivateChatGUI extends JFrame {
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
     JButton button1 = new JButton("Send");
     JTextArea textArea = new JTextArea(20, 40);
     JTextArea textField = new JTextArea(5, 30); // TODO
 
-    public JavaPrivateChatGUI(){
+    public JavaPrivateChatGUI() {
         super("Private chat");
         setResizable(false);
         setLayout(new BorderLayout());
