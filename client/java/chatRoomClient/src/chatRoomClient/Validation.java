@@ -85,7 +85,7 @@ public final class Validation {
         if (length < 1 || length > 16) {
             throw new InvalidIdLengthException();
         }
-        if (!id.matches("^[a-zA-Z0-9_]*$")){
+        if (!id.matches("^\\w*$")){
             throw new InvalidIdCharException();
         }
     }
