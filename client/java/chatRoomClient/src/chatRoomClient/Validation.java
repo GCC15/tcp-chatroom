@@ -18,9 +18,6 @@
 
 package chatRoomClient;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public final class Validation {
 
     private Validation() {
@@ -29,6 +26,11 @@ public final class Validation {
     public static abstract class ValidationException extends Exception {
         public ValidationException(String message) {
             super(message);
+        }
+    }
+    public static final class InvalidServerException extends ValidationException {
+        public InvalidServerException() {
+            super(Strings.INVALID_SERVER);
         }
     }
 
@@ -65,6 +67,12 @@ public final class Validation {
     public static final class InvalidPwdConfirmException extends ValidationException {
         public InvalidPwdConfirmException() {
             super(Strings.INVALID_PWD_CONFIRM);
+        }
+    }
+
+    public static void checkServer(String server) throws ValidationException {
+        if (server.equals("")){
+            throw new InvalidServerException();
         }
     }
 

@@ -22,8 +22,6 @@ import javax.swing.*;
 
 public class LoginGUI extends JFrame {
 
-    // TODO: password should be hidden in the UI!
-
     final JLabel labelServer = new JLabel("Server hostname: ");
     final JLabel labelPort = new JLabel("Port: ");
     final JLabel labelID = new JLabel("ID: ");
@@ -31,7 +29,7 @@ public class LoginGUI extends JFrame {
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
-    final JTextField textFieldPassword = new JTextField(20);
+    JPasswordField pwdFieldPassword = new JPasswordField(20);
     final JButton buttonLogIn = new JButton("Log In");
     final JButton buttonSignUp = new JButton("Sign Up");
 
@@ -50,7 +48,8 @@ public class LoginGUI extends JFrame {
         addComponentToPanel(panelID, labelID, textFieldID);
         add(panelID);
         JPanel panelPassword = new JPanel();
-        addComponentToPanel(panelPassword, labelPassword, textFieldPassword);
+        pwdFieldPassword.setEchoChar('*');
+        addComponentToPanel(panelPassword, labelPassword, pwdFieldPassword);
         add(panelPassword);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
@@ -82,9 +81,10 @@ public class LoginGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
+                Validation.checkServer(textFieldServer.getText());
                 Validation.checkPort(textFieldPort.getText());
                 Validation.checkId(textFieldID.getText());
-                Validation.checkPassword(textFieldPassword.getText());
+                Validation.checkPassword(new String(pwdFieldPassword.getPassword()));
             } catch (Validation.ValidationException exp) {
                 Utils.showErrorDialog(exp.getMessage());
             }

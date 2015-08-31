@@ -30,4 +30,5 @@ public final class Utils {
     public static void showErrorDialog(String message) {
         showMessageDialog(message, "Error");
     }
+
 }

@@ -7,6 +7,7 @@ public final class Strings {
 
     private Strings() {
     }
+    public static final String INVALID_SERVER = "Server is not valid";
 
     public static final String INVALID_PORT = "Port is not valid";
 
