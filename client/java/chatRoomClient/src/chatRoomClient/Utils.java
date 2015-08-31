@@ -26,4 +26,8 @@ public final class Utils {
     public static void showMessageDialog(String message, String title) {
         JOptionPane.showMessageDialog(new JFrame(), message, title, JOptionPane.ERROR_MESSAGE);
     }
+
+    public static void showErrorDialog(String message) {
+        showMessageDialog(message, "Error");
+    }
 }

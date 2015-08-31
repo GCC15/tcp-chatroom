@@ -34,7 +34,6 @@ public class SignUpGUI extends JFrame {
     final JTextField textFieldID = new JTextField(20);
     JPasswordField PwdFieldPwd = new JPasswordField(20);
     JPasswordField PwdFieldConfirmPwd = new JPasswordField(20);
-    ;
     final JButton buttonSignUp = new JButton("Sign Up");
 
     public SignUpGUI() {
@@ -86,7 +85,7 @@ public class SignUpGUI extends JFrame {
                 Validation.checkPasswordConfirm(new String (PwdFieldPwd.getPassword())
                         , new String (PwdFieldConfirmPwd.getPassword()));
             } catch (Validation.ValidationException exp) {
-                Utils.showMessageDialog(exp.getMessage());
+                Utils.showErrorDialog(exp.getMessage());
             }
 
         }
