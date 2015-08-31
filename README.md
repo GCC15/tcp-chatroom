@@ -6,7 +6,7 @@ Client and server programs for online instant messaging are implemented using
 various programming languages for different platforms. The 
 [SCRP](protocol/SCRP.txt)/TLS/TCP/IP protocol stack is used.
 
-# Features
+## Features
 
 - Implementation-independent protocol
 
@@ -28,7 +28,7 @@ various programming languages for different platforms. The
 
 - (TBD) Secure transmission based on TLS
 
-# Client
+## Client
 
 - [ ] [Java](client/java)
 
@@ -36,13 +36,13 @@ various programming languages for different platforms. The
 
 - [ ] [iOS](client/ios)
 
-# Server
+## Server
 
 - [ ] [Python](server/python)
 
 - [ ] [Java](server/java)
 
-# License
+## License
 
 This software is licensed under the GNU General Public License.
 See [LICENSE](LICENSE).
