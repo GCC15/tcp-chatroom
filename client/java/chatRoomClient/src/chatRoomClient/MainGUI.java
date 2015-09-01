@@ -1,4 +1,4 @@
-// Miscellaneous utility functions
+// The main GUI of the client
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -18,23 +18,19 @@
 
 package chatRoomClient;
 
+import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-public final class Utils {
-    private Utils() {
 
+public class MainGUI extends JFrame{
+
+    public MainGUI(){
+        super("Client");
+        setResizable(false);
+        setLayout(new GridBagLayout());
+        setSize(600, 400);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
     }
-
-    public static void showMessageDialog(String message, String title, int messageType) {
-        JOptionPane.showMessageDialog(new JFrame(), message, title, messageType);
-    }
-
-    public static void showErrorDialog(String message) {
-        showMessageDialog(message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void showConfirmationDialog(String message){
-        showMessageDialog(message, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-    }
-
 }

@@ -80,17 +80,23 @@ public class SignUpGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            boolean signUpSuccessful = true;
             try {
                 Validation.checkServer(textFieldServer.getText());
                 Validation.checkPort(textFieldPort.getText());
                 Validation.checkId(textFieldID.getText());
                 Validation.checkPassword(new String(pwdFieldPwd.getPassword()));
-                Validation.checkPasswordConfirm(new String (pwdFieldPwd.getPassword())
-                        , new String (pwdFieldConfirmPwd.getPassword()));
+                Validation.checkPasswordConfirm(new String(pwdFieldPwd.getPassword())
+                        , new String(pwdFieldConfirmPwd.getPassword()));
             } catch (Validation.ValidationException exp) {
+                signUpSuccessful = false;
                 Utils.showErrorDialog(exp.getMessage());
             }
-
+            //TODO: Confirm
+            if (signUpSuccessful) {
+                Utils.showConfirmationDialog(Strings.SIGN_UP_CONFIRMATION);
+                dispose();
+            }
         }
     }
 }

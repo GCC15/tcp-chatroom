@@ -35,4 +35,6 @@ public final class Strings {
     public static final String INVALID_PWD_CHAR = "Password contains invalid characters";
 
     public static final String INVALID_PWD_CONFIRM = "Confirmed password is not identical to the password";
+
+    public static final String SIGN_UP_CONFIRMATION = "Sign up succeed";
 }

@@ -82,15 +82,21 @@ public class LoginGUI extends JFrame {
     private class LoginActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            boolean loginSuccessful = true;
             try {
                 Validation.checkServer(textFieldServer.getText());
                 Validation.checkPort(textFieldPort.getText());
                 Validation.checkId(textFieldID.getText());
                 Validation.checkPassword(new String(pwdFieldPassword.getPassword()));
             } catch (Validation.ValidationException exp) {
+                loginSuccessful = false;
                 Utils.showErrorDialog(exp.getMessage());
             }
-            // TODO
+            // TODO: Confirm identity
+            if (loginSuccessful){
+                dispose();
+                SwingUtilities.invokeLater(MainGUI::new);
+            }
         }
     }
 }
