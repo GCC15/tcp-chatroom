@@ -1,3 +1,5 @@
+// Miscellaneous utility functions
+
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
 // This program is free software; you can redistribute it and/or modify
