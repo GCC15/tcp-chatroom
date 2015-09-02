@@ -253,12 +253,58 @@ Status: Under development
         {900, 901, 902, 903}
 
   2.2 LOG_IN
+    
+    Log in as an existed user.
+
+    Request fields
+
+      user_id
+
+        The ID of the user.
+
+      user_pass
+
+        The password of the user.
+
+    Response fields
+
+      err
+
+        {900, 950, 951}
 
   2.3 LOG_OFF
 
-  2.4 DELETE_ACC
+  2.4 DELETE_USER
+
+    Delete the user.
+
+    Request fields
+
+      user_id
+
+        The ID of the user.
+
+    Response fields
+
+      err
+
+        {900}
 
   2.5 CHANGE_PASS
+
+    Change the user password.
+
+    Request fields
+
+      user_pass
+
+        The password of the user.
+
+    Response fields
+
+      err
+
+        {900, 903}
   
   2.6 GET_TIME
 
@@ -299,7 +345,7 @@ Status: Under development
     Note: The client should check the format of user Id first, 
     and ideally the client should never receive this response.
 
-  903 INVALID_USER_PASS (SIGN_UP)
+  903 INVALID_USER_PASS (SIGN_UP, CHANGE_PASS)
 
     The user password is invalid.
 
@@ -311,13 +357,13 @@ Status: Under development
 
     Room ID already exists.
 
-  950 WRONG_LOG_IN (LOG_IN)
+  950 ID_PASSWORD_NOT_MATCH (LOG_IN)
 
     The user ID and the user password do not match.
 
-  951 TOO_MANY_WRONG_LOGIN (LOG_IN)
+  951 TOO_MANY_WRONG_ATTEMPTS (LOG_IN)
 
-    Wrong login attempts are too often.
+    Wrong attempts are too often.
 
   998 BAD_REQUEST (All requests)
 
