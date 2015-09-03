@@ -1,8 +1,8 @@
 This is the specification of the Stupid Chat Room Protocol (SCRP), a lightweight
 application-layer communication protocol used in the project tcp-chatroom
-(https://github.com/GCC15/tcp-chatroom). The SCRP is designed to work together with 
-other protocols including TLS/TCP/IP, although it is completely independent of 
-the underlying protocols.
+(https://github.com/GCC15/tcp-chatroom). The SCRP is designed to work together
+with other protocols including TLS/TCP/IP, although it is completely independent
+of the underlying protocols.
 
 Author:
 Zhang NS (https://github.com/zhangns)
@@ -18,7 +18,8 @@ Status: Under development
 
 1. Concepts
 
-  Abstract concepts and related quantities are defined in this section.
+  This section defines abstract entities and the fields needed to describe the
+  state and/or properties of each of them.
 
   1.1 SCRP system
 
@@ -26,31 +27,30 @@ Status: Under development
 
   1.2 Server
 
-    The server is a computer program which handles requests from clients. It
-    manages users, messages, rooms, and their interactions.
+    The server is a computer program which handles requests from clients.
 
-    Server nickname (Unicode string)
+    Nickname (Unicode string)
 
       A human-readable name of the server, e.g. "My Awesome Server". length <=
-      16.
+      32.
 
-    Server version (ASCII string)
+    Version (ASCII string)
 
       The version of the server, e.g. "1.0.0". length <= 16.
 
-    Server description (Unicode string)
+    Description (Unicode string)
 
-      A description of the server. length <= 256.
+      The description of the server. length <= 256.
 
-    Server protocol version (ASCII string)
+    Protocol version (ASCII string)
 
       The version of SCRP followed by the server, e.g. "1.0.0". length <= 16.
 
-    Server time (uint32)
+    Time (uint32)
 
       The current timestamp as seen from the server.
 
-    Server uptime (uint32)
+    Uptime (uint32)
 
       The timestamp when the server started running.
 
@@ -72,52 +72,54 @@ Status: Under development
 
     Number of rooms (uint32)
 
-      (Omitted)
+      Number of registered rooms.
 
     Max number of rooms (uint32)
 
       The maximum number of rooms since the server started.
 
-    Number of messages received (uint32)
+    Messages in (uint32)
 
-      (Omitted)
+      Number of messages received since the server started.
 
-    Number of messages sent (uint32)
+    Messages out (uint32)
 
-      (Omitted)
+      Number of messages received since the server started.
 
-    Amount of raw data received in bytes (uint64)
+    Data in (uint64)
 
-      The interpretation of "raw data" is implementation-dependent.
+      Amount of raw data received in bytes since the server started. The
+      interpretation of "raw data" is implementation-dependent.
 
-    Amount of raw data sent in bytes (uint64)
+    Data out (uint64)
 
-      The interpretation of "raw data" is implementation-dependent.
+      Amount of raw data sent in bytes since the server started. The
+      interpretation of "raw data" is implementation-dependent.
 
   1.3 Client
 
     A client is a computer program which communicates with the server on behalf
-    of a user. Clients include but are not limited to general-purpose GUI applications 
-    and automated scripts.
+    of a user. Clients include but are not limited to general-purpose GUI
+    applications and automated scripts.
 
-    Client nickname (Unicode string)
+    Nickname (Unicode string)
 
       A human-readable name of the client, e.g. "My Awesome Client". length <=
-      16.
+      32.
 
-    Client version (ASCII string)
+    Version (ASCII string)
 
       The version of the client, e.g. "1.0.0". length <= 16.
 
-    Client description (Unicode string)
+    Description (Unicode string)
 
-      A description of the client. length <= 256.
+      The description of the client. length <= 256.
 
-    Client protocol version (ASCII string)
+    Protocol version (ASCII string)
 
       The version of SCRP followed by the client, e.g. "1.0.0". length <= 16.
 
-    Client time (uint32)
+    Time (uint32)
 
       The current timestamp as seen from the client.
 
@@ -125,141 +127,158 @@ Status: Under development
 
     A user chats (a) with its friends, and (b) in rooms.
 
-    User ID (ASCII string)
+    ID (ASCII string)
 
       The identifier of the user, e.g. "john_42". It is valid if and only if (a)
       1 <= length <= 16, (b) it only contains alphanumeric characters
       (case-sensitive) and/or underscore(s), and (c) it is unique.
 
-    User password (ASCII string)
+    Password (ASCII string)
 
       The login credential of the user, e.g. "my_very_secure_password". It is
       valid if and only if (a) 6 <= length <= 64, and (b) it only contains
       printable ASCII characters, i.e. ASCII code 32 - 126 (0x20 - 0x7E).
 
-    User nickname (Unicode string)
+    Nickname (Unicode string)
 
-      A human-readable name of the user, e.g. "John Doe". 1 <= length <= 16.
+      A human-readable name of the user, e.g. "Erwin Schrödinger". 1 <= length
+      <= 32.
 
-    User description (Unicode string)
+    Description (Unicode string)
 
       The description of the user. length <= 256.
 
-    User sign up time (uint32)
+    Sign up time (uint32)
 
       The server time when the user signed up on the server.
-      
+
+    Last activity time (uint32)
+
+      The server time of the last time the user logged off from the server.
+
     Friends (collection of user)
-    
+
       Each user has zero or more friends.
 
     Rooms (collection of room)
-    
+
       Each user belongs to zero or more rooms.
-    
-    Last activity time (uint32)
-      The server time of the last time the user logged off from the server.
 
   1.5 Room
 
     A room consists of one or more users. Users send messages in the room.
 
-    Room ID (ASCII string)
+    ID (ASCII string)
 
       The identifier of the room. It is valid if and only if (a) 1 <= length <=
       16, (b) it only contains alphanumeric characters (case-sensitive) and/or
       underscore(s), and (c) it is unique.
 
-    Room nickname (Unicode string)
+    Nickname (Unicode string)
 
-      A human-readable name of the room. 1 <= length <= 16.
+      A human-readable name of the room. 1 <= length <= 32.
 
-    Room description (Unicode string)
+    Description (Unicode string)
 
       The description of the room. length <= 256.
-    
-    Room creator (User)
-      Creator of the room. Room creator has the greatest power in the room.
 
-    Room admin (User)
+    Creator (user)
 
-      A special type of user in the room appointed by the room creator.
-      Room admins have more power than general users but less power than the room creator.
-      A room has zero or more admins.
+      The user who owns the room. The room creator has the greatest power in the
+      room. Each room must have one creator.
 
-    Room access type
+    Admins (collection of user)
 
-      ROOM_ACCESS_PUBLIC
+      An admin administrates the room. Room admins are appointed by the room
+      creator. Room admins have more power than general users but less power
+      than the room creator. A room has zero or more admins.
 
-      ROOM_ACCESS_PASSWORD
+    Password (ASCII string)
 
-      ROOM_ACCESS_PERMISSION
+      The room password can be optionally set to prevent undesired users from
+      entering the room. It is valid if and only if (a) 6 <= length <= 64,
+      and (b) it only contains printable ASCII characters, i.e. ASCII code 32 -
+      126 (0x20 - 0x7E).
 
-    Room password (ASCII string)
+    Access type (enum int)
 
-      A room password is set to prevent undesired users from entering the room.
-      It is valid if and only if (a) 6 <= length <= 64, and (b) it only contains
-      printable ASCII characters, i.e. ASCII code 32 - 126 (0x20 - 0x7E).
-      Room passwords are optional.
+      The access type determines the condition for users to enter the room.
+      There are 3 access types.
 
-    Room permisson (Permission)
+      ROOM_ACCESS_PUBLIC = 0
 
-      A room permission is set to prevent undesired users from entering the room.
-      A room permission consists of a collection of Users (the creator and admins of the room) 
-      and the power to admit new users into the room.
+        Any user can enter the room unconditionally.
+
+      ROOM_ACCESS_PASSWORD = 1
+
+        A user can enter the room if and only if the correct password is
+        presented.
+
+      ROOM_ACCESS_PERMISSION = 2
+
+        A user can enter the room with the permission of the creator or any
+        admin in the room.
 
   1.6 Room message
 
     Room messages are what users send in a room. All other users in the same
     room at the time the message was sent can see the message.
 
-    Message ID
+    ID (uint32)
 
-      The identifier of the message. It is unique among all messages. 
+      The identifier of the message. It is unique among all messages.
 
-    Message Room ID
-
-      The Room ID of the room in which the message was sent.
-
-    Message time
+    Time (uint32)
 
       The server time when the message was received by the server.
 
-    Message sender
+    Sender (user)
 
       The user who sent the message.
 
-    Message receiver
+    Target room (room)
 
-      The users who received the message.
+      The room in which the message was sent.
 
   1.7 Private message
 
-    Private messages are what users to one of its friend. Only the specific receiver can see the message.
+    A private message is what a user sends to one of its friends. Only the
+    specific receiver can see the message.
 
-    Message ID
+    ID (uint32)
 
-      The identifier of the message. It is unique among all messages. 
+      The identifier of the message. It is unique among all messages.
 
-    Message time
+    Time (uint32)
 
       The server time when the message was received by the server.
 
-    Message sender
+    Sender (user)
 
       The user who sent the message.
 
-    Message receiver
+    Receiver (user)
 
-      The users who received the message.
+      The user to whom the message was sent.
 
 2. Request
 
-  Requests are what a client sends to the server. A request consists of
+  Requests are what a client sends to the server. A request is represented by a
+  JSON dictionary which contains the following fields.
 
-    (a) A serial number (uint32)
-    (b) A method 
-    (c) Other fields dependent on the method
+    (a) req_id (uint32)
+
+      The serial number of the request. It is unique among all requests from the
+      same client in the same session.
+
+    (b) method (string)
+
+        The method name of the request (case-sensitive).
+
+    (c) (other fields dependent on the method)
+
+  All SCRP request methods are defined below, including the fields required for
+  each method, and the corresponding response fields.
 
   2.1 SIGN_UP
 
@@ -267,77 +286,57 @@ Status: Under development
 
     Request fields
 
-      user_id
+      user_id (number)
 
         The ID of the new user.
 
-      user_pass
+      user_pass (string)
 
         The password of the new user.
 
     Response fields
 
-      err
+      err (number)
 
-        {900, 901, 902, 903, 998, 999}
+        {900, 901, 902, 903, 999}
 
   2.2 LOG_IN
-    
-    Log in as an existed user.
+
+    Log in as an existing user.
 
     Request fields
 
-      user_id
+      user_id (number)
 
-        The ID of the user.
+        The user ID.
 
-      user_pass
+      user_pass (string)
 
-        The password of the user.
+        The user password.
 
     Response fields
 
-      err
+      err (number)
 
-        {900, 950, 951}
+        {900, 901, 902, 950, 951, 999}
 
-    Login a user.
+  2.3 DELETE_USER
+
+    Delete a user.
 
     Request fields
 
-      user_id
+      user_id (user)
 
-        The ID of the new user.
-
-      user_pass
-
-        The password of the new user.
+        The ID of the user to be deleted.
 
     Response fields
 
-      err
+      err (number)
 
-        {900, 950, 951, 998, 999}
+        {900, 999}
 
-  2.3 LOG_OFF
-
-  2.4 DELETE_USER
-
-    Delete the user.
-
-    Request fields
-
-      user_id
-
-        The ID of the user.
-
-    Response fields
-
-      err
-
-        {900}
-
-  2.5 CHANGE_PASS
+  2.4 CHANGE_PASS
 
     Change the user password.
 
@@ -351,71 +350,71 @@ Status: Under development
 
       err
 
-        {900, 903}
-  
-  2.6 GET_TIME
+        {900, 903, 999}
 
-  2.7 CREATE_ROOM
+  2.5 GET_TIME
 
-  2.8 REMOVE_ROOM
+  2.6 CREATE_ROOM
 
-  2.9 REMOVE_USER
-  
-  2.10 SET_ADMIN
+  2.7 REMOVE_ROOM
 
-  2.11 REMOVE_ADMIN
+  2.8 REMOVE_USER
 
-  2.12 ADD_FRIEND
+  2.9 SET_ADMIN
 
-  2.13 REMOVE_FRIEND
-  
-  2.14 ENTER_ROOM
+  2.10 REMOVE_ADMIN
 
-  2.15 CHANGE_ROOM_ACCESS
+  2.11 ADD_FRIEND
 
+  2.12 REMOVE_FRIEND
 
-3. Response
+  2.13 ENTER_ROOM
+
+  2.14 CHANGE_ROOM_ACCESS
+
+3. Error
 
   Each type of error has an error number, a name, and a description.
 
-  900 SUCCESS (All requests)
+  900 SUCCESS
 
     The requested action was performed without errors.
 
-  901 USER_ALREADY_EXISTS (SIGN_UP)
+  901 USER_ALREADY_EXISTS
 
     User ID already exists.
 
-  902 INVALID_USER_ID (SIGN_UP)
+  902 INVALID_USER_ID
 
     The format of the user ID is invalid.
-    Note: The client should check the format of user Id first, 
-    and ideally the client should never receive this response.
 
-  903 INVALID_USER_PASS (SIGN_UP, CHANGE_PASS)
+    Note: The client should check the format of user ID first, and ideally the
+    client should never receive this response.
+
+  903 INVALID_USER_PASS
 
     The user password is invalid.
 
-  905 INVALID_ROOM_ID (CREATE_ROOM)
+  905 INVALID_ROOM_ID
 
     The format of the room ID is invalid.
 
-  910 ROOM_ALREADY_EXISTS (CREATE_ROOM)
+  910 ROOM_ALREADY_EXISTS
 
     Room ID already exists.
 
-  950 ID_PASSWORD_NOT_MATCH (LOG_IN)
+  950 ID_PASSWORD_NOT_MATCH
 
     The user ID and the user password do not match.
 
-  951 TOO_MANY_WRONG_ATTEMPTS (LOG_IN)
+  951 TOO_MANY_WRONG_ATTEMPTS
 
     Wrong attempts are too often.
 
-  998 BAD_REQUEST (All requests)
+  998 BAD_REQUEST
 
     The request was not understood and was ignored.
 
-  999 UNKNOWN (All requests)
+  999 UNKNOWN
 
     An unexpected error occurred.
