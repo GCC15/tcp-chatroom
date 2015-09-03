@@ -298,7 +298,7 @@ Status: Under development
 
       The req_id of the request that the server is responding to.
 
-    (b) Other fields dependent on the request method, including a error field,
+    (b) Other fields dependent on the request method, including an error field,
         which represents the error type of the response, defined in Section 3.
 
   All SCRP request methods are defined below. For each method, the name, the
@@ -316,7 +316,7 @@ Status: Under development
 
         The ID of the new user.
 
-      user_pass (string)
+      user_password (string)
 
         The password of the new user.
 
@@ -332,7 +332,7 @@ Status: Under development
 
         300 INVALID_USER_ID
 
-        310 INVALID_USER_PASS
+        310 INVALID_USER_PASSWORD
 
         320 INVALID_USER_NICKNAME
 
@@ -364,7 +364,7 @@ Status: Under development
 
         The user ID.
 
-      user_pass (string)
+      user_password (string)
 
         The user password.
 
@@ -374,7 +374,7 @@ Status: Under development
 
         300 INVALID_USER_ID
 
-        310 INVALID_USER_PASS
+        310 INVALID_USER_PASSWORD
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
@@ -414,7 +414,7 @@ Status: Under development
 
         The user ID.
 
-      user_pass (string)
+      user_password (string)
 
         The user password.
 
@@ -424,7 +424,7 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN
 
-        310 INVALID_USER_PASS
+        310 INVALID_USER_PASSWORD
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
@@ -446,7 +446,7 @@ Status: Under development
 
       (6) Return 900;
 
-  2.4 CHANGE_PASS
+  2.4 CHANGE_PASSWORD
 
     Change the user password.
 
@@ -457,11 +457,11 @@ Status: Under development
       user_id (string)
         The user ID.
 
-      old_user_pass (string)
+      old_user_password (string)
 
         The current password.
 
-      new_user_pass (string)
+      new_user_password (string)
 
         The new password.
 
@@ -471,7 +471,7 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN 
 
-        310 INVALID_USER_PASS
+        310 INVALID_USER_PASSWORD
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
@@ -550,7 +550,7 @@ Status: Under development
 
         301 INVALID_ROOM_ID
 
-        311 INVALID_ROOM_PASS
+        311 INVALID_ROOM_PASSWORD
 
         321 INVALID_ROOM_NICKNAME
 
@@ -606,7 +606,7 @@ Status: Under development
 
         301 INVALID_ROOM_ID
 
-        311 INVALID_ROOM_PASS
+        311 INVALID_ROOM_PASSWORD
 
         321 INVALID_ROOM_NICKNAME
 
@@ -844,11 +844,11 @@ Status: Under development
 
     The format of the room ID is invalid.
 
-  310 INVALID_USER_PASS
+  310 INVALID_USER_PASSWORD
 
     The format of the user password is invalid.
 
-  311 INVALID_ROOM_PASS
+  311 INVALID_ROOM_PASSWORD
 
     The format of the room password is invalid.
 
