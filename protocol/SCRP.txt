@@ -19,7 +19,8 @@ Status: Under development
 1. Concepts
 
   This section defines abstract entities and the fields needed to describe the
-  state and/or properties of each of them.
+  state and properties of each of them. The name, the data type, the meaning,
+  and the definition of validity of each field are specified.
 
   1.1 SCRP system
 
@@ -84,7 +85,7 @@ Status: Under development
 
     Messages out (uint32)
 
-      Number of messages received since the server started.
+      Number of messages sent since the server started.
 
     Data in (uint64)
 
@@ -261,7 +262,7 @@ Status: Under development
 
       The user to whom the message was sent.
 
-2. Request
+2. Request & Response
 
   Requests are what a client sends to the server. A request is represented by a
   JSON dictionary which contains the following fields.
@@ -273,12 +274,25 @@ Status: Under development
 
     (b) method (string)
 
-        The method name of the request (case-sensitive).
+      The method name of the request (case-sensitive).
 
-    (c) (other fields dependent on the method)
+    (c) Other fields dependent on the method.
 
-  All SCRP request methods are defined below, including the fields required for
-  each method, and the corresponding response fields.
+  The server must sends a response in reply to each request from a client. A
+  response is represented by a JSON dictionary which contains the following
+  fields.
+
+    (a) resp_id (uint32)
+
+      The req_id of the request that the server is responding to.
+
+    (b) Other fields dependent on the request method, including an err field,
+        which represents the error type of the response, defined in Section 3.
+
+  All SCRP request methods are defined below. For each method, the name, the
+  JSON data type, and the meaning of each request field and each response field
+  are specified. The algorithm for the server to process each request is also
+  specified.
 
   2.1 SIGN_UP
 
@@ -294,11 +308,31 @@ Status: Under development
 
         The password of the new user.
 
+      TODO: Fields for nickname, etc.
+
     Response fields
 
       err (number)
 
-        {900, 901, 902, 903, 999}
+        300 INVALID_USER_ID
+
+        302 INVALID_USER_PASS
+
+        400 USER_ALREADY_EXISTS
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If user ID is invalid, return 300;
+
+      (2) If user password is invalid, return 302;
+
+      (3) If a user with the same user ID is found, return 400;
+
+      (4) Perform sign up; TODO: Elaborate
+
+      (5) Return 900;
 
   2.2 LOG_IN
 
@@ -318,23 +352,33 @@ Status: Under development
 
       err (number)
 
-        {900, 901, 902, 950, 951, 999}
+        300 INVALID_USER_ID
+
+        402 TOO_MANY_WRONG_ATTEMPTS
+
+        403 WRONG_USER_PASS
+
+        900 SUCCESS
 
   2.3 DELETE_USER
 
-    Delete a user.
+    Delete the current user permanently.
 
     Request fields
 
-      user_id (user)
+      user_pass (string)
 
-        The ID of the user to be deleted.
+        The user password.
 
     Response fields
 
       err (number)
 
-        {900, 999}
+        402 TOO_MANY_WRONG_ATTEMPTS
+
+        403 WRONG_USER_PASS
+
+        900 SUCCESS
 
   2.4 CHANGE_PASS
 
@@ -342,17 +386,34 @@ Status: Under development
 
     Request fields
 
-      user_pass
+      old_user_pass (string)
 
-        The password of the user.
+        The current password.
+
+      new_user_pass (string)
+
+        The new password.
+
+    Response fields
+
+      err (number)
+
+        TODO
+
+  2.5 GET_TIME
+
+    Get the server time when the request is received by the server. This method
+    can be used to estimate the network latency.
+
+    Request fields
+
+      (None)
 
     Response fields
 
       err
 
-        {900, 903, 999}
-
-  2.5 GET_TIME
+        TODO
 
   2.6 CREATE_ROOM
 
@@ -376,45 +437,66 @@ Status: Under development
 
   Each type of error has an error number, a name, and a description.
 
+  Note: The algorithms specified in Section 2 and the error numbers in this
+  section are designed so that when the requirements of multiple errors are met
+  simultaneously, the server must respond with the error with the smallest error
+  number. This suggests that the server should usually check for errors in
+  ascending order of error numbers, whenever necessary.
+
+  233 BAD_REQUEST
+
+    The request was not understood because it violates the SCRP specification
+    (the version followed by the server) to a large extent, and was thus
+    ignored.
+
+  250 LOG_IN_FIRST
+
+    The server refuses to process the request because the client should log in
+    first before sending the request.
+
+  300 INVALID_USER_ID
+
+    The format of the user ID is invalid.
+
+  301 INVALID_ROOM_ID
+
+    The format of the room ID is invalid.
+
+  302 INVALID_USER_PASS
+
+    The format of the user password is invalid.
+
+  TODO: Other 3xx invalid errors. descriptions, nickname, etc...
+
+  Note: Errors with error number smaller than 400 never occurs if the client
+  follows this specification.
+
+  400 USER_ALREADY_EXISTS
+
+    The user ID already exists.
+
+  401 ROOM_ALREADY_EXISTS
+
+    The Room ID already exists.
+
+  402 TOO_MANY_WRONG_ATTEMPTS
+
+    Wrong attempts are too often.
+
+  403 WRONG_USER_PASS
+
+    The user ID and the user password do not match.
+
+  TODO: Other errors
+
   900 SUCCESS
 
     The requested action was performed without errors.
 
-  901 USER_ALREADY_EXISTS
-
-    User ID already exists.
-
-  902 INVALID_USER_ID
-
-    The format of the user ID is invalid.
-
-    Note: The client should check the format of user ID first, and ideally the
-    client should never receive this response.
-
-  903 INVALID_USER_PASS
-
-    The user password is invalid.
-
-  905 INVALID_ROOM_ID
-
-    The format of the room ID is invalid.
-
-  910 ROOM_ALREADY_EXISTS
-
-    Room ID already exists.
-
-  950 ID_PASSWORD_NOT_MATCH
-
-    The user ID and the user password do not match.
-
-  951 TOO_MANY_WRONG_ATTEMPTS
-
-    Wrong attempts are too often.
-
-  998 BAD_REQUEST
-
-    The request was not understood and was ignored.
-
   999 UNKNOWN
 
     An unexpected error occurred.
+
+    Note: This error never occurs if the server is properly developed and
+    follows this specification. The client can assume that this error never
+    occurs.
