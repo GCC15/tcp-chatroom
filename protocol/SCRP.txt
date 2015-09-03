@@ -298,7 +298,7 @@ Status: Under development
 
       The req_id of the request that the server is responding to.
 
-    (b) Other fields dependent on the request method, including an err field,
+    (b) Other fields dependent on the request method, including a error field,
         which represents the error type of the response, defined in Section 3.
 
   All SCRP request methods are defined below. For each method, the name, the
@@ -410,6 +410,10 @@ Status: Under development
 
     Request fields
 
+      user_id (string)
+
+        The user ID.
+
       user_pass (string)
 
         The user password.
@@ -449,6 +453,9 @@ Status: Under development
     This request can only be sent from a client with a user that is logged in.
 
     Request fields
+
+      user_id (string)
+        The user ID.
 
       old_user_pass (string)
 
@@ -497,17 +504,19 @@ Status: Under development
 
     Response fields
 
+      time (number)
+
       err (number)
 
         900 SUCCESS
 
     Algorithm
 
-      (1) Return 900;
+      (1) Return sever time with error code 900;
 
   2.6 CREATE_ROOM
 
-  Create a new room.
+    Create a new room.
 
     This request can only be sent from a client with a user that is logged in.
 
@@ -531,7 +540,63 @@ Status: Under development
 
       room_password (string)
 
-          The room password (optional)
+        The room password [optional]
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN 
+
+        301 INVALID_ROOM_ID
+
+        311 INVALID_ROOM_PASS
+
+        321 INVALID_ROOM_NICKNAME
+
+        401 ROOM_ALREADY_EXISTS
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If room ID is invalid, return 301;
+
+      (3) If room password is invalid, return 311;
+
+      (4) If room nickname is invalid, return 321;
+
+      (5) If a room with the same room ID is found, return 401;      
+
+      (6) TODO: Elaborate;
+
+      (7) Return 900;
+
+  2.7 ENTER_ROOM
+
+    Enter an existed room.
+
+    This request can only be sent from a client with a user that is logged in.
+
+    Request fields
+
+      room_id (string)
+
+        The room ID.
+
+      room_nickname (string)
+
+        The room nickname.
+
+      user_id (string)
+
+        The user ID.
+
+      room_password (string)
+
+        The room password [optional]
 
     Response fields
 
@@ -563,33 +628,194 @@ Status: Under development
 
       (4) If room nickname is invalid, return 321;
 
-      (5) If a room with the same room ID is found, return 401;
+      (5) If there are too many wrong attempts,  return 402;
 
-      (6) If there are too many wrong attempts,  return 402;
+      (6) If the room ID and password do not match, return 403;      
 
-      (7) If the room ID and room password do not match, return 403;      
+      (7) TODO: Elaborate;
+
+      (8) Return 900;
+
+  2.8 REMOVE_ROOM
+
+    REMOVE an existed room permanently.
+
+    This request can only be sent from the owner of the room who must be logged in.
+
+    Request fields
+
+      user_id (string)
+
+        The user ID.
+
+      room_id (string)
+
+        The room ID.
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        310 INVALID_USER_ID
+
+        320 INVALID_ROOM_ID
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If user password is not valid, return 310;
+
+      (3) If the room id is not valid, return 320;
+
+      (4) If the user is not authorized to send the request, return 801;
+
+      (5) TODO: Elaborate;
+
+      (6) Return 900;
+
+  2.9 CHANGE_ROOM_ACCESS
+
+    Change the access type of a room.
+
+    This request can only be sent from the owner of the room who must be logged in.
+
+    Request fields
+
+      user_id (string)
+
+        The user ID.
+
+      room_id (string)
+
+        The room ID.
+
+      access_type (number)
+
+      room_password (string)
+
+        The room password. Needed only when the access_type is ROOM_ACCESS_PASSWORD.
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        310 INVALID_USER_ID
+
+        320 INVALID_ROOM_ID
+
+        321 INVALID_ROOM_PASSWORD
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If user password is not valid, return 310;
+
+      (3) If room ID is not valid, return 320;
+
+      (4) If room password is not valid, return 321;
+
+      (5) If the user is not authorized to send the request, return 801;
+
+      (6) TODO: Elaborate;
+
+      (7) Return 900;
+
+  2.10 CHANGE_ROOM_PASSWORD
+
+
+    Change the password of a room.
+
+    This request can only be sent from the owner of the room who must be logged in.
+
+    This request can only be performed on a room with access type of ROOM_ACCESS_PASSWORD.
+
+    Request fields
+
+      user_id (string)
+
+        The user ID.
+
+      room_id (string)
+
+        The room ID.
+
+      old_room_password (string)
+
+        The current room password. 
+
+      new_room_password (string)
+
+        The new room password. 
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        310 INVALID_USER_ID
+
+        320 INVALID_ROOM_ID
+
+        321 INVALID_ROOM_PASSWORD
+
+        402 TOO_MANY_WRONG_ATTEMPTS
+
+        403 ID_PASSWORD_NOT_MATCH
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If user password is not valid, return 310;
+
+      (3) If room ID is not valid, return 320;
+
+      (4) If room password is not valid, return 321;
+
+      (5) If there are too many wrong attemps, return 402;
+
+      (6) If the room ID and password do not match, return 403;
+
+      (7) If the user is not authorized to send the request, return 801;
 
       (8) TODO: Elaborate;
 
       (9) Return 900;
 
-  2.7 REMOVE_ROOM
+  2.11 REMOVE_USER
 
-  2.8 REMOVE_USER
+  2.12 SET_ADMIN
 
-  2.9 SET_ADMIN
+  2.13 REMOVE_ADMIN
 
-  2.10 REMOVE_ADMIN
+  2.14 ADD_FRIEND
 
-  2.11 ADD_FRIEND
+  2.15 REMOVE_FRIEND
 
-  2.12 REMOVE_FRIEND
-
-  2.13 ENTER_ROOM
-
-  2.14 CHANGE_ROOM_ACCESS
+  
 
 3. Error
+  
+  Error is an indispensible part of the reponse to the requests sent from clients to server.
 
   Each type of error has an error number, a name, and a description.
 
@@ -661,6 +887,9 @@ Status: Under development
 
   TODO: Other errors
 
+  801 FORBIDDEN
+
+    The sender of the request is not authorized to perform the requested action.
 
   900 SUCCESS
 
@@ -672,3 +901,23 @@ Status: Under development
 
     Note: This error never occurs if the server is properly developed following
     this specification. The client can assume that this error never occurs.
+
+4. Server push
+
+  Server pushes are messages that the server sends to cients from time to time.
+  A server push is analogous to a request, but different in a major way that 
+  a server push does not need a response.
+
+  4.1 NEW_PRIVATE_MESSAGE
+
+  4.2 NEW_ROOM_MESSAGE
+
+  4.3 NEW_FRIEND_REQUEST
+
+  4.4 ENTER_ROOOM_REQUEST
+
+  4.5 USER_LEAVE_ROOM
+
+  4.6 APPOINTED_AS_ADMIN
+
+  4.7 FORCED_TO_LOGGED_OFF (?)
