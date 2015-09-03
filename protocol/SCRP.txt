@@ -165,6 +165,18 @@ Status: Under development
 
       Each user belongs to zero or more rooms.
 
+    Mode (enum int)
+    The mode determines condition of the user.
+      There are currently 2 modes.
+
+      ON = 0
+
+        User is logged in.
+
+      OFF = 1
+
+        User is logged off.
+
   1.5 Room
 
     A room consists of one or more users. Users send messages in the room.
@@ -262,6 +274,7 @@ Status: Under development
 
       The user to whom the message was sent.
 
+
 2. Request & Response
 
   Requests are what a client sends to the server. A request is represented by a
@@ -270,7 +283,7 @@ Status: Under development
     (a) req_id (uint32)
 
       The serial number of the request. It is unique among all requests from the
-      same client in the same session.
+      same client in the same session:
 
     (b) method (string)
 
@@ -278,9 +291,8 @@ Status: Under development
 
     (c) Other fields dependent on the method.
 
-  The server must sends a response in reply to each request from a client. A
-  response is represented by a JSON dictionary which contains the following
-  fields.
+  The server must sends a response to each request from a client. A response 
+  is represented by a JSON dictionary which contains the following fields.
 
     (a) resp_id (uint32)
 
@@ -300,7 +312,7 @@ Status: Under development
 
     Request fields
 
-      user_id (number)
+      user_id (string)
 
         The ID of the new user.
 
@@ -308,7 +320,11 @@ Status: Under development
 
         The password of the new user.
 
-      TODO: Fields for nickname, etc.
+      user_nickname (string)
+
+        The nickname of the new user.
+
+      TODO: Fields for others.
 
     Response fields
 
@@ -316,7 +332,7 @@ Status: Under development
 
         300 INVALID_USER_ID
 
-        302 INVALID_USER_PASS
+        310 INVALID_USER_PASS
 
         400 USER_ALREADY_EXISTS
 
@@ -326,11 +342,11 @@ Status: Under development
 
       (1) If user ID is invalid, return 300;
 
-      (2) If user password is invalid, return 302;
+      (2) If user password is invalid, return 310;
 
       (3) If a user with the same user ID is found, return 400;
 
-      (4) Perform sign up; TODO: Elaborate
+      (4) TODO: Elaborate
 
       (5) Return 900;
 
@@ -354,15 +370,39 @@ Status: Under development
 
         300 INVALID_USER_ID
 
+        310 INVALID_USER_PASS
+
         402 TOO_MANY_WRONG_ATTEMPTS
 
         403 WRONG_USER_PASS
 
+        404 USER_ALREADY_LOGGED_IN
+
         900 SUCCESS
+
+    Algorithm
+
+      (1) If user ID is invalid, return 300;
+
+      (2) If user password is invalid, return 310;
+
+      (3) If a user with the same user ID is found, return 400;
+
+      (4) If the user ID and password do not match, return 403;
+
+      (5) If there are too many wrong attempts,  return 402;
+
+      (5) If the user is already logged in, return 404;
+
+      (6) TODO: Elaborate;
+
+      (7) Return 900;
 
   2.3 DELETE_USER
 
     Delete the current user permanently.
+
+    This request can only be sent from a client with a user that is logged in.
 
     Request fields
 
@@ -374,15 +414,35 @@ Status: Under development
 
       err (number)
 
+        250 LOG_IN_FIRST 
+
+        310 INVALID_USER_PASS
+
         402 TOO_MANY_WRONG_ATTEMPTS
 
         403 WRONG_USER_PASS
 
         900 SUCCESS
 
+    Algorithm
+
+      (1) If the user is not loggedin, return 250;
+
+      (2) If user password is not valid, return 310;
+
+      (3) If the user ID and password do not match, return 403;
+
+      (4) If there are too many wrong attempts,  return 402;
+
+      (5) TODO: Elaborate;
+
+      (6) Return 900;
+
   2.4 CHANGE_PASS
 
     Change the user password.
+
+    This request can only be sent from a client with a user that is logged in.
 
     Request fields
 
@@ -398,7 +458,29 @@ Status: Under development
 
       err (number)
 
-        TODO
+        250 LOG_IN_FIRST 
+
+        310 INVALID_USER_PASS
+
+        402 TOO_MANY_WRONG_ATTEMPTS
+
+        403 WRONG_USER_PASS
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not loggedin, return 250;
+
+      (2) If old user password or new user password is not valid, return 310;
+
+      (3) If the user ID and old password do not match, return 403;
+
+      (4) If there are too many wrong attempts,  return 402;
+
+      (5) TODO: Elaborate;
+
+      (6) Return 900;
 
   2.5 GET_TIME
 
@@ -462,9 +544,21 @@ Status: Under development
 
     The format of the room ID is invalid.
 
-  302 INVALID_USER_PASS
+  310 INVALID_USER_PASS
 
     The format of the user password is invalid.
+
+  311 INVALID_ROOM_PASS
+
+    The format of the room password is invalid.
+
+  320 INALID_USER_NICKNAME
+
+    The format of the user nickname is invalid.
+
+  321 INVALID_ROOM_NICKNAME
+
+    The format of the room nickname is invalid.
 
   TODO: Other 3xx invalid errors. descriptions, nickname, etc...
 
@@ -487,7 +581,12 @@ Status: Under development
 
     The user ID and the user password do not match.
 
+  404 USER_ALREADY_LOGGED_IN
+
+    The user is already logged.
+
   TODO: Other errors
+
 
   900 SUCCESS
 
