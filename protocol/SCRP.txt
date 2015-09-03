@@ -10,7 +10,7 @@ Zifan Li (https://github.com/LiZifan)
 Zichao Li (https://github.com/kenathe)
 All Rights Reserved.
 
-Version: 0.0.2
+Version: 0.0.3
 Revision: 3 Sep 2015
 
 Status: Under development
@@ -169,14 +169,14 @@ Status: Under development
     The mode determines condition of the user.
       There are currently 2 modes.
 
-      ON = 0
-
-        User is logged in.
-
-      OFF = 1
+      OFF = 0
 
         User is logged off.
 
+      ON = 1
+
+        User is logged in.
+    
   1.5 Room
 
     A room consists of one or more users. Users send messages in the room.
@@ -334,6 +334,8 @@ Status: Under development
 
         310 INVALID_USER_PASS
 
+        320 INVALID_USER_NICKNAME
+
         400 USER_ALREADY_EXISTS
 
         900 SUCCESS
@@ -344,11 +346,13 @@ Status: Under development
 
       (2) If user password is invalid, return 310;
 
-      (3) If a user with the same user ID is found, return 400;
+      (3) If user nickname is invalid, return 320;
 
-      (4) TODO: Elaborate
+      (4) If a user with the same user ID is found, return 400;
 
-      (5) Return 900;
+      (5) TODO: Elaborate
+
+      (6) Return 900;
 
   2.2 LOG_IN
 
@@ -356,7 +360,7 @@ Status: Under development
 
     Request fields
 
-      user_id (number)
+      user_id (string)
 
         The user ID.
 
@@ -374,7 +378,7 @@ Status: Under development
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
-        403 WRONG_USER_PASS
+        403 ID_PASSWORD_NOT_MATCH
 
         404 USER_ALREADY_LOGGED_IN
 
@@ -388,9 +392,9 @@ Status: Under development
 
       (3) If a user with the same user ID is found, return 400;
 
-      (4) If the user ID and password do not match, return 403;
+      (4) If there are too many wrong attempts,  return 402;
 
-      (5) If there are too many wrong attempts,  return 402;
+      (5) If the user ID and password do not match, return 403;
 
       (5) If the user is already logged in, return 404;
 
@@ -414,25 +418,25 @@ Status: Under development
 
       err (number)
 
-        250 LOG_IN_FIRST 
+        250 USER_NOT_LOGGED_IN
 
         310 INVALID_USER_PASS
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
-        403 WRONG_USER_PASS
+        403 ID_PASSWORD_NOT_MATCH
 
         900 SUCCESS
 
     Algorithm
 
-      (1) If the user is not loggedin, return 250;
+      (1) If the user is not logged in, return 250;
 
       (2) If user password is not valid, return 310;
 
-      (3) If the user ID and password do not match, return 403;
+      (3) If there are too many wrong attempts,  return 402;
 
-      (4) If there are too many wrong attempts,  return 402;
+      (4) If the user ID and password do not match, return 403;
 
       (5) TODO: Elaborate;
 
@@ -458,25 +462,25 @@ Status: Under development
 
       err (number)
 
-        250 LOG_IN_FIRST 
+        250 USER_NOT_LOGGED_IN 
 
         310 INVALID_USER_PASS
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
-        403 WRONG_USER_PASS
+        403 ID_PASSWORD_NOT_MATCH
 
         900 SUCCESS
 
     Algorithm
 
-      (1) If the user is not loggedin, return 250;
+      (1) If the user is not logged in, return 250;
 
       (2) If old user password or new user password is not valid, return 310;
 
-      (3) If the user ID and old password do not match, return 403;
+      (3) If there are too many wrong attempts,  return 402;
 
-      (4) If there are too many wrong attempts,  return 402;
+      (4) If the user ID and password do not match, return 403;
 
       (5) TODO: Elaborate;
 
@@ -493,11 +497,81 @@ Status: Under development
 
     Response fields
 
-      err
+      err (number)
 
-        TODO
+        900 SUCCESS
+
+    Algorithm
+
+      (1) Return 900;
 
   2.6 CREATE_ROOM
+
+  Create a new room.
+
+    This request can only be sent from a client with a user that is logged in.
+
+    Request fields
+
+      room_id (string)
+
+        The room ID.
+
+      room_nickname (string)
+
+        The room nickname.
+
+      user_id (string)
+
+        The user ID.
+
+      room_access (enum int)
+
+        The access type of the room.
+
+      room_password (string)
+
+          The room password (optional)
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN 
+
+        301 INVALID_ROOM_ID
+
+        311 INVALID_ROOM_PASS
+
+        321 INVALID_ROOM_NICKNAME
+
+        401 ROOM_ALREADY_EXISTS
+
+        402 TOO_MANY_WRONG_ATTEMPTS
+
+        403 ID_PASSWORD_NOT_MATCH
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If room ID is invalid, return 301;
+
+      (3) If room password is invalid, return 311;
+
+      (4) If room nickname is invalid, return 321;
+
+      (5) If a room with the same room ID is found, return 401;
+
+      (6) If there are too many wrong attempts,  return 402;
+
+      (7) If the room ID and room password do not match, return 403;      
+
+      (8) TODO: Elaborate;
+
+      (9) Return 900;
 
   2.7 REMOVE_ROOM
 
@@ -527,14 +601,14 @@ Status: Under development
 
   233 BAD_REQUEST
 
-    The request was not understood because it violates the SCRP specification
-    (the version followed by the server) to a large extent, and was thus
+    The request is not understood because it violates the SCRP specification
+    (the version followed by the server) to a large extent, and is thus
     ignored.
 
-  250 LOG_IN_FIRST
+  250 USER_NOT_LOGGED_IN
 
-    The server refuses to process the request because the client should log in
-    first before sending the request.
+    The server refuses to process the request because the client is not logged in
+    before sending the request.
 
   300 INVALID_USER_ID
 
@@ -577,13 +651,13 @@ Status: Under development
 
     Wrong attempts are too often.
 
-  403 WRONG_USER_PASS
+  403 ID_PASSWORD_NOT_MATCH
 
-    The user ID and the user password do not match.
+    The ID and the password do not match.
 
   404 USER_ALREADY_LOGGED_IN
 
-    The user is already logged.
+    The user is already logged in.
 
   TODO: Other errors
 
@@ -596,6 +670,5 @@ Status: Under development
 
     An unexpected error occurred.
 
-    Note: This error never occurs if the server is properly developed and
-    follows this specification. The client can assume that this error never
-    occurs.
+    Note: This error never occurs if the server is properly developed following
+    this specification. The client can assume that this error never occurs.
