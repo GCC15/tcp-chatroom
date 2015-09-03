@@ -493,7 +493,46 @@ Status: Under development
 
       (6) Return 900;
 
-  2.5 GET_TIME
+  2.5 CHANGE_NICKNAME
+
+    Change the user nickname.
+
+    This request can only be sent from a client with a user that is logged in.
+
+    Request fields
+
+      user_id (string)
+        The user ID.
+
+      old_user_nickname (string)
+
+        The current nickname.
+
+      new_user_nickname (string)
+
+        The new nickname.
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN 
+
+        320 INVALID_USER_NICKNAME
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If old user nickname or new user nickname is not valid, return 320;
+
+      (3) TODO: Elaborate;
+
+      (4) Return 900;
+
+  2.6 GET_TIME
 
     Get the server time when the request is received by the server. This method
     can be used to estimate the network latency.
@@ -514,7 +553,7 @@ Status: Under development
 
       (1) Return sever time with error code 900;
 
-  2.6 CREATE_ROOM
+  2.7 CREATE_ROOM
 
     Create a new room.
 
@@ -574,7 +613,7 @@ Status: Under development
 
       (7) Return 900;
 
-  2.7 ENTER_ROOM
+  2.8 ENTER_ROOM
 
     Enter an existed room.
 
@@ -585,10 +624,6 @@ Status: Under development
       room_id (string)
 
         The room ID.
-
-      room_nickname (string)
-
-        The room nickname.
 
       user_id (string)
 
@@ -608,8 +643,6 @@ Status: Under development
 
         311 INVALID_ROOM_PASSWORD
 
-        321 INVALID_ROOM_NICKNAME
-
         401 ROOM_ALREADY_EXISTS
 
         402 TOO_MANY_WRONG_ATTEMPTS
@@ -626,8 +659,6 @@ Status: Under development
 
       (3) If room password is invalid, return 311;
 
-      (4) If room nickname is invalid, return 321;
-
       (5) If there are too many wrong attempts,  return 402;
 
       (6) If the room ID and password do not match, return 403;      
@@ -636,9 +667,9 @@ Status: Under development
 
       (8) Return 900;
 
-  2.8 REMOVE_ROOM
+  2.9 REMOVE_ROOM
 
-    REMOVE an existed room permanently.
+    Remove an existed room permanently.
 
     This request can only be sent from the owner of the room who must be logged in.
 
@@ -658,9 +689,9 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN
 
-        310 INVALID_USER_ID
+        300 INVALID_USER_ID
 
-        320 INVALID_ROOM_ID
+        301 INVALID_ROOM_ID
 
         801 FORBIDDEN
 
@@ -670,9 +701,9 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If user password is not valid, return 310;
+      (2) If user id is not valid, return 300;
 
-      (3) If the room id is not valid, return 320;
+      (3) If the room id is not valid, return 301;
 
       (4) If the user is not authorized to send the request, return 801;
 
@@ -680,7 +711,7 @@ Status: Under development
 
       (6) Return 900;
 
-  2.9 CHANGE_ROOM_ACCESS
+  2.10 CHANGE_ROOM_ACCESS
 
     Change the access type of a room.
 
@@ -696,7 +727,9 @@ Status: Under development
 
         The room ID.
 
-      access_type (number)
+      new_access_type (number)
+
+        The access type that is supposed to change to.
 
       room_password (string)
 
@@ -708,11 +741,11 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN
 
-        310 INVALID_USER_ID
+        300 INVALID_USER_ID
 
-        320 INVALID_ROOM_ID
+        301 INVALID_ROOM_ID
 
-        321 INVALID_ROOM_PASSWORD
+        311 INVALID_ROOM_PASSWORD
 
         801 FORBIDDEN
 
@@ -722,11 +755,11 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If user password is not valid, return 310;
+      (2) If user id is not valid, return 300;
 
-      (3) If room ID is not valid, return 320;
+      (3) If the room id is not valid, return 301;
 
-      (4) If room password is not valid, return 321;
+      (4) If room password is not valid, return 311;
 
       (5) If the user is not authorized to send the request, return 801;
 
@@ -734,8 +767,7 @@ Status: Under development
 
       (7) Return 900;
 
-  2.10 CHANGE_ROOM_PASSWORD
-
+  2.11 CHANGE_ROOM_PASSWORD
 
     Change the password of a room.
 
@@ -767,11 +799,11 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN
 
-        310 INVALID_USER_ID
+        300 INVALID_USER_ID
 
-        320 INVALID_ROOM_ID
+        301 INVALID_ROOM_ID
 
-        321 INVALID_ROOM_PASSWORD
+        311 INVALID_ROOM_PASSWORD
 
         402 TOO_MANY_WRONG_ATTEMPTS
 
@@ -785,11 +817,11 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If user password is not valid, return 310;
+      (2) If user ID is not valid, return 300;
 
-      (3) If room ID is not valid, return 320;
+      (3) If room ID is not valid, return 301;
 
-      (4) If room password is not valid, return 321;
+      (4) If room password is not valid, return 311;
 
       (5) If there are too many wrong attemps, return 402;
 
@@ -801,18 +833,71 @@ Status: Under development
 
       (9) Return 900;
 
-  2.11 REMOVE_USER
+  2.12 CHANGE_ROOM_NICKNAME
 
-  2.12 SET_ADMIN
+    Change the nickname of a room.
 
-  2.13 REMOVE_ADMIN
+    This request can only be sent from the admin of the room who must be logged in.
 
-  2.14 ADD_FRIEND
+    Request fields
 
-  2.15 REMOVE_FRIEND
+      user_id (string)
+
+        The user ID.
+
+      room_id (string)
+
+        The room ID.
+
+      old_room_nickname (string)
+
+        The current room nickname. 
+
+      new_room_nickname (string)
+
+        The new room nickname. 
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        300 INVALID_USER_ID
+
+        301 INVALID_ROOM_ID
+
+        321 INVALID_ROOM_NICKNAME
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If user ID is not valid, return 300;
+
+      (3) If room ID is not valid, return 301;
+
+      (4) If the old room nickname or new room nickname is not valid, return 321;
+
+      (7) If the user is not authorized to send the request, return 801;
+
+      (8) TODO: Elaborate;
+
+  2.12 REMOVE_USER
+
+  2.13 SET_ADMIN
+
+  2.14 REMOVE_ADMIN
+
+  2.15 ADD_FRIEND
+
+  2.16 REMOVE_FRIEND
 
   
-
 3. Error
   
   Error is an indispensible part of the reponse to the requests sent from clients to server.
