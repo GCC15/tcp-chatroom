@@ -195,16 +195,21 @@ Status: Under development
 
       The description of the room. length <= 256.
 
-    Creator (user)
+    Owner (user)
 
-      The user who owns the room. The room creator has the greatest power in the
-      room. Each room must have one creator.
+      The user who owns the room. The room owner has the greatest power in the
+      room. Each room must have one and only one owner at all times.
 
     Admins (collection of user)
 
       An admin administrates the room. Room admins are appointed by the room
-      creator. Room admins have more power than general users but less power
-      than the room creator. A room has zero or more admins.
+      owner. Room admins have more power than general users but less power
+      than the room owner. A room has zero or more admins.
+
+    Member (collection of user)
+
+      A member of the room can receive and send messages in the room. Room owner 
+      and admins are all members of the room.
 
     Password (ASCII string)
 
@@ -229,7 +234,7 @@ Status: Under development
 
       ROOM_ACCESS_PERMISSION = 2
 
-        A user can enter the room with the permission of the creator or any
+        A user can enter the room with the permission of the owner or any
         admin in the room.
 
   1.6 Room message
@@ -277,13 +282,13 @@ Status: Under development
 
 2. Request & Response
 
-  Requests are what a client sends to the server. A request is represented by a
-  JSON dictionary which contains the following fields.
+  Requests are what clients send to the server. A request is represented by a
+  JSON dictionary which contains the following fields:
 
     (a) req_id (uint32)
 
       The serial number of the request. It is unique among all requests from the
-      same client in the same session:
+      same client in the same session。
 
     (b) method (string)
 
@@ -291,10 +296,10 @@ Status: Under development
 
     (c) Other fields dependent on the method.
 
-  The server must sends a response to each request from a client. A response is
-  represented by a JSON dictionary which contains the following fields.
+  The server must sends a response to each request from clients. A response is
+  represented by a JSON dictionary which contains the following fields:
 
-    (a) resp_id (uint32)
+    (a) resp_id (uint32|number)
 
       The req_id of the request that the server is responding to.
 
@@ -326,7 +331,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         300 INVALID_USER_ID
 
@@ -377,7 +382,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         251 USER_ALREADY_LOGGED_IN
 
@@ -399,24 +404,23 @@ Status: Under development
 
       (3) If user_password is invalid, return 310;
 
-      (4) If there are too many wrong attempts, return 402;
+      (4) If there are too many wrong attempts (implementation dependent), return 402;
 
       (5) If user_id and user_password do not match, return 403;
 
       (6) Update user with user_id:
             Set Mode = MODE_ONLINE;
 
-      (5) For each user_x in current user's Friends:
-            Remove current user from user_x.Friends;
-            TODO: inform online
+      (7) For each user_x in current user's Friends:
+            TODO: inform online (GUI change but no notification unless choose to receive)
             Push <server push> to user_x;
 
-      (6) For each room_x in current user's Rooms:
+      (8) For each room_x in current user's Rooms:
             For each user_x in room_x:
-              TODO: inform online
+              TODO: inform online (GUI change but no notification)
               Push <server push> to user_x
 
-      (8) Return 900;
+      (9) Return 900;
 
   2.3 DELETE_USER
 
@@ -432,7 +436,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -456,12 +460,12 @@ Status: Under development
 
       (5) For each user_x in current user's Friends:
             Remove current user from user_x.Friends;
-            TODO: inform disappear
+            TODO: inform disappear (GUI change but no notification)
             Push <server push> to user_x;
 
       (6) For each room_x in current user's Rooms:
             For each user_x in room_x:
-              TODO: inform disappear
+              TODO: inform disappear (GUI change but no notification)
               Push <server push> to user_x
 
       (6) Delete user record with current user ID;
@@ -476,10 +480,6 @@ Status: Under development
 
     Request fields
 
-      user_id (string)
-
-        The user ID.
-
       old_user_password (string)
 
         The current password.
@@ -490,7 +490,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN 
 
@@ -531,7 +531,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN 
 
@@ -549,13 +549,12 @@ Status: Under development
             Set Nickname = user_nickname;
 
       (4) For each user_x in current user's Friends:
-            Remove current user from user_x.Friends;
             TODO: inform nickname change
             Push <server push> to user_x;
 
       (5) For each room_x in current user's Rooms:
             For each user_x in room_x:
-              TODO: inform nickname change
+              TODO: inform nickname change (GUI change but no notification)
               Push <server push> to user_x
 
       (6) Return 900;
@@ -571,9 +570,9 @@ Status: Under development
 
     Response fields
 
-      time (number)
+      time (uint32|number)
 
-      err (number)
+      err (uint32|number)
 
         900 SUCCESS
 
@@ -597,21 +596,17 @@ Status: Under development
 
         The room nickname.
 
-      user_id (string)
-
-        The user ID.
-
       room_access (enum int)
 
         The access type of the room.
 
       room_password (string)
 
-        The room password [optional]
+        The room password [only for room_access = ROOM_ACCESS_PASSWORD]
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN 
 
@@ -637,9 +632,19 @@ Status: Under development
 
       (5) If a room with the same room ID is found, return 401;      
 
-      (6) TODO: Elaborate;
+      (6) Add a room:
+            room ID = room_id;
+            room nickname = room_nickname;
+            room access = room_access;
+            room password = room_password [only for room_access = ROOM_ACCESS_PASSWORD];
+            room owner = sender_id;
+            room member.append(sender_id);
 
-      (7) Return 900;
+      (7) Update current user:
+            Rooms = Rooms.append(room);
+          TODO: Anything more? Available for search?
+
+      (8) Return 900;
 
   2.8 ENTER_ROOM
 
@@ -653,17 +658,13 @@ Status: Under development
 
         The room ID.
 
-      user_id (string)
-
-        The user ID.
-
       room_password (string)
 
-        The room password [optional]
+        The room password [only for room_access = ROOM_ACCESS_PASSWORD]
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN 
 
@@ -691,7 +692,8 @@ Status: Under development
 
       (6) If the room ID and password do not match, return 403;      
 
-      (7) TODO: Elaborate;
+      (7) Update room:
+            TODO
 
       (8) Return 900;
 
@@ -703,10 +705,6 @@ Status: Under development
 
     Request fields
 
-      user_id (string)
-
-        The user ID.
-
       room_id (string)
 
         The room ID.
@@ -716,8 +714,6 @@ Status: Under development
       err (number)
 
         250 USER_NOT_LOGGED_IN
-
-        300 INVALID_USER_ID
 
         301 INVALID_ROOM_ID
 
@@ -729,13 +725,16 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If user id is not valid, return 300;
+      (2) If the room id is not valid, return 301;
 
-      (3) If the room id is not valid, return 301;
+      (3) If the user is not authorized to send the request, return 801;
 
-      (4) If the user is not authorized to send the request, return 801;
+      (4) Update members:
+            For each member in room members;
+            Rooms.delete(room);
 
-      (5) TODO: Elaborate;
+      (5) Update room:
+            room.destory();
 
       (6) Return 900;
 
@@ -1040,6 +1039,8 @@ Status: Under development
 
   2.28 RECEIVE_MESSAGE (when an user logged in and want to see the message that is sent 
   during his logged off period)
+
+  2.29 GET_ROOM_ACCESS_TYPE
 
   
 3. Error
