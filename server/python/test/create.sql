@@ -3,7 +3,7 @@ CREATE TABLE user (
     pass TEXT NOT NULL,
     salt TEXT NOT NULL,
     sign_up_time INTEGER NOT NULL,
-    nickname` TEXT NOT NULL,
+    nickname TEXT NOT NULL,
     description TEXT NOT NULL,
     PRIMARY KEY(id)
 );

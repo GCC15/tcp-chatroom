@@ -9,7 +9,7 @@ def main():
     for i in range(1):
         client_socket = socket.socket()
         client_socket.connect(('localhost', cfg.get('server_port')))
-        # client_socket.connect(('52.74.148.102', c.get('server_port')))
+        # client_socket.connect(('52.74.148.102', cfg.get('server_port')))
         ct = ClientThread(client_socket)
         print('[Main] Starting ClientThread {}'.format(ct.getName()))
         ct.start()
@@ -27,14 +27,14 @@ class ClientThread(threading.Thread):
         print('[{}] Length {}'.format(self.name, len(data)))
         print('[{}] Sent {}'.format(self.name, self.__s.send(data)))
 
-        data = self.__s.recv(800)
-        print('[{}] Received {}'.format(self.name, len(data)))
+        # data = self.__s.recv(800)
+        # print('[{}] Received {}'.format(self.name, len(data)))
+        #
+        # data = self.__s.recv(800)
+        # print('[{}] Received {}'.format(self.name, len(data)))
 
-        data = self.__s.recv(800)
-        print('[{}] Received {}'.format(self.name, len(data)))
-
-        data = self.__s.recv(800)
-        print('[{}] Received {}'.format(self.name, len(data)))
+        # data = self.__s.recv(800)
+        # print('[{}] Received {}'.format(self.name, len(data)))
 
         self.__s.close()
         t1 = time.time()
