@@ -11,7 +11,7 @@ Zichao Li (https://github.com/kenathe)
 All Rights Reserved.
 
 Version: 0.0.3
-Revision: 4 Sep 2015
+Revision: 5 Sep 2015
 
 Status: Under development
 
@@ -89,13 +89,13 @@ Status: Under development
 
     Data in (uint64)
 
-      Amount of raw data received in bytes since the server started. The
-      interpretation of "raw data" is implementation-dependent.
+      Amount of raw data (implementation-dependent) received in bytes since the
+      server started.
 
     Data out (uint64)
 
-      Amount of raw data sent in bytes since the server started. The
-      interpretation of "raw data" is implementation-dependent.
+      Amount of raw data (implementation-dependent) sent in bytes since the
+      server started.
 
   1.3 Client
 
@@ -203,13 +203,13 @@ Status: Under development
     Admins (collection of user)
 
       An admin administrates the room. Room admins are appointed by the room
-      owner. Room admins have more power than general users but less power
-      than the room owner. A room has zero or more admins.
+      owner. Room admins have more power than general users but less power than
+      the room owner. A room has zero or more admins.
 
-    Member (collection of user)
+    Members (collection of user)
 
-      A member of the room can receive and send messages in the room. Room owner 
-      and admins are all members of the room.
+      A member can receive and send messages in the room. Members include the
+      room owner, admins (if any), and general users (if any).
 
     Password (ASCII string)
 
@@ -285,10 +285,10 @@ Status: Under development
   Requests are what clients send to the server. A request is represented by a
   JSON dictionary which contains the following fields:
 
-    (a) req_id (uint32)
+    (a) req_id (uint32|number)
 
       The serial number of the request. It is unique among all requests from the
-      same client in the same session。
+      same client in the same session.
 
     (b) method (string)
 
@@ -354,15 +354,15 @@ Status: Under development
       (4) If a user with the same ID is found, return 400;
 
       (5) Add a user:
-            Set ID = user_id;
-            Set Password = user_password;
-            Set Nickname = user_nickname;
-            Set Description = "";
-            Set Sign up time = Server time;
-            Set Last activity time = Server time;
-            Set Friends = {};
-            Set Rooms = {};
-            Set Mode = MODE_OFFLINE;
+            user ID = user_id;
+            user password = user_password;
+            user nickname = user_nickname;
+            user description = "";
+            user sign up time = Server time;
+            user last activity time = Server time;
+            user friends = {};
+            user rooms = {};
+            user mode = MODE_OFFLINE;
 
       (6) Return 900;
 
@@ -404,12 +404,13 @@ Status: Under development
 
       (3) If user_password is invalid, return 310;
 
-      (4) If there are too many wrong attempts (implementation dependent), return 402;
+      (4) If there are too many wrong attempts (implementation dependent),
+          return 402;
 
       (5) If user_id and user_password do not match, return 403;
 
       (6) Update user with user_id:
-            Set Mode = MODE_ONLINE;
+            user mode = MODE_ONLINE;
 
       (7) For each user_x in current user's Friends:
             TODO: inform online (GUI change but no notification unless choose to receive)
@@ -513,7 +514,7 @@ Status: Under development
       (4) If current user ID and old_user_password do not match, return 403;
 
       (5) Update current user:
-            Set Password = new_user_password;
+            user password = new_user_password;
 
       (6) Return 900;
 
@@ -546,7 +547,7 @@ Status: Under development
       (2) If user_nickname is not valid, return 320;
 
       (3) Update current user:
-            Set Nickname = user_nickname;
+            user nickname = user_nickname;
 
       (4) For each user_x in current user's Friends:
             TODO: inform nickname change
@@ -596,13 +597,13 @@ Status: Under development
 
         The room nickname.
 
-      room_access (enum int)
+      room_access (enum|number)
 
         The access type of the room.
 
-      room_password (string)
+      [room_password] (string)
 
-        The room password [only for room_access = ROOM_ACCESS_PASSWORD]
+        The room password (when room_access == ROOM_ACCESS_PASSWORD).
 
     Response fields
 
@@ -616,6 +617,8 @@ Status: Under development
 
         321 INVALID_ROOM_NICKNAME
 
+        340 INVALID_ROOM_ACCESS_TYPE
+
         401 ROOM_ALREADY_EXISTS
 
         900 SUCCESS
@@ -624,27 +627,32 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If room ID is invalid, return 301;
+      (2) If room_id is invalid, return 301;
 
-      (3) If room password is invalid, return 311;
+      (3) If room_password is invalid, return 311;
 
-      (4) If room nickname is invalid, return 321;
+      (4) If room_nickname is invalid, return 321;
 
-      (5) If a room with the same room ID is found, return 401;      
+      (5) If room_access is invalid, return 340;
 
-      (6) Add a room:
+      (6) If a room with the same room ID is found, return 401;
+
+      (7) Add a room:
             room ID = room_id;
             room nickname = room_nickname;
-            room access = room_access;
-            room password = room_password [only for room_access = ROOM_ACCESS_PASSWORD];
-            room owner = sender_id;
-            room member.append(sender_id);
+            room description = "";
+            room owner = current user;
+            room admins = {};
+            room members = {current user};
+            room access type = room_access;
+            If room_access ==  ROOM_ACCESS_PASSWORD:
+              room password = room_password;
 
-      (7) Update current user:
-            Rooms = Rooms.append(room);
-          TODO: Anything more? Available for search?
+      (8) Update current user:
+            user rooms += the room added;
+          TODO: Anything more? Available for search? (NS: what search?)
 
-      (8) Return 900;
+      (9) Return 900;
 
   2.8 ENTER_ROOM
 
@@ -660,7 +668,7 @@ Status: Under development
 
       room_password (string)
 
-        The room password [only for room_access = ROOM_ACCESS_PASSWORD]
+        The room password [when room access type = ROOM_ACCESS_PASSWORD].
 
     Response fields
 
@@ -672,8 +680,6 @@ Status: Under development
 
         311 INVALID_ROOM_PASSWORD
 
-        401 ROOM_ALREADY_EXISTS
-
         402 TOO_MANY_WRONG_ATTEMPTS
 
         403 ID_PASSWORD_NOT_MATCH
@@ -684,24 +690,34 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If room ID is invalid, return 301;
+      (2) If room_id is invalid, return 301;
 
-      (3) If room password is invalid, return 311;
+      (3) If room_password is invalid, return 311;
 
-      (5) If there are too many wrong attempts,  return 402;
+      (5) If there are too many wrong attempts, return 402;
 
-      (6) If the room ID and password do not match, return 403;      
+      (6) If room access type == ROOM_ACCESS_PASSWORD and room_password is not
+          correct, return 403;
 
-      (7) Update room:
-            TODO
+      (7) If room access type == ROOM_ACCESS_PERMISSION:
+            TODO: server push to creator and each admin to ask for permission
+            return 900;
 
-      (8) Return 900;
+      (8) Update room:
+            room members += current user;
+
+      (9) For each user in room members:
+            TODO: inform new member
+            Push <server push> to user
+
+      (10) Return 900;
 
   2.9 REMOVE_ROOM
 
-    Remove an existed room permanently.
+    Remove an existing room permanently.
 
-    This request can only be sent from the owner of the room who must be logged in.
+    This request can only be sent from the owner of the room who must be logged
+    in.
 
     Request fields
 
@@ -725,42 +741,38 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If the room id is not valid, return 301;
+      (2) If room_id is not valid, return 301;
 
-      (3) If the user is not authorized to send the request, return 801;
+      (3) If current user != room owner, return 801;
 
-      (4) Update members:
-            For each member in room members;
-            Rooms.delete(room);
+      (4) For each user in room members:
+            user rooms -= room;
+            TODO: server push to inform removal
 
-      (5) Update room:
-            room.destory();
+      (5) Delete the room with room_id;
 
       (6) Return 900;
 
   2.10 CHANGE_ROOM_ACCESS
 
-    Change the access type of a room.
+    Change the access settings of a room (access type and password).
 
-    This request can only be sent from the owner of the room who must be logged in.
+    This request can only be sent from the room owner who must be logged in.
+    TODO: Admins cannot?
 
     Request fields
-
-      user_id (string)
-
-        The user ID.
 
       room_id (string)
 
         The room ID.
 
-      new_access_type (number)
+      room_access_type (enum|number)
 
-        The access type that is supposed to change to.
+        The new room access type.
 
-      room_password (string)
+      [room_password] (string)
 
-        The room password. Needed only when the access_type is ROOM_ACCESS_PASSWORD.
+        The new room password (when room_access_type == ROOM_ACCESS_PASSWORD).
 
     Response fields
 
@@ -768,11 +780,11 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN
 
-        300 INVALID_USER_ID
-
         301 INVALID_ROOM_ID
 
         311 INVALID_ROOM_PASSWORD
+
+        340 INVALID_ROOM_ACCESS_TYPE
 
         801 FORBIDDEN
 
@@ -782,89 +794,28 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If user id is not valid, return 300;
+      (2) If room_id is not valid, return 301;
 
-      (3) If the room id is not valid, return 301;
+      (3) If room_access_type == ROOM_ACCESS_PASSWORD and room_password is not
+          valid, return 311;
 
-      (4) If room password is not valid, return 311;
+      (4) If room_access_type is invalid, return 340;
 
-      (5) If the user is not authorized to send the request, return 801;
+      (4) If current user != room owner, return 801;
 
-      (6) TODO: Elaborate;
+      (5) Update the room with room_id:
+            room access type = room_access_type;
+            If room_access_type == ROOM_ACCESS_PASSWORD:
+              room password = room_password;
 
-      (7) Return 900;
+      (6) Return 900;
 
-  2.11 CHANGE_ROOM_PASSWORD
-
-    Change the password of a room.
-
-    This request can only be sent from the owner of the room who must be logged in.
-
-    This request can only be performed on a room with access type of ROOM_ACCESS_PASSWORD.
-
-    Request fields
-
-      user_id (string)
-
-        The user ID.
-
-      room_id (string)
-
-        The room ID.
-
-      old_room_password (string)
-
-        The current room password. 
-
-      new_room_password (string)
-
-        The new room password. 
-
-    Response fields
-
-      err (number)
-
-        250 USER_NOT_LOGGED_IN
-
-        300 INVALID_USER_ID
-
-        301 INVALID_ROOM_ID
-
-        311 INVALID_ROOM_PASSWORD
-
-        402 TOO_MANY_WRONG_ATTEMPTS
-
-        403 ID_PASSWORD_NOT_MATCH
-
-        801 FORBIDDEN
-
-        900 SUCCESS
-
-    Algorithm
-
-      (1) If the user is not logged in, return 250;
-
-      (2) If user ID is not valid, return 300;
-
-      (3) If room ID is not valid, return 301;
-
-      (4) If room password is not valid, return 311;
-
-      (5) If there are too many wrong attempts, return 402;
-
-      (6) If the room ID and password do not match, return 403;
-
-      (7) If the user is not authorized to send the request, return 801;
-
-      (8) TODO: Elaborate;
-
-      (9) Return 900;
-
-  2.12 CHANGE_ROOM_NICKNAME
+  2.11 CHANGE_ROOM_NICKNAME
 
     Change the nickname of a room.
 
     This request can only be sent from the admins of the room who must be logged in.
+    TODO: owner cannot?
 
     Request fields
 
@@ -1095,7 +1046,19 @@ Status: Under development
 
     The format of the room nickname is invalid.
 
-  TODO: Other 3xx invalid errors. descriptions, etc...
+  330 INVALID_USER_DESCRIPTION
+
+    The format of the user description is invalid.
+
+  331 INVALID_ROOM_DESCRIPTION
+
+    The format of the room description is invalid
+
+  340 INVALID_ROOM_ACCESS_TYPE
+
+    The room access type is invalid.
+
+  TODO: Other 3xx invalid errors
 
   Note: Errors with error number smaller than 400 never occurs if the client
   follows this specification.
