@@ -413,12 +413,12 @@ Status: Under development
             user mode = MODE_ONLINE;
 
       (7) For each user_x in current user's Friends:
-            TODO: inform online (GUI change but no notification unless choose to receive)
+            TODO: inform online 
             Push <server push> to user_x;
 
       (8) For each room_x in current user's Rooms:
             For each user_x in room_x:
-              TODO: inform online (GUI change but no notification)
+              TODO: inform online 
               Push <server push> to user_x
 
       (9) Return 900;
@@ -461,12 +461,12 @@ Status: Under development
 
       (5) For each user_x in current user's Friends:
             Remove current user from user_x.Friends;
-            TODO: inform disappear (GUI change but no notification)
+            TODO: inform disappear 
             Push <server push> to user_x;
 
       (6) For each room_x in current user's Rooms:
             For each user_x in room_x:
-              TODO: inform disappear (GUI change but no notification)
+              TODO: inform disappear 
               Push <server push> to user_x
 
       (6) Delete user record with current user ID;
@@ -555,7 +555,7 @@ Status: Under development
 
       (5) For each room_x in current user's Rooms:
             For each user_x in room_x:
-              TODO: inform nickname change (GUI change but no notification)
+              TODO: inform nickname change 
               Push <server push> to user_x
 
       (6) Return 900;
@@ -757,8 +757,8 @@ Status: Under development
 
     Change the access settings of a room (access type and password).
 
-    This request can only be sent from the room owner who must be logged in.
-    TODO: Admins cannot?
+    This request can only be sent from the room owner or the admins who 
+    must be logged in.
 
     Request fields
 
@@ -814,14 +814,10 @@ Status: Under development
 
     Change the nickname of a room.
 
-    This request can only be sent from the admins of the room who must be logged in.
-    TODO: owner cannot?
+    This request can only be sent from the owner or the admins of the room 
+    who must be logged in.
 
     Request fields
-
-      user_id (string)
-
-        The user ID.
 
       room_id (string)
 
@@ -837,8 +833,6 @@ Status: Under development
 
         250 USER_NOT_LOGGED_IN
 
-        300 INVALID_USER_ID
-
         301 INVALID_ROOM_ID
 
         321 INVALID_ROOM_NICKNAME
@@ -851,31 +845,28 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If user ID is not valid, return 300;
+      (2) If room ID is not valid, return 301;
 
-      (3) If room ID is not valid, return 301;
+      (3) If the new room nickname is not valid, return 321;
 
-      (4) If the new room nickname is not valid, return 321;
+      (4) If the user is not authorized to send the request, return 801;
 
-      (5) If the user is not authorized to send the request, return 801;
+      (5) room nickname = new_room_nickname
 
-      (6) TODO: Elaborate;
+      (6) TODO: Server push to every member of the room to inform change
 
-      (7) Return 900;
+      (6) Return 900;
 
   2.12 REMOVE_USER_FROM_ROOM
 
     Remove a user from the room.
 
-    This request can only be sent from the admins of the room who must be logged in.
-    The admins can not remove each other or the owner from the room. 
-    The owner can remove anyone else from the room, including admins.
+    This request can only be sent from the admins or the owner of the room 
+    who must be logged in. The admins can not remove each other or the owner 
+    from the room. The owner can remove anyone else from the room, 
+    including admins.
 
     Request fields
-
-      admin_user_id (string)
-
-        The user ID of the admin (request sender).
 
       subject_user_id (string)
 
@@ -901,30 +892,29 @@ Status: Under development
 
     Algorithm
 
-      (1) If the user is not logged in, return 250;
+      (1) If the action performer is not logged in, return 250;
 
-      (2) If the ID of the admin or the ID of the subject is not valid, return 300;
+      (2) If the ID of the subject is not valid, return 300;
 
       (3) If room ID is not valid, return 301;
 
       (4) If the user is not authorized to send the request, return 801;
 
-      (5) TODO: Elaborate;
+      (5) room members -= subject_user_id
 
-      (6) Return 900;
+      (6) TODO: Server push to every member of the room to inform change
+
+      (7) Return 900;
 
 
   2.13 SET_ADMIN
 
-  Set an admin for the room.
+    Set a current general member of the room to be an admin.
 
-    This request can only be sent from the owner of the room who must be logged in.
+    This request can only be sent from the owner of the room who 
+    must be logged in.
 
     Request fields
-
-      owner_user_id (string)
-
-        The user ID of the owner (request sender).
 
       subject_user_id (string)
 
@@ -952,21 +942,143 @@ Status: Under development
 
       (1) If the user is not logged in, return 250;
 
-      (2) If the ID of the owner or the ID of the subject is not valid, return 300;
+      (2) If the ID of the subject is not valid, return 300;
 
       (3) If room ID is not valid, return 301;
 
       (4) If the user is not authorized to send the request, return 801;
 
-      (5) TODO: Elaborate; what if too many admin?
+      (5) room admins += subject_user_id
 
-      (6) Return 900;
+      (6) TODO: Server push to every member of the room to inform change
+            QUESTION: Maximum admin number?
+
+      (7) Return 900;
 
   2.14 REMOVE_ADMIN
 
+    Set a current admin of the room to be a general member.
+
+    This request can only be sent from the owner of the room who 
+    must be logged in.
+
+    Request fields
+
+      subject_user_id (string)
+
+        The user ID of the subject (the user who is going to be set as an admin).
+
+      room_id (string)
+
+        The room ID.
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        300 INVALID_USER_ID
+
+        301 INVALID_ROOM_ID
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If the ID of the subject is not valid, return 300;
+
+      (3) If room ID is not valid, return 301;
+
+      (4) If the user is not authorized to send the request, return 801;
+
+      (5) room admins -= subject_user_id
+
+      (6) TODO: Server push to every member of the room to inform change
+
+      (7) Return 900;
+
+
   2.15 ADD_FRIEND
 
+    Send a friend request to another user. 
+
+    This request can only be sent from a user that is logged in
+
+    Request fields
+
+      subject_user_id (string)
+
+        The user ID of the subject (the receiver of the request).
+
+      verification message (string)
+
+        Messages that is used to allow the subject (the receiver of the request)
+        verify your identity.
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        300 INVALID_USER_ID
+
+        320 INVALID_USER_NICKNAME
+
+        330 INVALID_USER_DESCRIPTION
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If the user ID of the subject is not valid, return 300;
+
+      (3) TODO: Server push to the subject.
+
+      (4) Return 900;
+
   2.16 REMOVE_FRIEND
+
+    Remove a friend. 
+
+    This request can only be sent from a user that is logged in
+
+    Request fields
+
+      subject_user_id (string)
+
+        The user ID of the subject (the receiver of the request).
+
+    Response fields
+
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        300 INVALID_USER_ID
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If the ID of the subject is not valid, return 300;
+
+      (3) If the user is not authorized to send the request, return 801;
+
+      (4) TODO: Server push to the subject.
+
+      (5) Return 900;
 
   2.17 CHANGE_USER_DESCRIPTION
 
