@@ -727,7 +727,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -776,7 +776,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -829,7 +829,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -878,7 +878,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -926,7 +926,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -974,7 +974,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -1022,7 +1022,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -1058,7 +1058,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -1141,7 +1141,7 @@ Status: Under development
 
     Response fields
 
-      err (number)
+      err (uint32|number)
 
         250 USER_NOT_LOGGED_IN
 
@@ -1177,51 +1177,100 @@ Status: Under development
 
     Request fields
 
-      user_id (string)
-
-        The user ID.
+      (None)
 
     Response fields
 
-      time (uint32|number)
+      last_activity_time (uint32|number)
 
       err (uint32|number)
+
+        250 USER_NOT_LOGGED_IN
 
         900 SUCCESS
 
     Algorithm
 
-      (1) Return 900 with time = last activity time;
+      (1) If the user is not logged in, return 250;
 
-  2.20 APPROVE_REQUEST (like add friend or join room)
+      (2) Return 900 with time = last_activity_time;
 
-  2.21 IGNORE_REQUEST
+  2.20 HANDLE_REQUEST 
 
-  2.22 REJECT_REQUEST
+  Handle an "ADD_FRIEND" request or "ENTER_ROOM" request when the room
+  access type is ROOM_ACCESS_PERMISSION. If it is the latter case, the performer
+  must be admin or owner of the room.
 
-  2.23 SEND_ROOM_MESSAGE
+  This request can only be sent from a client with a user that is logged in.
 
-  2.24 SEND_PRIVATE_MESSAGE
+    Request fields
 
-  2.25 RECEIVE_MESSAGE (when an user logged in and want to see the message that is sent 
-  during his logged off period)
+      target_request_id (string)
 
-  2.26 GET_ROOM_ACCESS_TYPE
+        The request id of the target request that this request is responding to 
 
-  2.27 SEARCH_USER
+      action_type (enum int|number)
 
-  2.28 SEARCH_ROOM
+        The action to the request.
+        0 is REJECT
+        1 is APPROVE
+        2 is IGNORE
+
+    Response fields
+
+      err (uint32|number)
+
+        250 USER_NOT_LOGGED_IN
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If the user is not authorized to do so, return 801;
+
+      (3)
+          a. If the action_type is REJECT
+             TODO: send server push to the target request sender;
+
+          b. If the action_type is APPROVE
+             for this request sender: Friends += target request sender;
+             for the target request sender: Friends += this request sender
+             TODO: send server push to the target request sender
+
+          c. If the action_type is IGNORE
+             TODO: Archive this message 
+
+      (4) Return 900 with time = last_activity_time;
+
+  2.21 SEND_ROOM_MESSAGE
+
+  2.22 SEND_PRIVATE_MESSAGE
+
+  2.23 GET_ROOM_ACCESS_TYPE
+
+  2.24 SEARCH_USER
+
+  2.25 SEARCH_ROOM
+
+  2.26 RECEIVE_MESSAGE (??when an user logged in and want to see the message 
+  that is sent during his logged off period)
+  QUESTION: Necessary?
 
 3. Error
   
-  Error is an indispensable part of the response to the requests sent from clients to server.
+  Error is an indispensable part of the response to the requests sent 
+  from clients to server.
 
   Each type of error has an error number, a name, and a description.
 
   Note: The algorithms specified in Section 2 and the error numbers in this
   section are designed so that when the requirements of multiple errors are met
-  simultaneously, the server must respond with the error with the smallest error
-  number. This suggests that the server should usually check for errors in
+  simultaneously, the server responds the error with the smallest error
+  number. Therefore, the server should usually check for errors in
   ascending order of error numbers, whenever necessary.
 
   233 BAD_REQUEST
@@ -1278,8 +1327,8 @@ Status: Under development
 
   TODO: Other 3xx invalid errors
 
-  Note: Errors with error number smaller than 400 never occurs if the client
-  follows this specification.
+  Note: Errors with error number smaller than 400 should never occur if the 
+  client follows this specification precisely.
 
   400 USER_ALREADY_EXISTS
 
@@ -1311,8 +1360,9 @@ Status: Under development
 
     An unexpected error occurred.
 
-    Note: This error never occurs if the server is properly developed following
-    this specification. The client can assume that this error never occurs.
+    Note: This error should never occur if the server is properly developed 
+    according to this specification. The client can assume that this error never 
+    occurs.
 
 4. Server push
 
