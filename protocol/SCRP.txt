@@ -579,7 +579,7 @@ Status: Under development
 
     Algorithm
 
-      (1) Return 900 with time = sever time;
+      (1) Return 900 with time = server time;
 
   2.7 CREATE_ROOM
 
@@ -694,23 +694,23 @@ Status: Under development
 
       (3) If room_password is invalid, return 311;
 
-      (5) If there are too many wrong attempts, return 402;
+      (4) If there are too many wrong attempts, return 402;
 
-      (6) If room access type == ROOM_ACCESS_PASSWORD and room_password is not
+      (5) If room access type == ROOM_ACCESS_PASSWORD and room_password is not
           correct, return 403;
 
-      (7) If room access type == ROOM_ACCESS_PERMISSION:
+      (6) If room access type == ROOM_ACCESS_PERMISSION:
             TODO: server push to creator and each admin to ask for permission
             return 900;
 
-      (8) Update room:
+      (7) Update room:
             room members += current user;
 
-      (9) For each user in room members:
+      (8) For each user in room members:
             TODO: inform new member
             Push <server push> to user
 
-      (10) Return 900;
+      (9) Return 900;
 
   2.9 REMOVE_ROOM
 
@@ -801,14 +801,14 @@ Status: Under development
 
       (4) If room_access_type is invalid, return 340;
 
-      (4) If current user != room owner, return 801;
+      (5) If current user != room owner, return 801;
 
-      (5) Update the room with room_id:
+      (6) Update the room with room_id:
             room access type = room_access_type;
             If room_access_type == ROOM_ACCESS_PASSWORD:
               room password = room_password;
 
-      (6) Return 900;
+      (7) Return 900;
 
   2.11 CHANGE_ROOM_NICKNAME
 
@@ -855,7 +855,7 @@ Status: Under development
 
       (6) TODO: Server push to every member of the room to inform change
 
-      (6) Return 900;
+      (7) Return 900;
 
   2.12 REMOVE_USER_FROM_ROOM
 
@@ -951,7 +951,7 @@ Status: Under development
       (5) room admins += subject_user_id
 
       (6) TODO: Server push to every member of the room to inform change
-            QUESTION: Maximum admin number?
+            QUESTION: Maximum admin number? 
 
       (7) Return 900;
 
@@ -1082,30 +1082,136 @@ Status: Under development
 
   2.17 CHANGE_USER_DESCRIPTION
 
+    Change the user description.
+
+    This request can only be sent from a client with a user that is logged in.
+
+    Request fields
+
+      user_description (string)
+
+        The new description.
+
+    Response fields
+
+      err (uint32|number)
+
+        250 USER_NOT_LOGGED_IN 
+
+        330 INVALID_USER_DESCRIPTION
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If user_description is not valid, return 330;
+
+      (3) Update current user:
+            user description = user_description;
+
+      (4) For each user_x in current user's Friends:
+            TODO: inform description change
+            Push <server push> to user_x;
+
+      (5) For each room_x in current user's Rooms:
+            For each user_x in room_x:
+              TODO: inform description change 
+              Push <server push> to user_x
+
+      (6) Return 900;
+
   2.18 CHANGE_ROOM_DESCRIPTION
 
-  2.19 GET_USER_LAST_ACTIVITY_TIME (?)
+    Change the description of a room.
 
-  2.20 ADD_FRIEND
+    This request can only be sent from the owner or the admins of the room 
+    who must be logged in.
 
-  2.21 REMOVE_FRIEND
+    Request fields
 
-  2.22 APPROVE_REQUEST (like add friend or join room)
+      room_id (string)
 
-  2.23 IGNORE_REQUEST
+        The room ID.
 
-  2.24 REJECT_REQUEST
+      new_room_description (string)
 
-  2.26 SEND_ROOM_MESSAGE
+        The new room nickname. 
 
-  2.27 SEND_PRIVATE_MESSAGE
+    Response fields
 
-  2.28 RECEIVE_MESSAGE (when an user logged in and want to see the message that is sent 
+      err (number)
+
+        250 USER_NOT_LOGGED_IN
+
+        301 INVALID_ROOM_ID
+
+        331 INVALID_ROOM_DESCRIPTION
+
+        801 FORBIDDEN
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) If the user is not logged in, return 250;
+
+      (2) If room ID is not valid, return 301;
+
+      (3) If the new room description is not valid, return 331;
+
+      (4) If the user is not authorized to send the request, return 801;
+
+      (5) room description = new_room_description
+
+      (6) TODO: Server push to every member of the room to inform change
+
+      (7) Return 900;
+
+  2.19 GET_USER_LAST_ACTIVITY_TIME
+
+  Get the user's last activity time.
+
+  This request can only be sent from a client with a user that is logged in.
+
+    Request fields
+
+      user_id (string)
+
+        The user ID.
+
+    Response fields
+
+      time (uint32|number)
+
+      err (uint32|number)
+
+        900 SUCCESS
+
+    Algorithm
+
+      (1) Return 900 with time = last activity time;
+
+  2.20 APPROVE_REQUEST (like add friend or join room)
+
+  2.21 IGNORE_REQUEST
+
+  2.22 REJECT_REQUEST
+
+  2.23 SEND_ROOM_MESSAGE
+
+  2.24 SEND_PRIVATE_MESSAGE
+
+  2.25 RECEIVE_MESSAGE (when an user logged in and want to see the message that is sent 
   during his logged off period)
 
-  2.29 GET_ROOM_ACCESS_TYPE
+  2.26 GET_ROOM_ACCESS_TYPE
 
-  
+  2.27 SEARCH_USER
+
+  2.28 SEARCH_ROOM
+
 3. Error
   
   Error is an indispensable part of the response to the requests sent from clients to server.
