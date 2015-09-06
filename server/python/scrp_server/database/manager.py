@@ -23,16 +23,16 @@ import threading
 import os
 import sqlite3
 
-import config as cfg
+import env
 
 
 class _ManagerThread(threading.Thread):
     def __init__(self):
         super().__init__(name='DBManagerThread', daemon=True)
 
-        var_dir = cfg.get('var_dir')
-        cfg.make_dirs(var_dir)
-        db_file = cfg.get('db_file')
+        var_dir = env.get_var_dir()
+        env.make_dirs(var_dir)
+        db_file = env.get_db_file()
         self.__db_file_path = os.path.join(var_dir, db_file)
 
         self.__func = None

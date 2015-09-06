@@ -16,21 +16,20 @@ A Python implementation of the chatroom server.
 
   [config.json](config.json)
 
-- Check server status
-
-  ```
-  python scrpd.py status
-  ```
-
 - Start the server
 
   ```
   python scrpd.py start
   ```
-
+  
 - Stop the server
 
   ```
   python scrpd.py stop
   ```
 
+- Check server status
+
+  ```
+  python scrpd.py status
+  ```

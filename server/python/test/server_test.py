@@ -3,13 +3,13 @@ import threading
 import time
 import random
 
-import config as cfg
+import env
 
 
 def main():
     server_socket = socket.socket()
-    server_socket.bind(('', cfg.get('server_port')))
-    server_socket.listen(cfg.get('tcp_listen_backlog'))
+    server_socket.bind(('', env.get_server_port))
+    server_socket.listen(env.get_tcp_listen_backlog)
     while True:
         print('[Main] Waiting for a new connection request...')
         client_socket, address = server_socket.accept()

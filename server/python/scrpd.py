@@ -17,26 +17,26 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import sys
-import os
-import socket
+
+import daemon
 
 
 def main():
     if len(sys.argv) != 2:
-        print_usage_and_exit()
+        _print_usage_and_exit()
     action = sys.argv[1]
-    if action == 'status':
-        pass
-    elif action == 'start':
-        pass
+    if action == 'start':
+        daemon.start()
     elif action == 'stop':
-        pass
+        daemon.stop()
+    elif action == 'status':
+        daemon.status()
     else:
-        print_usage_and_exit()
+        _print_usage_and_exit()
 
 
-def print_usage_and_exit():
-    print('Usage: <python> {} [status|start|stop]'.format(sys.argv[0]))
+def _print_usage_and_exit():
+    print('Usage: <python> {} start|stop|status'.format(sys.argv[0]))
     sys.exit(1)
 
 
