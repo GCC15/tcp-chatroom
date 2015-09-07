@@ -1,0 +1,9 @@
+This file records changes made in each version of the SQLite database.
+
+Version 0
+  Empty database
+
+Version 1 (7 Sep 2015)
+  Add table user
+
+Version 2

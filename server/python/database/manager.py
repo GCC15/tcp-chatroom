@@ -28,7 +28,7 @@ import env
 
 class _ManagerThread(threading.Thread):
     def __init__(self):
-        super().__init__(name='DBManagerThread', daemon=True)
+        super().__init__(name='DBManagerThread')
 
         var_dir = env.get_var_dir()
         env.make_dirs(var_dir)
@@ -94,3 +94,18 @@ def shutdown():
     Blocks until the manager thread stops safely.
     """
     _mt.shutdown()
+
+
+def main():
+    """For testing"""
+    def task(cursor_factory):
+        c = cursor_factory()
+        c.execute('SELECT ?', [42])
+        return c.fetchone()[0]
+
+    print(execute(task))
+    shutdown()
+
+
+if __name__ == '__main__':
+    main()

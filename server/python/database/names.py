@@ -1,4 +1,4 @@
-"""String constants for the SQLite database"""
+"""String constants for the database"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
