@@ -1,4 +1,4 @@
-// Miscellaneous utility functions
+// PrivateMessage class
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -16,25 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package chatRoomClient;
+package general;
 
-import javax.swing.*;
-
-public final class Utils {
-    private Utils() {
-
-    }
-
-    public static void showMessageDialog(String message, String title, int messageType) {
-        JOptionPane.showMessageDialog(new JFrame(), message, title, messageType);
-    }
-
-    public static void showErrorDialog(String message) {
-        showMessageDialog(message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    public static void showConfirmationDialog(String message){
-        showMessageDialog(message, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-    }
-
+public class PrivateMessage {
 }

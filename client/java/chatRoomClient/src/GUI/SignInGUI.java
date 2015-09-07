@@ -1,4 +1,4 @@
-// The GUI for sign up
+// The GUI for login
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -16,33 +16,33 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package chatRoomClient;
+package GUI;
 
-import javax.swing.*;
+import general.Utils;
+import general.Validation;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import javax.swing.*;
 
+public class SignInGUI extends JFrame {
 
-public class SignUpGUI extends JFrame {
-
-    final JLabel labelServer = new JLabel("Server host: ");
+    final JLabel labelServer = new JLabel("Server hostname: ");
     final JLabel labelPort = new JLabel("Port: ");
-    final JLabel labelID = new JLabel("New ID: ");
-    final JLabel labelPassword = new JLabel("New Password: ");
-    final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
+    final JLabel labelID = new JLabel("ID: ");
+    final JLabel labelPassword = new JLabel("Password: ");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
-    JPasswordField pwdFieldPwd = new JPasswordField(20);
-    JPasswordField pwdFieldConfirmPwd = new JPasswordField(20);
+    JPasswordField pwdFieldPassword = new JPasswordField(20);
+    final JButton buttonLogIn = new JButton("Log In");
     final JButton buttonSignUp = new JButton("Sign Up");
 
-    public SignUpGUI() {
-        super("Sign Up");
+    public SignInGUI() {
+        super("Log In");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        setSize(500, 250);
+        setSize(400, 250);
         JPanel panelServer = new JPanel();
         addComponentToPanel(panelServer, labelServer, textFieldServer);
         add(panelServer);
@@ -53,19 +53,17 @@ public class SignUpGUI extends JFrame {
         addComponentToPanel(panelID, labelID, textFieldID);
         add(panelID);
         JPanel panelPassword = new JPanel();
-        pwdFieldPwd.setEchoChar('*');
-        pwdFieldConfirmPwd.setEchoChar('*');
-        addComponentToPanel(panelPassword, labelPassword, pwdFieldPwd);
+        pwdFieldPassword.setEchoChar('*');
+        addComponentToPanel(panelPassword, labelPassword, pwdFieldPassword);
         add(panelPassword);
-        JPanel panelConfirmPwd = new JPanel();
-        addComponentToPanel(panelConfirmPwd, labelConfirmPwd, pwdFieldConfirmPwd);
-        add(panelConfirmPwd);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
         buttonSignUp.addActionListener(new SignUpActionListener());
         panelButton.add(buttonSignUp);
+        buttonLogIn.addActionListener(new LoginActionListener());
+        panelButton.add(buttonLogIn);
         add(panelButton);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
@@ -80,22 +78,27 @@ public class SignUpGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            boolean signUpSuccessful = true;
+            SwingUtilities.invokeLater(RegisterGUI::new);
+        }
+    }
+
+    private class LoginActionListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            boolean loginSuccessful = true;
             try {
                 Validation.checkServer(textFieldServer.getText());
                 Validation.checkPort(textFieldPort.getText());
                 Validation.checkId(textFieldID.getText());
-                Validation.checkPassword(new String(pwdFieldPwd.getPassword()));
-                Validation.checkPasswordConfirm(new String(pwdFieldPwd.getPassword())
-                        , new String(pwdFieldConfirmPwd.getPassword()));
+                Validation.checkPassword(new String(pwdFieldPassword.getPassword()));
             } catch (Validation.ValidationException exp) {
-                signUpSuccessful = false;
+                loginSuccessful = false;
                 Utils.showErrorDialog(exp.getMessage());
             }
-            //TODO: Confirm
-            if (signUpSuccessful) {
-                Utils.showConfirmationDialog(Strings.SIGN_UP_CONFIRMATION);
+            // TODO: Confirm identity
+            if (loginSuccessful){
                 dispose();
+                SwingUtilities.invokeLater(MainGUI::new);
             }
         }
     }

@@ -1,4 +1,4 @@
-// Main execution file
+// Room class
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -16,15 +16,7 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package chatRoomClient;
+package general;
 
-import javax.swing.*;
-
-
-public class Main {
-    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(ChatRoomGUI::new);
-        SwingUtilities.invokeLater(LoginGUI::new);
-//        SwingUtilities.invokeLater(SignUpGUI::new);
-    }
+public class Room {
 }

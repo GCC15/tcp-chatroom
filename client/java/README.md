@@ -4,9 +4,14 @@ A Java implementation of the chatroom client.
 
 *Under development.*
 
-# Requirements
+## Requirements
 
 - JDK 1.8
 
-# Usage
+## Usage
 
+
+## License
+
+This software is licensed under the GNU General Public License.
+See [LICENSE](LICENSE).

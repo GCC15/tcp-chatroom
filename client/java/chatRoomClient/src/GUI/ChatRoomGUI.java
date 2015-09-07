@@ -1,4 +1,4 @@
-// The GUI for private chat between two users
+// The GUI for group chats
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -16,20 +16,21 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package chatRoomClient;
+package GUI;
 
 import java.awt.*;
 import javax.swing.*;
 
-public class PrivateChatGUI extends JFrame {
+
+public class ChatRoomGUI extends JFrame {
     JPanel panel1 = new JPanel();
     JPanel panel2 = new JPanel();
     JButton button1 = new JButton("Send");
     JTextArea textArea = new JTextArea(20, 40);
     JTextArea textField = new JTextArea(5, 30); // TODO
 
-    public PrivateChatGUI() {
-        super("Private chat");
+    public ChatRoomGUI() {
+        super("Chat Room");
         setResizable(false);
         setLayout(new BorderLayout());
         panel1.add(new JScrollPane(textArea));
