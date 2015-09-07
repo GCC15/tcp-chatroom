@@ -28,6 +28,7 @@ public final class Validation {
             super(message);
         }
     }
+
     public static final class InvalidServerException extends ValidationException {
         public InvalidServerException() {
             super(Strings.INVALID_SERVER);
@@ -71,7 +72,7 @@ public final class Validation {
     }
 
     public static void checkServer(String server) throws ValidationException {
-        if (server.equals("")){
+        if (server.equals("")) {
             throw new InvalidServerException();
         }
     }
@@ -93,7 +94,7 @@ public final class Validation {
         if (length < 1 || length > 16) {
             throw new InvalidIdLengthException();
         }
-        if (!id.matches("^\\w*$")){
+        if (!id.matches("^\\w*$")) {
             throw new InvalidIdCharException();
         }
     }
@@ -104,7 +105,7 @@ public final class Validation {
         if (length < 6 || length > 64) {
             throw new InvalidPwdLengthException();
         }
-        if (!password.matches("^[ -~]*$")){
+        if (!password.matches("^[ -~]*$")) {
             throw new InvalidPwdCharException();
         }
     }

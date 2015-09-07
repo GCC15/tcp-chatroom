@@ -1,4 +1,4 @@
-// The GUI for group chats
+// Main execution file
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -16,32 +16,15 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package GUI;
+package gui;
 
-import java.awt.*;
 import javax.swing.*;
 
 
-public class ChatRoomGUI extends JFrame {
-    JPanel panel1 = new JPanel();
-    JPanel panel2 = new JPanel();
-    JButton button1 = new JButton("Send");
-    JTextArea textArea = new JTextArea(20, 40);
-    JTextArea textField = new JTextArea(5, 30); // TODO
-
-    public ChatRoomGUI() {
-        super("Chat Room");
-        setResizable(false);
-        setLayout(new BorderLayout());
-        panel1.add(new JScrollPane(textArea));
-        panel2.setLayout(new FlowLayout());
-        panel2.add(textField);
-        panel2.add(button1);
-        add(panel1, BorderLayout.CENTER);
-        add(panel2, BorderLayout.SOUTH);
-        setSize(500, 500);
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        setVisible(true);
+public class Main {
+    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(ChatRoomGUI::new);
+        SwingUtilities.invokeLater(SignInGUI::new);
+//        SwingUtilities.invokeLater(RegisterGUI::new);
     }
-
 }

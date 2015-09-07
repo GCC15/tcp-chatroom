@@ -1,4 +1,4 @@
-// Miscellaneous utility functions
+// Definition of all string constants in UI here.
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -18,23 +18,24 @@
 
 package general;
 
-import javax.swing.*;
+public final class Strings {
 
-public final class Utils {
-    private Utils() {
-
+    private Strings() {
     }
 
-    public static void showMessageDialog(String message, String title, int messageType) {
-        JOptionPane.showMessageDialog(new JFrame(), message, title, messageType);
-    }
+    public static final String INVALID_SERVER = "Server is not valid";
 
-    public static void showErrorDialog(String message) {
-        showMessageDialog(message, "Error", JOptionPane.ERROR_MESSAGE);
-    }
+    public static final String INVALID_PORT = "Port is not valid";
 
-    public static void showConfirmationDialog(String message){
-        showMessageDialog(message, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-    }
+    public static final String INVALID_ID_LENGTH = "ID length is not valid, should be 1~16";
 
+    public static final String INVALID_ID_CHAR = "ID contains invalid characters";
+
+    public static final String INVALID_PWD_LENGTH = "Password length is not valid, should be 6~64";
+
+    public static final String INVALID_PWD_CHAR = "Password contains invalid characters";
+
+    public static final String INVALID_PWD_CONFIRM = "Confirmed password is not identical to the password";
+
+    public static final String SIGN_UP_CONFIRMATION = "Sign up succeed";
 }

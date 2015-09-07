@@ -16,15 +16,15 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package GUI;
+package gui;
 
 import java.awt.*;
 import javax.swing.*;
 
 
-public class MainGUI extends JFrame{
+public class MainGUI extends JFrame {
 
-    public MainGUI(){
+    public MainGUI() {
         super("Client");
         setResizable(false);
         setLayout(new GridBagLayout());

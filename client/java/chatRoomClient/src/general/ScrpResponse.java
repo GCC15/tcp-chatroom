@@ -20,7 +20,8 @@ package general;
 
 public abstract class ScrpResponse {
     private String responseID;
-    public ScrpResponse(){
+
+    public ScrpResponse() {
 
     }
 }

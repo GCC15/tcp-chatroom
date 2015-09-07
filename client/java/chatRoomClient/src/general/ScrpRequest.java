@@ -1,4 +1,4 @@
-// Main execution file
+// Abstract base class for all SCRP requests
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -16,15 +16,15 @@
 // with this program; if not, write to the Free Software Foundation, Inc.,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-package GUI;
+package general;
 
-import javax.swing.*;
+public abstract class ScrpRequest {
+    private String requestID;
+    private String method;
 
+    public ScrpRequest() {
 
-public class Main {
-    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(ChatRoomGUI::new);
-        SwingUtilities.invokeLater(SignInGUI::new);
-//        SwingUtilities.invokeLater(RegisterGUI::new);
     }
+
+    public abstract ScrpResponse send();
 }

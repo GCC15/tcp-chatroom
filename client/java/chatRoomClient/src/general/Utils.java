@@ -1,4 +1,4 @@
-// Abstract base class for all SCRP requests
+// Miscellaneous utility functions
 
 // Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 
@@ -18,11 +18,23 @@
 
 package general;
 
-public abstract class ScrpRequest {
-    private String requestID;
-    private String method;
-    public ScrpRequest(){
+import javax.swing.*;
+
+public final class Utils {
+    private Utils() {
 
     }
-    public abstract ScrpResponse send();
+
+    public static void showMessageDialog(String message, String title, int messageType) {
+        JOptionPane.showMessageDialog(new JFrame(), message, title, messageType);
+    }
+
+    public static void showErrorDialog(String message) {
+        showMessageDialog(message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public static void showConfirmationDialog(String message) {
+        showMessageDialog(message, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
+    }
+
 }
