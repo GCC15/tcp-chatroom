@@ -18,6 +18,79 @@
 
 package general;
 
-public class User {
+import java.util.*;
 
+public class User {
+    private String userID;
+    private String userPassword;
+    private String userNickname;
+    private String userDescription;
+    private int userSignUpTime;
+    private int userLastActivityTime;
+    private List<User> userFriends;
+    private List<Room> userRooms;
+    Utils.AllUserMode userMode;
+
+    public User(String ID, String pwd, String nickname, String description){
+        userID = ID;
+        userPassword = pwd;
+        userNickname = nickname;
+        userDescription = description;
+    }
+
+    public void setUserSignUpTime(int signUpTime){
+        userSignUpTime = signUpTime;
+    }
+
+    public int getUserSignUpTime(){
+        return userSignUpTime;
+    }
+
+    public void setUserLastActivityTime(int lastActivityTime){
+        userLastActivityTime = lastActivityTime;
+    }
+
+    public int getUserLastActivityTime(){
+        return userLastActivityTime;
+    }
+
+    public List<User> getUserFriendList(){
+        return userFriends;
+    }
+
+    public void addFriend(User friend){
+        userFriends.add(friend);
+    }
+
+    public void removeFriend(User friend){
+        userFriends.remove(friend); //TODO: IS this correct?
+    }
+
+    public void removeAllFriends(){
+        userFriends.removeAll(userFriends);
+    }
+
+    public List<Room> getUserRoomList(){
+        return userRooms;
+    }
+
+    public void addRoom(Room room){
+        userRooms.add(room);
+    }
+
+    public void removeRoom(Room room){
+        userRooms.remove(room); //TODO: IS this correct?
+    }
+
+    public void removeAllRooms(){
+        userFriends.removeAll(userRooms);
+    }
+
+    public void setUserMode(Utils.AllUserMode mode){
+        userMode = mode;
+    }
+
+    public Utils.AllUserMode getUserMode(){
+        return userMode;
+    }
 }

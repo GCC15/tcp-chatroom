@@ -37,4 +37,8 @@ public final class Utils {
         showMessageDialog(message, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    public static enum AllUserMode{
+        MODE_ONLINE, MODE_OFFLINE
+    }
+
 }

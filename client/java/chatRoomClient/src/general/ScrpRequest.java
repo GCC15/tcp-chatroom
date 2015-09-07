@@ -18,6 +18,9 @@
 
 package general;
 
+import java.net.*;
+import java.io.*;
+
 public abstract class ScrpRequest {
     private String requestID;
     private String method;

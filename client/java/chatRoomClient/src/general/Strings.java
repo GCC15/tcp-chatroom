@@ -38,4 +38,9 @@ public final class Strings {
     public static final String INVALID_PWD_CONFIRM = "Confirmed password is not identical to the password";
 
     public static final String SIGN_UP_CONFIRMATION = "Sign up succeed";
+
+    public static final String SCRP_VERSION = "0.0.3";
+
+    public static final String CLIENT_VERSION = "0.0.1";
+
 }
