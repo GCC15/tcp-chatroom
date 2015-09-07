@@ -11,7 +11,7 @@ Zichao Li (https://github.com/kenathe)
 All Rights Reserved.
 
 Version: 0.0.3
-Revision: 7 Sep 2015
+Revision: 5 Sep 2015
 
 Status: Under development
 
@@ -1169,7 +1169,7 @@ Status: Under development
 
       (7) Return 900;
 
-  2.19 GET_LAST_ACTIVITY_TIME
+  2.19 GET_USER_LAST_ACTIVITY_TIME
 
   Get the user's last activity time.
 
@@ -1195,7 +1195,7 @@ Status: Under development
 
       (2) Return 900 with time = last_activity_time;
 
-  2.20 HANDLE_REQUEST
+  2.20 HANDLE_REQUEST 
 
   Handle an "ADD_FRIEND" request or "ENTER_ROOM" request when the room
   access type is ROOM_ACCESS_PERMISSION. If it is the latter case, the performer
