@@ -19,33 +19,43 @@
 # Users
 TBL_USER = 'user'
 COL_USER_ID = 'id'
-COL_USER_PASS = 'pass'
+COL_USER_PASSWORD = 'password'
 COL_USER_SALT = 'salt'
+COL_USER_NICKNAME = 'nickname'
+COL_USER_DESCRIPTION = 'description'
 COL_USER_SIGN_UP_TIME = 'sign_up_time'
-COL_USER_NICKNAME = 'name'
-COL_USER_DESC = 'desc'
+COL_USER_LAST_ACTIVITY_TIME = 'last_activity_time'
 
 # Rooms
 TBL_ROOM = 'room'
 COL_ROOM_ID = 'id'
-COL_ROOM_NICKNAME = 'name'
-COL_ROOM_DESC = 'desc'
+COL_ROOM_NICKNAME = 'nickname'
+COL_ROOM_DESCRIPTION = 'description'
+COL_ROOM_OWNER = 'owner'
+COL_ROOM_PASSWORD = 'password'
+COL_ROOM_ACCESS_TYPE = 'access_type'
 
-# Friendships
-TBL_FRIENDSHIP = 'friendship'
-COL_FRIEND_L = 'user_l'
-COL_FRIEND_R = 'user_r'
+# Members
+TBL_MEMBER = 'member'
+COL_MEMBER_USER_ID = 'user_id'
+COL_MEMBER_ROOM_ID = 'room_id'
+COL_MEMBER_IS_ADMIN = 'is_admin'
 
-# Messages
-TBL_MSG = 'msg'
-COL_MSG_ID = 'id'
-COL_MSG_TIME = 'time'
-COL_MSG_CONTENT = 'content'
-COL_MSG_SENDER = 'sender'
-COL_MSG_ROOM = 'room'
+# Friends
+TBL_FRIEND = 'friend'
+COL_FRIEND_USER_L = 'user_l'
+COL_FRIEND_USER_R = 'user_r'
 
 # Friend requests
-TBL_FRIEND_REQ = 'friend_req'
-COL_FRIEND_REQ_TIME = 'time'
-COL_FRIEND_REQ_FROM = 'user_from'
-COL_FRIEND_REQ_TO = 'user_to'
+TBL_FRIEND_REQUEST = 'friend_req'
+COL_FRIEND_REQUEST_TIME = 'time'
+COL_FRIEND_REQUEST_FROM = 'user_from'
+COL_FRIEND_REQUEST_TO = 'user_to'
+
+# Messages
+TBL_MESSAGE = 'message'
+COL_MESSAGE_ID = 'id'
+COL_MESSAGE_TIME = 'time'
+COL_MESSAGE_CONTENT = 'content'
+COL_MESSAGE_SENDER = 'sender'
+COL_MESSAGE_ROOM = 'room'

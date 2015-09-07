@@ -4,13 +4,13 @@ A Python implementation of the chatroom server.
 
 *Under development.*
 
-# Requirements
+## Requirements
 
 - A host with a public IP address
 
 - Python 3
 
-# Usage
+## Usage
 
 - Configure
 

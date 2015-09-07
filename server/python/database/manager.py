@@ -42,6 +42,7 @@ class _ManagerThread(threading.Thread):
         self.__exec_lock = threading.Lock()
         self.__task_event = threading.Event()
         self.__result_event = threading.Event()
+        self.__shutting_down = False
 
     def run(self):
         conn = sqlite3.connect(self.__db_file_path)
@@ -49,6 +50,8 @@ class _ManagerThread(threading.Thread):
             self.__task_event.wait()
             # Block
             self.__task_event.clear()
+            if self.__shutting_down:
+                break
             # noinspection PyCallingNonCallable
             self.__result = self.__func(conn.cursor)
             conn.commit()
@@ -57,6 +60,8 @@ class _ManagerThread(threading.Thread):
     def execute(self, func):
         with self.__exec_lock:
             # Only one thread can enter the block at the same time
+            if self.__shutting_down:
+                return
             self.__func = func
             self.__task_event.set()
             self.__result_event.wait()
@@ -64,35 +69,28 @@ class _ManagerThread(threading.Thread):
             self.__result_event.clear()
             return self.__result
 
+    def shutdown(self):
+        with self.__exec_lock:
+            self.__shutting_down = True
+        self.__task_event.set()
+        self.join()
+
 
 _mt = _ManagerThread()
 _mt.start()
 
 
 def execute(func):
-    """func receives a cursor factory function () -> Cursor as the argument"""
+    """
+    Perform some DB operations.
+    func receives a cursor factory function () -> Cursor as the argument
+    """
     return _mt.execute(func)
 
 
-def main(i):
-    """For testing"""
-    print('{} WAITING IN {}'.format(i, threading.current_thread().name))
-
-    def task(cursor_factory):
-        print('{} RUNNING IN {}'.format(i, threading.current_thread().name))
-        time.sleep(random.random())
-        c = cursor_factory()
-        c.execute('SELECT -{}'.format(i))
-        ret = c.fetchall()
-        print('{} RETURNING'.format(i))
-        return ret
-
-    print('{} RESULT {}'.format(i, execute(task)))
-
-
-if __name__ == '__main__':
-    import time
-    import random
-
-    for _i in range(5):
-        threading.Thread(target=main, args=(_i + 1,)).start()
+def shutdown():
+    """
+    Shutdown the DB manager thread.
+    Blocks until the manager thread stops safely.
+    """
+    _mt.shutdown()
