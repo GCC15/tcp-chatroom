@@ -18,5 +18,83 @@
 
 package general;
 
+import java.util.*;
+
 public class Room {
+    private String roomID;
+    private String roomNickname;
+    private String roomDescription;
+    private String roomPassword;
+    private User roomOwner;
+    private HashSet<User> roomAdmins;
+    private HashSet<User> roomMembers;
+    Utils.RoomAccessType roomAccessType;
+
+    public Room(String ID, String nickname, String description, User owner,
+                Utils.RoomAccessType accessType) {
+        roomID = ID;
+        roomNickname = nickname;
+        roomDescription = description;
+        roomOwner = owner;
+        roomAdmins.add(owner);
+        roomMembers.add(owner);
+        roomAccessType = accessType;
+    }
+
+    public String getRoomIDID() { return roomID; }
+
+    public void setRoomID(String ID) { roomID = ID; }
+
+    public String getRoomNickname() { return roomNickname; }
+
+    public void setRoomNickname(String nickname) { roomNickname = nickname; }
+
+    public String getRoomDescription() { return roomDescription; }
+
+    public void setRoomDescription(String description) { roomDescription = description; }
+
+    public User getRoomOwner() { return roomOwner; }
+
+    public void setRoomOwner(User owner) { roomOwner = owner; }
+
+    public HashSet<User> getRoomAdmins(){
+        return roomAdmins;
+    }
+
+    public void addAdmin(User admin){
+        roomAdmins.add(admin);
+    }
+
+    public void removeAdmin(User friend){
+        roomAdmins.remove(friend);
+    }
+
+    public void removeAllAdmins(){
+        roomAdmins.clear();
+    }
+
+    public HashSet<User> getRoomMembers(){
+        return roomMembers;
+    }
+
+    public void addMember(User member){
+        roomMembers.add(member);
+    }
+
+    public void removeMember(User member){
+        roomMembers.remove(member);
+    }
+
+    public void removeAllMembers() {
+        roomMembers.clear();
+    }
+
+    public void setRoomAccessType(Utils.RoomAccessType accessType) {
+        roomAccessType = accessType;
+    }
+
+    public Utils.RoomAccessType getRoomAccessType(){
+        return roomAccessType;
+    }
+
 }

@@ -22,7 +22,6 @@ import javax.swing.*;
 
 public final class Utils {
     private Utils() {
-
     }
 
     public static void showMessageDialog(String message, String title, int messageType) {
@@ -39,6 +38,10 @@ public final class Utils {
 
     public static enum AllUserMode{
         MODE_ONLINE, MODE_OFFLINE
+    }
+
+    public static enum RoomAccessType{
+        ROOM_ACCESS_PUBLIC, ROOM_ACCESS_PASSWORD, ROOM_ACCESS_PERMISSION
     }
 
 }

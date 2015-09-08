@@ -22,39 +22,49 @@ import java.util.*;
 
 public class User {
     private String userID;
-    private String userPassword;
     private String userNickname;
     private String userDescription;
     private int userSignUpTime;
     private int userLastActivityTime;
-    private List<User> userFriends;
-    private List<Room> userRooms;
+    private HashSet<User> userFriends;
+    private HashSet<Room> userRooms;
     Utils.AllUserMode userMode;
 
-    public User(String ID, String pwd, String nickname, String description){
+    public User(String ID, String nickname, String description) {
         userID = ID;
-        userPassword = pwd;
         userNickname = nickname;
         userDescription = description;
+    }
+
+    public String getUserID() { return userID; }
+
+    public void setUserID(String ID) { userID = ID; }
+
+    public String getUserNickname() { return userNickname; }
+
+    public void setUserNickname(String nickname) { userNickname = nickname; }
+
+    public String getUserDescription() { return userDescription; }
+
+    public void setUserDescription(String description) { userDescription = description; }
+
+    public int getUserSignUpTime(){
+        return userSignUpTime;
     }
 
     public void setUserSignUpTime(int signUpTime){
         userSignUpTime = signUpTime;
     }
 
-    public int getUserSignUpTime(){
-        return userSignUpTime;
+    public int getUserLastActivityTime(){
+        return userLastActivityTime;
     }
 
     public void setUserLastActivityTime(int lastActivityTime){
         userLastActivityTime = lastActivityTime;
     }
 
-    public int getUserLastActivityTime(){
-        return userLastActivityTime;
-    }
-
-    public List<User> getUserFriendList(){
+    public HashSet<User> getUserFriendList(){
         return userFriends;
     }
 
@@ -63,14 +73,14 @@ public class User {
     }
 
     public void removeFriend(User friend){
-        userFriends.remove(friend); //TODO: IS this correct?
+        userFriends.remove(friend);
     }
 
     public void removeAllFriends(){
-        userFriends.removeAll(userFriends);
+        userFriends.clear();
     }
 
-    public List<Room> getUserRoomList(){
+    public HashSet<Room> getUserRoomList(){
         return userRooms;
     }
 
@@ -79,14 +89,14 @@ public class User {
     }
 
     public void removeRoom(Room room){
-        userRooms.remove(room); //TODO: IS this correct?
+        userRooms.remove(room);
     }
 
-    public void removeAllRooms(){
-        userFriends.removeAll(userRooms);
+    public void removeAllRooms() {
+        userFriends.clear();
     }
 
-    public void setUserMode(Utils.AllUserMode mode){
+    public void setUserMode(Utils.AllUserMode mode) {
         userMode = mode;
     }
 

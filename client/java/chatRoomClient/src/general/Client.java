@@ -32,20 +32,20 @@ public class Client {
         clientDescription = description;
     }
 
-    public void setClientNickname(String nickname) {
-        clientNickname = nickname;
-    }
-
     public String getClientNickname() {
         return clientNickname;
     }
 
-    public void setClientDescription(String description) {
-        clientDescription = description;
+    public void setClientNickname(String nickname) {
+        clientNickname = nickname;
     }
 
-    public String getClientDesription() {
+    public String getClientDescription() {
         return clientDescription;
+    }
+
+    public void setClientDescription(String description) {
+        clientDescription = description;
     }
 
     public static int getClientTime(){
