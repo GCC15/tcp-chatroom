@@ -24,7 +24,6 @@ public class Room {
     private String roomID;
     private String roomNickname;
     private String roomDescription;
-    private String roomPassword;
     private User roomOwner;
     private HashSet<User> roomAdmins;
     private HashSet<User> roomMembers;
@@ -36,7 +35,9 @@ public class Room {
         roomNickname = nickname;
         roomDescription = description;
         roomOwner = owner;
+        roomAdmins = new HashSet<User>();
         roomAdmins.add(owner);
+        roomMembers = new HashSet<User>();
         roomMembers.add(owner);
         roomAccessType = accessType;
     }

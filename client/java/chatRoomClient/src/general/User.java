@@ -34,6 +34,8 @@ public class User {
         userID = ID;
         userNickname = nickname;
         userDescription = description;
+        userFriends = new HashSet<User>();
+        userRooms = new HashSet<Room>();
     }
 
     public String getUserID() { return userID; }
