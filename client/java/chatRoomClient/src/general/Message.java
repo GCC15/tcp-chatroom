@@ -19,5 +19,38 @@
 package general;
 
 public class Message {
+    private String messageId;
+    private int messageServerReceivedTime;
+    private User messageSender;
+
+    public Message(String ID, int time, User sender) {
+        messageId = ID;
+        messageServerReceivedTime = time;
+        messageSender = sender;
+    }
+
+    public String getMessageID() {
+        return messageId;
+    }
+
+    public void setMessageID(String ID) {
+        messageId = ID;
+    }
+
+    public int getMessageServerReceivedTime() {
+        return messageServerReceivedTime;
+    }
+
+    public void setMessageServerReceivedTime(int time) {
+        messageServerReceivedTime = time;
+    }
+
+    public User getMessageSender() {
+        return messageSender;
+    }
+
+    public void setMessageSender(User sender) {
+        messageSender = sender;
+    }
 
 }

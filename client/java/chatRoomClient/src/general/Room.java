@@ -35,9 +35,9 @@ public class Room {
         roomNickname = nickname;
         roomDescription = description;
         roomOwner = owner;
-        roomAdmins = new HashSet<User>();
+        roomAdmins = new HashSet<>();
         roomAdmins.add(owner);
-        roomMembers = new HashSet<User>();
+        roomMembers = new HashSet<>();
         roomMembers.add(owner);
         roomAccessType = accessType;
     }

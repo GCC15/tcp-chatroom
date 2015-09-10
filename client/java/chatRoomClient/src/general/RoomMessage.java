@@ -18,5 +18,11 @@
 
 package general;
 
-public class RoomMessage {
+public class RoomMessage extends Message{
+    private Room roomMessageTargetRoom;
+
+    public RoomMessage(String ID, int time, User sender, Room targetRoom) {
+        super(ID, time, sender);
+        roomMessageTargetRoom = targetRoom;
+    }
 }

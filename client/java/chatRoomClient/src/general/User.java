@@ -28,14 +28,14 @@ public class User {
     private int userLastActivityTime;
     private HashSet<User> userFriends;
     private HashSet<Room> userRooms;
-    Utils.AllUserMode userMode;
+    Utils.UserMode userMode;
 
     public User(String ID, String nickname, String description) {
         userID = ID;
         userNickname = nickname;
         userDescription = description;
-        userFriends = new HashSet<User>();
-        userRooms = new HashSet<Room>();
+        userFriends = new HashSet<>();
+        userRooms = new HashSet<>();
     }
 
     public String getUserID() { return userID; }
@@ -98,11 +98,11 @@ public class User {
         userFriends.clear();
     }
 
-    public void setUserMode(Utils.AllUserMode mode) {
+    public void setUserMode(Utils.UserMode mode) {
         userMode = mode;
     }
 
-    public Utils.AllUserMode getUserMode(){
+    public Utils.UserMode getUserMode(){
         return userMode;
     }
 }

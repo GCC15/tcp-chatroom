@@ -18,5 +18,11 @@
 
 package general;
 
-public class PrivateMessage {
+public class PrivateMessage extends Message {
+    private User privateMessageReceiver;
+
+    public PrivateMessage(String ID, int time, User sender, User receiver) {
+        super(ID, time, sender);
+        privateMessageReceiver = receiver;
+    }
 }

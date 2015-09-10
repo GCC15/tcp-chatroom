@@ -48,7 +48,7 @@ public class Client {
         clientDescription = description;
     }
 
-    public static int getClientTime(){
+    public static int getClientTime() {
         return LocalDateTime.now().getSecond();
     }
 }
