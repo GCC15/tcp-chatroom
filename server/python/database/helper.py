@@ -17,6 +17,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 from . import manager
+from .names import *
 
 
 def get_db_version() -> int:
@@ -47,9 +48,46 @@ def upgrade_db(old_ver: int, new_ver: int):
         def increment_task(cursor_factory):
             """Upgrade from old_ver to old_ver + 1"""
             c = cursor_factory()
-            if old_ver == 0:
-                # DB is empty
-                pass
+            if old_ver == 0: # DB is empty
+                # User
+                c.execute('''
+                    CREATE TABLE {user} (
+                        {id} TEXT NOT NULL PRIMARY KEY,
+                        {password} TEXT NOT NULL,
+                        {salt} TEXT NOT NULL,
+                        {nickname} TEXT NOT NULL,
+                        {description} TEXT NOT NULL,
+                        {sign_up_time} INTEGER NOT NULL
+                    )
+                '''.format(
+                    user=TBL_USER,
+                    id=COL_USER_ID,
+                    password=COL_USER_PASSWORD,
+                    salt=COL_USER_SALT,
+                    nickname=COL_USER_NICKNAME,
+                    description=COL_USER_DESCRIPTION,
+                    sign_up_time=COL_USER_SIGN_UP_TIME,
+                    last_activity_time=COL_USER_LAST_ACTIVITY_TIME
+                ))
+                # Room
+                c.execute('''
+                    CREATE TABLE {room} (
+                        {id} TEXT NOT NULL PRIMARY KEY,
+                        {nickname} TEXT NOT NULL,
+                        {description} TEXT NOT NULL,
+                        {owner} TEXT NOT NULL,
+                        {password} TEXT,
+                        {access_type} INTEGER NOT NULL
+                    )
+                '''.format(
+                    room=TBL_ROOM,
+                    id=COL_ROOM_ID,
+                    nickname=COL_ROOM_NICKNAME,
+                    description=COL_ROOM_DESCRIPTION,
+                    owner=COL_ROOM_OWNER,
+                    password=COL_ROOM_PASSWORD,
+                    access_type=COL_ROOM_ACCESS_TYPE
+                ))
             elif old_ver == 1:
                 pass
             else:

@@ -39,7 +39,11 @@ COL_ROOM_ACCESS_TYPE = 'access_type'
 TBL_MEMBER = 'member'
 COL_MEMBER_USER_ID = 'user_id'
 COL_MEMBER_ROOM_ID = 'room_id'
-COL_MEMBER_IS_ADMIN = 'is_admin'
+
+# Admins
+TBL_ADMIN = 'admin'
+COL_ADMIN_USER_ID = 'user_id'
+COL_ADMIN_ROOM_ID = 'room_id'
 
 # Friends
 TBL_FRIEND = 'friend'
