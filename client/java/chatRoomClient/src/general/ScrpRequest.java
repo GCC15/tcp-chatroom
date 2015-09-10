@@ -25,9 +25,26 @@ public abstract class ScrpRequest {
     private String requestID;
     private String method;
 
-    public ScrpRequest() {
+    private ScrpRequest() {
+    }
+    // NOTE: Everything below must not be useful or correct
+    Socket sock;
+    Thread thread;
+    boolean isConnected;
+    public final static int DEFAULT_PORT = 6543;
+    public void startConnect(){
+        isConnected = false;
+        try {
+            sock = new Socket( "127.0.0.1", DEFAULT_PORT);
+            isConnected = true;
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        if(thread == null) {
+            thread = new Thread();
+            thread.start();
+        }
 
     }
-
     public abstract ScrpResponse send();
 }
