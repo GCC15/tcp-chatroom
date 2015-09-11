@@ -83,3 +83,7 @@ def get_control_port() -> int:
 
 def get_tcp_listen_backlog() -> int:
     return _get('tcp_listen_backlog')
+
+
+def get_salt_length() -> int:
+    return _get('salt_length')

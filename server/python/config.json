@@ -12,5 +12,7 @@
   
   "server_port": 42015,
   "control_port": 42016,
-  "tcp_listen_backlog": 5
+  "tcp_listen_backlog": 5,
+
+  "salt_length": 12
 }

@@ -51,42 +51,43 @@ def upgrade_db(old_ver: int, new_ver: int):
             if old_ver == 0: # DB is empty
                 # User
                 c.execute('''
-                    CREATE TABLE {user} (
-                        {id} TEXT NOT NULL PRIMARY KEY,
-                        {password} TEXT NOT NULL,
-                        {salt} TEXT NOT NULL,
-                        {nickname} TEXT NOT NULL,
-                        {description} TEXT NOT NULL,
-                        {sign_up_time} INTEGER NOT NULL
+                    CREATE TABLE {USER} (
+                        {ID} TEXT NOT NULL PRIMARY KEY,
+                        {HASHED_PASSWORD} TEXT NOT NULL,
+                        {SALT} TEXT NOT NULL,
+                        {NICKNAME} TEXT NOT NULL,
+                        {DESCRIPTION} TEXT NOT NULL,
+                        {SIGN_UP_TIME} INTEGER NOT NULL,
+                        {LAST_ACTIVITY_TIME} INTEGER NOT NULL
                     )
                 '''.format(
-                    user=TBL_USER,
-                    id=COL_USER_ID,
-                    password=COL_USER_PASSWORD,
-                    salt=COL_USER_SALT,
-                    nickname=COL_USER_NICKNAME,
-                    description=COL_USER_DESCRIPTION,
-                    sign_up_time=COL_USER_SIGN_UP_TIME,
-                    last_activity_time=COL_USER_LAST_ACTIVITY_TIME
+                    USER=TBL_USER,
+                    ID=COL_USER_ID,
+                    HASHED_PASSWORD=COL_USER_HASHED_PASSWORD,
+                    SALT=COL_USER_SALT,
+                    NICKNAME=COL_USER_NICKNAME,
+                    DESCRIPTION=COL_USER_DESCRIPTION,
+                    SIGN_UP_TIME=COL_USER_SIGN_UP_TIME,
+                    LAST_ACTIVITY_TIME=COL_USER_LAST_ACTIVITY_TIME
                 ))
                 # Room
                 c.execute('''
-                    CREATE TABLE {room} (
-                        {id} TEXT NOT NULL PRIMARY KEY,
-                        {nickname} TEXT NOT NULL,
-                        {description} TEXT NOT NULL,
-                        {owner} TEXT NOT NULL,
-                        {password} TEXT,
-                        {access_type} INTEGER NOT NULL
+                    CREATE TABLE {ROOM} (
+                        {ID} TEXT NOT NULL PRIMARY KEY,
+                        {NICKNAME} TEXT NOT NULL,
+                        {DESCRIPTION} TEXT NOT NULL,
+                        {OWNER} TEXT NOT NULL,
+                        {PASSWORD} TEXT,
+                        {ACCESS_TYPE} INTEGER NOT NULL
                     )
                 '''.format(
-                    room=TBL_ROOM,
-                    id=COL_ROOM_ID,
-                    nickname=COL_ROOM_NICKNAME,
-                    description=COL_ROOM_DESCRIPTION,
-                    owner=COL_ROOM_OWNER,
-                    password=COL_ROOM_PASSWORD,
-                    access_type=COL_ROOM_ACCESS_TYPE
+                    ROOM=TBL_ROOM,
+                    ID=COL_ROOM_ID,
+                    NICKNAME=COL_ROOM_NICKNAME,
+                    DESCRIPTION=COL_ROOM_DESCRIPTION,
+                    OWNER=COL_ROOM_OWNER,
+                    PASSWORD=COL_ROOM_PASSWORD,
+                    ACCESS_TYPE=COL_ROOM_ACCESS_TYPE
                 ))
             elif old_ver == 1:
                 pass

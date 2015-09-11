@@ -19,7 +19,7 @@
 # Users
 TBL_USER = 'user'
 COL_USER_ID = 'id'
-COL_USER_PASSWORD = 'password'
+COL_USER_HASHED_PASSWORD = 'hashed_password'
 COL_USER_SALT = 'salt'
 COL_USER_NICKNAME = 'nickname'
 COL_USER_DESCRIPTION = 'description'

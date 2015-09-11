@@ -19,12 +19,23 @@ All functions are atomic.
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import random
+import string
+import hashlib
+
+import env
 from . import manager
-from . import names
 from . import helper
-import model
+from .names import *
+from model.data import *
 
 DB_VERSION = 1  # Current DB version
+
+
+def _get_salt() -> str:
+    """Fixed-length salt"""
+    return ''.join(random.choice(string.ascii_letters + string.digits) for
+                   _ in range(env.get_salt_length()))
 
 
 def _check_db():
@@ -49,10 +60,46 @@ def _check_db():
 _check_db()
 
 
-def add_user(user: model.User):
+def add_user(user: User):
+    salt = _get_salt()
+    hashed_password = hashlib.md5(user.password + salt)
+
     def task(cursor_factory):
         c = cursor_factory()
-        # TODO
-        c.execute('INSERT INTO {} () VALUES ()'.format(names.TBL_USER))
+        c.execute('''
+            INSERT INTO {USER} (
+                {ID},
+                {HASHED_PASSWORD},
+                {SALT},
+                {NICKNAME},
+                {DESCRIPTION},
+                {SIGN_UP_TIME},
+                {LAST_ACTIVITY_TIME}
+            ) VALUES (
+                {id},
+                {hashed_password},
+                {salt},
+                {nickname},
+                {description},
+                {sign_up_time},
+                {last_activity_time}
+            )
+        '''.format(
+            USER=TBL_USER,
+            ID=COL_USER_ID,
+            HASHED_PASSWORD=COL_USER_HASHED_PASSWORD,
+            SALT=COL_USER_SALT,
+            NICKNAME=COL_USER_NICKNAME,
+            DESCRIPTION=COL_USER_DESCRIPTION,
+            SIGN_UP_TIME=COL_USER_SIGN_UP_TIME,
+            LAST_ACTIVITY_TIME=COL_USER_LAST_ACTIVITY_TIME,
+            id=user.id_,
+            hashed_password=hashed_password,
+            salt=salt,
+            nickname=user.nickname,
+            description=user.description,
+            sign_up_time=user.sign_up_time,
+            last_activity_time=user.last_activity_time
+        ))
 
     manager.execute(task)
