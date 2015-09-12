@@ -25,59 +25,39 @@ import sqlite3
 
 import env
 
+_var_dir = env.get_var_dir()
+env.make_dirs(_var_dir)
+_db_file = env.get_db_file()
+_db_file_path = os.path.join(_var_dir, _db_file)
 
-class _ManagerThread(threading.Thread):
-    def __init__(self):
-        super().__init__(name='DBManagerThread')
+# Task and result
+_func = None
+_result = None
 
-        var_dir = env.get_var_dir()
-        env.make_dirs(var_dir)
-        db_file = env.get_db_file()
-        self.__db_file_path = os.path.join(var_dir, db_file)
-
-        self.__func = None
-        self.__result = None
-
-        # Synchronization
-        self.__exec_lock = threading.Lock()
-        self.__task_event = threading.Event()
-        self.__result_event = threading.Event()
-        self.__shutting_down = False
-
-    def run(self):
-        conn = sqlite3.connect(self.__db_file_path)
-        while True:
-            self.__task_event.wait()
-            # Block
-            self.__task_event.clear()
-            if self.__shutting_down:
-                break
-            # noinspection PyCallingNonCallable
-            self.__result = self.__func(conn.cursor)
-            conn.commit()
-            self.__result_event.set()
-
-    def execute(self, func):
-        with self.__exec_lock:
-            # Only one thread can enter the block at the same time
-            if self.__shutting_down:
-                return
-            self.__func = func
-            self.__task_event.set()
-            self.__result_event.wait()
-            # Block
-            self.__result_event.clear()
-            return self.__result
-
-    def shutdown(self):
-        with self.__exec_lock:
-            self.__shutting_down = True
-        self.__task_event.set()
-        self.join()
+# Synchronization
+_exec_lock = threading.Lock()
+_task_event = threading.Event()
+_result_event = threading.Event()
+_shutting_down = False
 
 
-_mt = _ManagerThread()
-_mt.start()
+def manage():
+    global _result
+    conn = sqlite3.connect(_db_file_path)
+    while True:
+        _task_event.wait()
+        # Block
+        _task_event.clear()
+        if _shutting_down:
+            break
+        # noinspection PyCallingNonCallable
+        _result = _func(conn.cursor)
+        conn.commit()
+        _result_event.set()
+
+
+_manager_thread = threading.Thread(target=manage, name="DBManagerThread")
+_manager_thread.start()
 
 
 def execute(func):
@@ -85,7 +65,17 @@ def execute(func):
     Perform some DB operations.
     func receives a cursor factory function () -> Cursor as the argument
     """
-    return _mt.execute(func)
+    global _func
+    with _exec_lock:
+        # Only one thread can enter the block at the same time
+        if _shutting_down:
+            return
+        _func = func
+        _task_event.set()
+        _result_event.wait()
+        # Block
+        _result_event.clear()
+        return _result
 
 
 def shutdown():
@@ -93,14 +83,19 @@ def shutdown():
     Shutdown the DB manager thread.
     Blocks until the manager thread stops safely.
     """
-    _mt.shutdown()
+    global _shutting_down
+    with _exec_lock:
+        _shutting_down = True
+        _task_event.set()
+        _manager_thread.join()
 
 
 def main():
     """For testing"""
+
     def task(cursor_factory):
         c = cursor_factory()
-        c.execute('SELECT ?', [42])
+        c.execute('SELECT -?', [42])
         return c.fetchone()[0]
 
     print(execute(task))

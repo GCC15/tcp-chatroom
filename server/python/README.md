@@ -6,9 +6,7 @@ A Python implementation of the chatroom server.
 
 ## Requirements
 
-- A host with a public IP address
-
-- Python 3
+- Python 3.4+
 
 ## Usage
 

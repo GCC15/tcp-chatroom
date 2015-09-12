@@ -16,14 +16,13 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import socket
-import scrp_server
 import os
 import socket
 import subprocess
 import sys
 
 import env
+import scrp_server
 
 env.make_dirs(env.get_var_dir())
 _lock_file_path = os.path.join(env.get_var_dir(), env.get_lock_file())
@@ -63,6 +62,7 @@ def status():
 
 
 def _start_daemon(args: tuple) -> subprocess.Popen:
+    """Start a daemon process with given args"""
     if env.IS_WIN32:
         return subprocess.Popen(args, creationflags=env.WIN32_DETACHED_PROCESS)
     else:
@@ -70,10 +70,8 @@ def _start_daemon(args: tuple) -> subprocess.Popen:
 
 
 def main():
-    while True:
-        pass
-        # TODO
-        # server = scrp_server.Server()
+    """Entry point of the daemon process"""
+    scrp_server.serve()
 
 
 if __name__ == '__main__':

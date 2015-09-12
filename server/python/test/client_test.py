@@ -8,8 +8,8 @@ import env
 def main():
     for i in range(1):
         client_socket = socket.socket()
-        client_socket.connect(('localhost', env.get_server_port))
-        # client_socket.connect(('52.74.148.102', cfg.get('server_port')))
+        client_socket.connect(('localhost', env.get_server_port()))
+        # client_socket.connect(('52.74.148.102', env.get_server_port()))
         ct = ClientThread(client_socket)
         print('[Main] Starting ClientThread {}'.format(ct.getName()))
         ct.start()
