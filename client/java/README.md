@@ -10,8 +10,3 @@ A Java implementation of the chatroom client.
 
 ## Usage
 
-
-## License
-
-This software is licensed under the GNU General Public License.
-See [LICENSE](LICENSE).
