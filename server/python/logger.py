@@ -1,5 +1,6 @@
 import os
 import threading
+import time
 
 import env
 
@@ -14,7 +15,11 @@ _write_lock = threading.Lock()
 
 def log(message: str):
     with _write_lock:
-        _f.write('{}: {}\n'.format(threading.current_thread().name, message))
+        _f.write('[{}] {}: {}\n'.format(
+            time.ctime(),
+            threading.current_thread().name,
+            message)
+        )
 
 
 def main():
