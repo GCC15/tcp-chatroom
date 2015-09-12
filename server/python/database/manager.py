@@ -86,8 +86,8 @@ def shutdown():
     global _shutting_down
     with _exec_lock:
         _shutting_down = True
-        _task_event.set()
-        _manager_thread.join()
+    _task_event.set()
+    _manager_thread.join()
 
 
 def main():
