@@ -1,6 +1,6 @@
 """
 High-level abstraction of the database
-All functions are atomic.
+All functions are atomic and synchronous.
 """
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
@@ -27,7 +27,7 @@ import env
 from . import manager
 from . import helper
 from .names import *
-from model.data import *
+from scrp.entity import *
 
 DB_VERSION = 1  # Current DB version
 
@@ -103,3 +103,20 @@ def add_user(user: User):
         ))
 
     manager.execute(task)
+
+
+def get_user(user_id: str) -> User:
+    if not User.is_valid_id(user_id):
+        return None
+
+    def task(cursor_factory) -> User:
+        c = cursor_factory()
+        c.execute('''
+            SELECT * FROM {USER} WHERE {ID} = ?
+        '''.format(
+
+        ), [
+            user_id
+        ])
+
+    return manager.execute(task)

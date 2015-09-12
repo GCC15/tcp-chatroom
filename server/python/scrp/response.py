@@ -1,0 +1,2 @@
+class ScrpResponse:
+    """SCRP Response"""

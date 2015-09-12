@@ -1,5 +1,5 @@
 """
-SCRP Data representation and validation.
+SCRP entity representation and validation.
 """
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
@@ -24,13 +24,35 @@ from .error import *
 
 
 class User:
-    id_pattern = re.compile(r'^\w{1,16}$', re.A)
-    # TODO: other patterns
+    PATTERN_ID = re.compile(r'^\w{1,16}$', re.A)
+    PATTERN_PASSWORD = re.compile(r'^[ -~]{6,64}$', re.A)
 
-    def __init__(self, id_: str, password: str, nickname: str, description:str,
+    @staticmethod
+    def is_valid_id(id_: str) -> bool:
+        return User.PATTERN_ID.match(id_)
+
+    @staticmethod
+    def is_valid_password(password: str) -> bool:
+        return User.PATTERN_PASSWORD.match(password)
+
+    @staticmethod
+    def is_valid_nickname(nickname: str) -> bool:
+        return 1 <= len(nickname) <= 32
+
+    @staticmethod
+    def is_valid_description(description: str) -> bool:
+        return len(description) <= 256
+
+    def __init__(self, id_: str, password: str, nickname: str, description: str,
                  sign_up_time: int, last_activity_time: int):
-        if not User.id_pattern.match(id_):
+        if not self.is_valid_id(id_):
             raise InvalidUserIdError()
+        if not self.is_valid_password(password):
+            raise InvalidUserPasswordError()
+        if not self.is_valid_nickname(nickname):
+            raise InvalidUserNicknameError()
+        if not self.is_valid_description(description):
+            raise InvalidUserDescriptionError()
         self.id_ = id_
         self.password = password
         self.nickname = nickname
@@ -39,12 +61,12 @@ class User:
         self.last_activity_time = last_activity_time
 
 
-class RoomMessage:
-    def __init__(self):
+class Room:
+    def __init__(self, id_: str, nickname: str, description: str):
         pass
 
 
-class Room:
+class RoomMessage:
     def __init__(self):
         pass
 
