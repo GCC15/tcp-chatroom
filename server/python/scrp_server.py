@@ -1,3 +1,5 @@
+"""SCRP server core"""
+
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,37 +20,81 @@ import socket
 import threading
 
 import env
+import logger
 
 
-def serve():
-    server_socket = socket.socket()
-    server_socket.bind(('', env.get_server_port()))
-    server_socket.listen(env.get_tcp_listen_backlog())
-    while True:
-        client_socket, address = server_socket.accept()
-        # print('[Main] Connection established with {}'.format(address))
-        cht = ClientHandlerThread(client_socket)
-        print('[Main] Starting ClientHandlerThread {}'
-              .format(cht.name))
-        cht.start()
+class ServerThread(threading.Thread):
+    """Main Daemon thread"""
+
+    def __init__(self):
+        super().__init__(name='ServerThread')
+        self.__ct = ControlThread(self)
+        # Store all ClientHandlerThreads
+        self.__cht_set = set()
+        # Map user_id -> cht
+        self.__id_cht_dict = {}
+        # Synchronize
+        self.lock = threading.RLock()
+
+    def cht_ready(self, cht: 'ClientHandlerThread'):
+        """Inform that a cht is ready"""
+        with self.lock:
+            logger.d(str(cht))
+            self.__cht_set.add(cht)
+
+    def run(self):
+        logger.i('ServerThread started')
+        # Start the control thread
+        self.__ct.start()
+        # Start listening
+        server_socket = socket.socket()
+        server_port = env.get_server_port()
+        server_socket.bind(('', server_port))
+        server_socket.listen(env.get_tcp_listen_backlog())
+        logger.i('Listening on server port {}'.format(server_port))
+        while True:
+            logger.i('Waiting for a new client connection')
+            client_socket, address = server_socket.accept()
+            logger.i('Connection established with client {}'.format(address))
+            cht = ClientHandlerThread(self, client_socket)
+            logger.i('Starting ClientHandlerThread {}'.format(cht.name))
+            cht.start()
 
 
 class ControlThread(threading.Thread):
-    def __init__(self):
-        super().__init__()
-        self.__control_socket = socket.socket()
-        self.__control_port = env.get_control_port()
+    """
+    Receive control messages from controllers (scrpd.py)
+    """
+
+    def __init__(self, server_thread: ServerThread):
+        super().__init__(name='ControlThread')
+        self.__st = server_thread
 
     def run(self):
-        pass
+        logger.i('ControlThread started')
+        control_socket = socket.socket()
+        control_port = env.get_control_port()
+        # Only allow control messages from localhost for security
+        control_socket.bind(('localhost', control_port))
+        control_socket.listen(env.get_tcp_listen_backlog())
+        logger.i('Listening on control port {}'.format(control_port))
+        while True:
+            logger.i('Waiting for a new controller connection')
+            client_socket, address = control_socket.accept()
+            logger.i('Connection established with controller {}'
+                     .format(address))
+            # TODO
 
 
 class ClientHandlerThread(threading.Thread):
     """Handles a client"""
 
-    def __init__(self, client_socket):
+    def __init__(self, st: ServerThread, client_socket: socket.socket):
         super().__init__()
+        self.__st = st
         self.__client_socket = client_socket
 
     def run(self):
-        pass
+        logger.i('ClientHandlerThread {} started'.format(self.name))
+        self.__st.cht_ready(self)
+

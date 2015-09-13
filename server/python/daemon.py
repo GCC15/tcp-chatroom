@@ -1,4 +1,7 @@
-"""SCRP server daemon"""
+"""
+SCRP server daemon
+Do NOT run this file directly except when debugging.
+"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
@@ -22,6 +25,7 @@ import subprocess
 import sys
 
 import env
+import logger
 import scrp_server
 
 env.make_dirs(env.get_var_dir())
@@ -71,7 +75,8 @@ def _start_daemon(args: tuple) -> subprocess.Popen:
 
 def main():
     """Entry point of the daemon process"""
-    scrp_server.serve()
+    logger.i('Starting ServerThread')
+    scrp_server.ServerThread().start()
 
 
 if __name__ == '__main__':
