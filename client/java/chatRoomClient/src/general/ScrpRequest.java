@@ -18,33 +18,39 @@
 
 package general;
 
+import org.json.JSONObject;
+
 import java.net.*;
 import java.io.*;
 
-public abstract class ScrpRequest {
-    private String requestID;
-    private String method;
+public class ScrpRequest {
+    private int requestID;
+    private String requestMethod;
 
-    private ScrpRequest() {
+    public ScrpRequest(int ID, String method) {
+        requestID = ID;
+        requestMethod = method;
     }
+
     // NOTE: Everything below must not be useful or correct
-    Socket sock;
-    Thread thread;
-    boolean isConnected;
-    public final static int DEFAULT_PORT = 6543;
-    public void startConnect(){
-        isConnected = false;
-        try {
-            sock = new Socket( "127.0.0.1", DEFAULT_PORT);
-            isConnected = true;
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-        if(thread == null) {
-            thread = new Thread();
-            thread.start();
-        }
 
+
+    public JSONObject createSignUpJSON(String userID, String userPwd, String userNickname) {
+        assert (requestMethod.equals("SIGN_UP"));
+        JSONObject signUpJSON = new JSONObject().put("req_id", requestID);
+        signUpJSON.put("method", requestMethod);
+        signUpJSON.put("user_id", userID);
+        signUpJSON.put("user_password", userPwd);
+        signUpJSON.put("user_nickname", userNickname);
+        return signUpJSON;
     }
-    public abstract ScrpResponse send();
+
+    public JSONObject createLogInJSON(String userID, String userPwd) {
+        assert (requestMethod.equals("LOG_IN"));
+        JSONObject logInJSON = new JSONObject().put("req_id", requestID);
+        logInJSON.put("method", requestMethod);
+        logInJSON.put("user_id", userID);
+        logInJSON.put("user_password", userPwd);
+        return logInJSON;
+    }
 }

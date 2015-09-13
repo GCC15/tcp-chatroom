@@ -31,43 +31,43 @@ public final class Validation {
 
     public static final class InvalidServerException extends ValidationException {
         public InvalidServerException() {
-            super(Strings.INVALID_SERVER);
+            super(Strings.Validation.INVALID_SERVER);
         }
     }
 
     public static final class InvalidPortException extends ValidationException {
         public InvalidPortException() {
-            super(Strings.INVALID_PORT);
+            super(Strings.Validation.INVALID_PORT);
         }
     }
 
     public static final class InvalidIdLengthException extends ValidationException {
         public InvalidIdLengthException() {
-            super(Strings.INVALID_ID_LENGTH);
+            super(Strings.Validation.INVALID_ID_LENGTH);
         }
     }
 
     public static final class InvalidIdCharException extends ValidationException {
         public InvalidIdCharException() {
-            super(Strings.INVALID_ID_CHAR);
+            super(Strings.Validation.INVALID_ID_CHAR);
         }
     }
 
     public static final class InvalidPwdLengthException extends ValidationException {
         public InvalidPwdLengthException() {
-            super(Strings.INVALID_PWD_LENGTH);
+            super(Strings.Validation.INVALID_PWD_LENGTH);
         }
     }
 
     public static final class InvalidPwdCharException extends ValidationException {
         public InvalidPwdCharException() {
-            super(Strings.INVALID_PWD_CHAR);
+            super(Strings.Validation.INVALID_PWD_CHAR);
         }
     }
 
     public static final class InvalidPwdConfirmException extends ValidationException {
         public InvalidPwdConfirmException() {
-            super(Strings.INVALID_PWD_CONFIRM);
+            super(Strings.Validation.INVALID_PWD_CONFIRM);
         }
     }
 

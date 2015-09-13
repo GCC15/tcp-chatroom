@@ -36,11 +36,11 @@ public final class Utils {
         showMessageDialog(message, "Confirmation", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public enum UserMode{
+    public enum UserMode {
         MODE_ONLINE, MODE_OFFLINE
     }
 
-    public enum RoomAccessType{
+    public enum RoomAccessType {
         ROOM_ACCESS_PUBLIC, ROOM_ACCESS_PASSWORD, ROOM_ACCESS_PERMISSION
     }
 

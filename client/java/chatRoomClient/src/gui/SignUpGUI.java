@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class RegisterGUI extends JFrame {
+public class SignUpGUI extends JFrame {
 
     final JLabel labelServer = new JLabel("Server host: ");
     final JLabel labelPort = new JLabel("Port: ");
@@ -42,7 +42,7 @@ public class RegisterGUI extends JFrame {
     JPasswordField pwdFieldConfirmPwd = new JPasswordField(20);
     final JButton buttonSignUp = new JButton("Sign Up");
 
-    public RegisterGUI() {
+    public SignUpGUI() {
         super("Sign Up");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -98,7 +98,7 @@ public class RegisterGUI extends JFrame {
             }
             //TODO: Confirm
             if (signUpSuccessful) {
-                Utils.showConfirmationDialog(Strings.SIGN_UP_CONFIRMATION);
+                Utils.showConfirmationDialog(Strings.Validation.SIGN_UP_CONFIRMATION);
                 dispose();
             }
         }

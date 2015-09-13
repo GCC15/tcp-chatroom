@@ -18,10 +18,10 @@
 
 package general;
 
-public abstract class ScrpResponse {
-    private String responseID;
+public class ScrpResponse {
+    private int responseID;
 
-    public ScrpResponse() {
-
+    public ScrpResponse(int ID) {
+        responseID = ID;
     }
 }

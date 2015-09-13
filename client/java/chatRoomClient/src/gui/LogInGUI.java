@@ -25,7 +25,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class SignInGUI extends JFrame {
+public class LogInGUI extends JFrame {
 
     final JLabel labelServer = new JLabel("Server hostname: ");
     final JLabel labelPort = new JLabel("Port: ");
@@ -38,7 +38,7 @@ public class SignInGUI extends JFrame {
     final JButton buttonLogIn = new JButton("Log In");
     final JButton buttonSignUp = new JButton("Sign Up");
 
-    public SignInGUI() {
+    public LogInGUI() {
         super("Log In");
         setResizable(false);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
@@ -78,7 +78,7 @@ public class SignInGUI extends JFrame {
     private class SignUpActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            SwingUtilities.invokeLater(RegisterGUI::new);
+            SwingUtilities.invokeLater(SignUpGUI::new);
         }
     }
 

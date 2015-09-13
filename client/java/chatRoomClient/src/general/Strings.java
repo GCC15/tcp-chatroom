@@ -23,24 +23,19 @@ public final class Strings {
     private Strings() {
     }
 
-    public static final String INVALID_SERVER = "Server is not valid";
+    public final class Validation {
+        public static final String INVALID_SERVER = "Server is not valid";
+        public static final String INVALID_PORT = "Port is not valid";
+        public static final String INVALID_ID_LENGTH = "ID length is not valid, should be 1~16";
+        public static final String INVALID_ID_CHAR = "ID contains invalid characters";
+        public static final String INVALID_PWD_LENGTH = "Password length is not valid, should be 6~64";
+        public static final String INVALID_PWD_CHAR = "Password contains invalid characters";
+        public static final String INVALID_PWD_CONFIRM = "Confirmed password is not identical to the password";
+        public static final String SIGN_UP_CONFIRMATION = "Sign up succeed";
+    }
 
-    public static final String INVALID_PORT = "Port is not valid";
-
-    public static final String INVALID_ID_LENGTH = "ID length is not valid, should be 1~16";
-
-    public static final String INVALID_ID_CHAR = "ID contains invalid characters";
-
-    public static final String INVALID_PWD_LENGTH = "Password length is not valid, should be 6~64";
-
-    public static final String INVALID_PWD_CHAR = "Password contains invalid characters";
-
-    public static final String INVALID_PWD_CONFIRM = "Confirmed password is not identical to the password";
-
-    public static final String SIGN_UP_CONFIRMATION = "Sign up succeed";
-
-    public static final String SCRP_VERSION = "0.0.3";
-
-    public static final String CLIENT_VERSION = "0.0.1";
-
+    public final class General {
+        public static final String SCRP_VERSION = "0.0.3";
+        public static final String CLIENT_VERSION = "0.0.1";
+    }
 }

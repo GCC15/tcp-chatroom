@@ -18,14 +18,18 @@
 
 package general;
 
-import java.time.LocalDateTime;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Client {
     private String clientNickname;
-    public static final String clientVersion = Strings.CLIENT_VERSION;
+    public static final String clientVersion = Strings.General.CLIENT_VERSION;
     private String clientDescription;
-    public static final String protocolVersion = Strings.SCRP_VERSION;
-    private int clientTime;
+    public static final String protocolVersion = Strings.General.SCRP_VERSION;
 
     public Client(String nickname, String description) {
         clientNickname = nickname;
@@ -48,7 +52,36 @@ public class Client {
         clientDescription = description;
     }
 
-    public static int getClientTime() {
-        return LocalDateTime.now().getSecond();
+    public static long getClientTime() {
+        return System.currentTimeMillis();
+    }
+
+    Socket sock;
+    boolean isConnected;
+    Thread thread;
+    public static final int DEFAULT_PORT = 6543;
+
+
+    public void connectToServer() {
+        isConnected = false;
+        try {
+            sock = new Socket("127.0.0.1", DEFAULT_PORT);
+            isConnected = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (thread == null) {
+            thread = new Thread();
+            thread.start();
+        }
+    }
+
+    public void sendJSON(JSONObject jsonObject) {
+        try {
+            OutputStreamWriter out = new OutputStreamWriter(sock.getOutputStream(), StandardCharsets.UTF_8);
+            out.write(jsonObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
