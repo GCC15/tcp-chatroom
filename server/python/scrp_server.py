@@ -34,11 +34,11 @@ class ServerThread(threading.Thread):
         # Map user_id -> cht
         self.__id_cht_dict = {}
         # Synchronize
-        self.lock = threading.RLock()
+        self.__lock = threading.RLock()
 
     def cht_ready(self, cht: 'ClientHandlerThread'):
         """Inform that a cht is ready"""
-        with self.lock:
+        with self.__lock:
             logger.d(str(cht))
             self.__cht_set.add(cht)
 
@@ -98,3 +98,13 @@ class ClientHandlerThread(threading.Thread):
         logger.i('ClientHandlerThread {} started'.format(self.name))
         self.__st.cht_ready(self)
 
+
+class RequestHandlerThread(threading.Thread):
+    """Handles a request"""
+
+    def __init__(self, cht: ClientHandlerThread):
+        super().__init__()
+        self.__cht = cht
+
+    def run(self):
+        logger.i('RequestHandlerThread {} started'.format(self.name))
