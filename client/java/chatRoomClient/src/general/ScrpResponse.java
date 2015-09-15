@@ -19,6 +19,102 @@
 package general;
 
 public class ScrpResponse {
+
+    public static class SignUpResponse {
+
+    }
+
+    public static class LogInResponse {
+
+    }
+
+    public static class DeleteUserResponse {
+
+    }
+
+    public static class ChangeUserPasswordResponse {
+
+    }
+
+    public static class ChangeUseNicknameResponse {
+
+    }
+
+    public static class GetTimeResponse {
+
+    }
+
+    public static class CreateRoomResponse {
+
+    }
+
+    public static class EnterRoomResponse {
+
+    }
+
+    public static class RemoveRoomResponse {
+
+    }
+
+    public static class ChangeRoomAccessResponse {
+
+    }
+
+    public static class ChangeRoomNicknameResponse {
+
+    }
+
+    public static class RemoveUserFromRoomResponse {
+
+    }
+
+    public static class SetAdminResponse {
+
+    }
+
+    public static class RemoveAdminResponse {
+
+    }
+
+    public static class AddFriendResponse {
+
+    }
+
+    public static class RemoveFriendResponse {
+
+    }
+
+    public static class ChangeUserDescriptionResponse {
+
+    }
+
+    public static class ChangeRoomDescriptionResponse {
+
+    }
+
+    public static class GetUserLastActivityTimeResponse {
+
+    }
+
+    public static class SendRoomMessageResponse {
+
+    }
+
+    public static class SendPrivateMessageResponse {
+
+    }
+
+    public static class GetRoomAccessTypeResponse {
+
+    }
+
+    public static class SearchUserResponse {
+
+    }
+
+    public static class SearchRoomRequest {
+
+    }
     private int responseID;
 
     public ScrpResponse(int ID) {

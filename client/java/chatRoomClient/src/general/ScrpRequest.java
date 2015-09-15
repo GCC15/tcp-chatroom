@@ -21,79 +21,214 @@ package general;
 import org.json.JSONObject;
 
 public class ScrpRequest {
-    public static JSONObject createSignUpJSON(int requestID, String userID,
-                                              String userPwd, String userNickname) {
-        JSONObject signUpJSON = new JSONObject().put("req_id", requestID);
-        signUpJSON.put("method", "SIGN_UP");
-        signUpJSON.put("user_id", userID);
-        signUpJSON.put("user_password", userPwd);
-        signUpJSON.put("user_nickname", userNickname);
-        return signUpJSON;
+
+    public static class SignUpRequest {
+        public JSONObject signUpJSON;
+
+        public JSONObject getSignUpJSON() {
+            return signUpJSON;
+        }
+
+        public JSONObject setSignUpJSON(int requestID, String userID,
+                                                  String userPwd, String userNickname) {
+            signUpJSON = new JSONObject().put("req_id", requestID);
+            signUpJSON.put("method", "SIGN_UP");
+            signUpJSON.put("user_id", userID);
+            signUpJSON.put("user_password", userPwd);
+            signUpJSON.put("user_nickname", userNickname);
+            return signUpJSON;
+        }
     }
 
-    public static JSONObject createLogInJSON(int requestID, String userID,
-                                             String userPwd) {
-        JSONObject logInJSON = new JSONObject().put("req_id", requestID);
-        logInJSON.put("method", "LOG_IN");
-        logInJSON.put("user_id", userID);
-        logInJSON.put("user_password", userPwd);
-        return logInJSON;
+    public static class LogInRequest {
+        public JSONObject logInJSON;
+
+        public JSONObject getLogInJSON() {
+            return logInJSON;
+        }
+
+        public JSONObject setLogInJSON(int requestID, String userID,
+                                                 String userPwd) {
+            logInJSON = new JSONObject().put("req_id", requestID);
+            logInJSON.put("method", "LOG_IN");
+            logInJSON.put("user_id", userID);
+            logInJSON.put("user_password", userPwd);
+            return logInJSON;
+        }
     }
 
-    public static JSONObject createDeleteUserJSON(int requestID,
-                                                  String userPwd) {
-        JSONObject deleteUserJSON = new JSONObject().put("req_id", requestID);
-        deleteUserJSON.put("method", "DELETE_USER");
-        deleteUserJSON.put("user_password", userPwd);
-        return deleteUserJSON;
+    public static class DeleteUserRequest {
+        public JSONObject deleteUserJSON;
+
+        public JSONObject getDeleteUserJSON() {
+            return deleteUserJSON;
+        }
+
+        public JSONObject setDeleteUserJSON(int requestID,
+                                                      String userPwd) {
+            deleteUserJSON = new JSONObject().put("req_id", requestID);
+            deleteUserJSON.put("method", "DELETE_USER");
+            deleteUserJSON.put("user_password", userPwd);
+            return deleteUserJSON;
+        }
     }
 
-    public static JSONObject createChangePwdJSON(int requestID,
-                                                 String oldPwd, String newPwd) {
-        JSONObject changePwdJSON = new JSONObject().put("req_id", requestID);
-        changePwdJSON.put("method", "CHANGE_USER_PASSWORD");
-        changePwdJSON.put("old_user_password", oldPwd);
-        changePwdJSON.put("new_user_password", newPwd);
-        return changePwdJSON;
+    public static class ChangeUserPasswordRequest {
+        public JSONObject changeUserPasswordJSON;
+
+        public JSONObject getChangeUserPasswordJSON() {
+            return changeUserPasswordJSON;
+        }
+
+        public JSONObject setChangeUserPasswordJSON(int requestID,
+                                                     String oldPwd, String newPwd) {
+            changeUserPasswordJSON = new JSONObject().put("req_id", requestID);
+            changeUserPasswordJSON.put("method", "CHANGE_USER_PASSWORD");
+            changeUserPasswordJSON.put("old_user_password", oldPwd);
+            changeUserPasswordJSON.put("new_user_password", newPwd);
+            return changeUserPasswordJSON;
+        }
     }
 
-    public static JSONObject createChangeUserNicknameJSON(int requestID,
-                                                          String userNickname) {
-        JSONObject changeUserNicknameJSON = new JSONObject().put("req_id", requestID);
-        changeUserNicknameJSON.put("method", "CHANGE_USER_NICKNAME");
-        changeUserNicknameJSON.put("user_nickname", userNickname);
-        return changeUserNicknameJSON;
+    public static class ChangeUseNicknameRequest {
+        public JSONObject changeUserNicknameJSON;
+
+        public JSONObject getChangeUserNicknameJSON() {
+            return changeUserNicknameJSON;
+        }
+
+        public JSONObject setChangeUserNicknameJSON(int requestID,
+                                                              String userNickname) {
+            changeUserNicknameJSON = new JSONObject().put("req_id", requestID);
+            changeUserNicknameJSON.put("method", "CHANGE_USER_NICKNAME");
+            changeUserNicknameJSON.put("user_nickname", userNickname);
+            return changeUserNicknameJSON;
+        }
     }
 
-    public static JSONObject createGetTimeJSON(int requestID) {
-        JSONObject getTimeJSON = new JSONObject().put("req_id", requestID);
-        getTimeJSON.put("method", "GET_TIME");
-        return getTimeJSON;
+    public static class GetTimeRequest {
+        public JSONObject getTimeJSON;
+
+        public JSONObject getGetTimeJSON() {
+            return getTimeJSON;
+        }
+
+        public JSONObject setGetTimeJSON(int requestID) {
+            getTimeJSON = new JSONObject().put("req_id", requestID);
+            getTimeJSON.put("method", "GET_TIME");
+            return getTimeJSON;
+        }
     }
 
-    public static JSONObject createCreateRoomJSON(int requestID, String roomID,
-                                                  String roomNickname,
-                                                  Utils.RoomAccessType roomAccess) {
-        JSONObject createRoomJSON = new JSONObject().put("req_id", requestID);
-        createRoomJSON.put("method", "CREATE_ROOM");
-        createRoomJSON.put("room_id", roomID);
-        createRoomJSON.put("room_nickname", roomNickname);
-        createRoomJSON.put("room_access", roomAccess);
-        return createRoomJSON;
+    public static class CreateRoomRequest {
+        public JSONObject createRoomJSON;
+
+        public JSONObject getCreateRoomJSON() {
+            return createRoomJSON;
+        }
+
+        public JSONObject setCreateRoomJSON(int requestID, String roomID,
+                                                      String roomNickname,
+                                                      Utils.RoomAccessType roomAccess) {
+            createRoomJSON = new JSONObject().put("req_id", requestID);
+            createRoomJSON.put("method", "CREATE_ROOM");
+            createRoomJSON.put("room_id", roomID);
+            createRoomJSON.put("room_nickname", roomNickname);
+            createRoomJSON.put("room_access", roomAccess);
+            return createRoomJSON;
+        }
     }
 
-    public static JSONObject createCreatePwdRoomJSON(int requestID, String roomID,
-                                                     String roomNickname,
-                                                     Utils.RoomAccessType roomAccess,
-                                                     String roomPassword) {
-        JSONObject createRoomPwdJSON = new JSONObject().put("req_id", requestID);
-        createRoomPwdJSON.put("method", "CREATE_ROOM");
-        createRoomPwdJSON.put("room_id", roomID);
-        createRoomPwdJSON.put("room_nickname", roomNickname);
-        createRoomPwdJSON.put("room_access", roomAccess);
-        createRoomPwdJSON.put("room_password",roomPassword);
-        return createRoomPwdJSON;
+    public static class EnterRoomRequest {
+        public JSONObject enterRoomJSON;
+
+        public JSONObject getEnterRoomJSON() {
+            return enterRoomJSON;
+        }
+
+        public JSONObject setEnterRoomJSON(int requestID, String roomID) {
+            enterRoomJSON = new JSONObject().put("req_id", requestID);
+            enterRoomJSON.put("method", "Enter_ROOM");
+            enterRoomJSON.put("room_id", roomID);
+            return enterRoomJSON;
+        }
     }
+
+    public static class RemoveRoomRequest {
+        public JSONObject removeRoomJSON;
+
+        public JSONObject getRemoveRoomJSON() {
+            return removeRoomJSON;
+        }
+
+        public JSONObject setRemoveRoomJSON(int requestID, String roomID) {
+            removeRoomJSON = new JSONObject().put("req_id", requestID);
+            removeRoomJSON.put("method", "Remove_ROOM");
+            removeRoomJSON.put("room_id", roomID);
+            return removeRoomJSON;
+        }
+    }
+
+    public static class ChangeRoomAccessRequest {
+
+    }
+
+    public static class ChangeRoomNicknameRequest {
+
+    }
+
+    public static class RemoveUserFromRoomRequest {
+
+    }
+
+    public static class SetAdminRequest {
+
+    }
+
+    public static class RemoveAdminRequest {
+
+    }
+
+    public static class AddFriendRequest {
+
+    }
+
+    public static class RemoveFriendRequest {
+
+    }
+
+    public static class ChangeUserDescriptionRequest {
+
+    }
+
+    public static class ChangeRoomDescriptionRequest {
+
+    }
+
+    public static class GetUserLastActivityTimeRequest {
+
+    }
+
+    public static class SendRoomMessageRequest {
+
+    }
+
+    public static class SendPrivateMessageRequest {
+
+    }
+
+    public static class GetRoomAccessTypeRequest {
+
+    }
+
+    public static class SearchUserRequest {
+
+    }
+
+    public static class SearchRoomRequest {
+
+    }
+
 
     public static JSONObject createEnterRoomJSON(int requestID, String roomID) {
         JSONObject enterRoomJSON = new JSONObject().put("req_id", requestID);
@@ -111,10 +246,5 @@ public class ScrpRequest {
         return enterPwdRoomJSON;
     }
 
-    public static JSONObject createRemoveRoomJSON(int requestID, String roomID) {
-        JSONObject enterPwdRoomJSON = new JSONObject().put("req_id", requestID);
-        enterPwdRoomJSON.put("method", "Remove_ROOM");
-        enterPwdRoomJSON.put("room_id", roomID);
-        return enterPwdRoomJSON;
-    }
+
 }
