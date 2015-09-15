@@ -18,9 +18,12 @@
 
 package gui;
 
+import general.ScrpRequest;
 import general.Strings;
 import general.Utils;
 import general.Validation;
+import general.Client;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,9 +38,11 @@ public class SignUpGUI extends JFrame {
     final JLabel labelID = new JLabel("New ID: ");
     final JLabel labelPassword = new JLabel("New Password: ");
     final JLabel labelConfirmPwd = new JLabel("Confirm Password: ");
+    final JLabel labelNickname = new JLabel("Nickname");
     final JTextField textFieldServer = new JTextField(20);
     final JTextField textFieldPort = new JTextField(20);
     final JTextField textFieldID = new JTextField(20);
+    final JTextField textFieldNickname = new JTextField(20);
     JPasswordField pwdFieldPwd = new JPasswordField(20);
     JPasswordField pwdFieldConfirmPwd = new JPasswordField(20);
     final JButton buttonSignUp = new JButton("Sign Up");
@@ -64,6 +69,9 @@ public class SignUpGUI extends JFrame {
         JPanel panelConfirmPwd = new JPanel();
         addComponentToPanel(panelConfirmPwd, labelConfirmPwd, pwdFieldConfirmPwd);
         add(panelConfirmPwd);
+        JPanel panelNickname = new JPanel();
+        addComponentToPanel(panelNickname, labelNickname, textFieldNickname);
+        add(panelNickname);
         JPanel panelButton = new JPanel();
         panelButton.setLayout(new FlowLayout());
         buttonSignUp.addActionListener(new SignUpActionListener());
@@ -85,17 +93,26 @@ public class SignUpGUI extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             boolean signUpSuccessful = true;
+            String server = textFieldServer.getText();
+            String port = textFieldPort.getText();
+            String ID = textFieldID.getText();
+            String password = new String(pwdFieldPwd.getPassword());
+            String passwordConfirm = new String(pwdFieldConfirmPwd.getPassword());
+            String nickname = textFieldNickname.getText();
             try {
-                Validation.checkServer(textFieldServer.getText());
-                Validation.checkPort(textFieldPort.getText());
-                Validation.checkId(textFieldID.getText());
-                Validation.checkPassword(new String(pwdFieldPwd.getPassword()));
-                Validation.checkPasswordConfirm(new String(pwdFieldPwd.getPassword())
-                        , new String(pwdFieldConfirmPwd.getPassword()));
+                Validation.checkServer(server);
+                Validation.checkPort(port);
+                Validation.checkId(ID);
+                Validation.checkPassword(password);
+                Validation.checkPasswordConfirm(password, passwordConfirm);
             } catch (Validation.ValidationException exp) {
                 signUpSuccessful = false;
                 Utils.showErrorDialog(exp.getMessage());
             }
+            Client theClient = new Client();
+            int requestID = theClient.getRequestID();
+            JSONObject signUpJSON = ScrpRequest.createSignUpJSON(requestID, ID, password, nickname);
+            theClient.sendJSON(signUpJSON);
             //TODO: Confirm
             if (signUpSuccessful) {
                 Utils.showConfirmationDialog(Strings.Validation.SIGN_UP_CONFIRMATION);

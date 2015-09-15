@@ -25,15 +25,21 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
+
 public class Client {
     private String clientNickname;
     public static final String clientVersion = Strings.General.CLIENT_VERSION;
     private String clientDescription;
     public static final String protocolVersion = Strings.General.SCRP_VERSION;
+    private int requestID = 0;
 
     public Client(String nickname, String description) {
         clientNickname = nickname;
         clientDescription = description;
+    }
+
+    public Client() {
+        this("default nickname", "default description");
     }
 
     public String getClientNickname() {
@@ -83,5 +89,10 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getRequestID() {
+        requestID++;
+        return requestID;
     }
 }

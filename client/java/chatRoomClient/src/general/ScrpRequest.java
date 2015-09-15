@@ -20,37 +20,54 @@ package general;
 
 import org.json.JSONObject;
 
-import java.net.*;
-import java.io.*;
-
 public class ScrpRequest {
-    private int requestID;
-    private String requestMethod;
-
-    public ScrpRequest(int ID, String method) {
-        requestID = ID;
-        requestMethod = method;
-    }
-
-    // NOTE: Everything below must not be useful or correct
-
-
-    public JSONObject createSignUpJSON(String userID, String userPwd, String userNickname) {
-        assert (requestMethod.equals("SIGN_UP"));
+    public static JSONObject createSignUpJSON(int requestID, String userID,
+                                              String userPwd, String userNickname) {
         JSONObject signUpJSON = new JSONObject().put("req_id", requestID);
-        signUpJSON.put("method", requestMethod);
+        signUpJSON.put("method", "SIGN_UP");
         signUpJSON.put("user_id", userID);
         signUpJSON.put("user_password", userPwd);
         signUpJSON.put("user_nickname", userNickname);
         return signUpJSON;
     }
 
-    public JSONObject createLogInJSON(String userID, String userPwd) {
-        assert (requestMethod.equals("LOG_IN"));
+    public static JSONObject createLogInJSON(int requestID, String userID,
+                                             String userPwd) {
         JSONObject logInJSON = new JSONObject().put("req_id", requestID);
-        logInJSON.put("method", requestMethod);
+        logInJSON.put("method", "LOG_IN");
         logInJSON.put("user_id", userID);
         logInJSON.put("user_password", userPwd);
         return logInJSON;
+    }
+
+    public static JSONObject createDeleteUserJSON(int requestID,
+                                                  String userPwd) {
+        JSONObject deleteUserJSON = new JSONObject().put("req_id", requestID);
+        deleteUserJSON.put("method", "DELETE_USER");
+        deleteUserJSON.put("user_password", userPwd);
+        return deleteUserJSON;
+    }
+
+    public static JSONObject createChangePwdJSON(int requestID,
+                                                 String oldPwd, String newPwd) {
+        JSONObject changePwdJSON = new JSONObject().put("req_id", requestID);
+        changePwdJSON.put("method", "CHANGE_USER_PASSWORD");
+        changePwdJSON.put("old_user_password", oldPwd);
+        changePwdJSON.put("new_user_password", newPwd);
+        return changePwdJSON;
+    }
+
+    public static JSONObject createChangeUserNicknameJSON(int requestID,
+                                                          String userNickname) {
+        JSONObject changeUserNicknameJSON = new JSONObject().put("req_id", requestID);
+        changeUserNicknameJSON.put("method", "CHANGE_USER_NICKNAME");
+        changeUserNicknameJSON.put("user_nickname", userNickname);
+        return changeUserNicknameJSON;
+    }
+
+    public static JSONObject createGetTimeJSON(int requestID) {
+        JSONObject getTimeJSON = new JSONObject().put("req_id", requestID);
+        getTimeJSON.put("method", "GET_TIME");
+        return getTimeJSON;
     }
 }
