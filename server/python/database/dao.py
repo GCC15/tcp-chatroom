@@ -60,7 +60,7 @@ def _check_db():
 _check_db()
 
 
-def add_user(user: User):
+def create_user(user: User):
     salt = _get_salt()
     hashed_password = hashlib.md5(user.password + salt)
 
