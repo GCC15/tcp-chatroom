@@ -30,7 +30,7 @@ various programming languages for different platforms. The
 
 ## Client
 
-- [ ] [Java](client/java)
+- [ ] [Java](client/java) (prototype)
 
 - [ ] [Android](client/android)
 
@@ -38,7 +38,7 @@ various programming languages for different platforms. The
 
 ## Server
 
-- [ ] [Python](server/python)
+- [ ] [Python](server/python) (prototype)
 
 - [ ] [Java](server/java)
 
