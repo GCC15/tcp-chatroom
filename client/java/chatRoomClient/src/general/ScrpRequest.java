@@ -22,17 +22,51 @@ import org.json.JSONObject;
 
 public class ScrpRequest {
 
-    public static class SignUpRequest {
-        public JSONObject signUpJSON;
+    public static abstract class BaseRequest {
+        private int requestID;
+        private String requestMethod;
 
-        public JSONObject getSignUpJSON() {
-            return signUpJSON;
+        private BaseRequest(int ID, String method) {
+            requestID = ID;
+            requestMethod = method;
         }
 
-        public JSONObject setSignUpJSON(int requestID, String userID,
-                                                  String userPwd, String userNickname) {
-            signUpJSON = new JSONObject().put("req_id", requestID);
-            signUpJSON.put("method", "SIGN_UP");
+        public int getRequestID() {
+            return requestID;
+        }
+
+        public String getMethod() {
+            return requestMethod;
+        }
+
+        public abstract JSONObject createJSON();
+    }
+
+    public static class SignUpRequest extends BaseRequest {
+        private String userID;
+        private String userPwd;
+        private String userNickname;
+
+        public SignUpRequest(int requestID, String userID,
+                             String userPwd, String userNickname) {
+            super(requestID, "SIGN_UP");
+            this.userID = userID;
+            this.userPwd = userPwd;
+            this.userNickname = userNickname;
+        }
+
+        public String getUserID() {
+            return userID;
+        }
+
+        public String getUserNickname() {
+            return userNickname;
+        }
+
+        @Override
+        public JSONObject createJSON() {
+            JSONObject signUpJSON = new JSONObject().put("req_id", getRequestID());
+            signUpJSON.put("method", getMethod());
             signUpJSON.put("user_id", userID);
             signUpJSON.put("user_password", userPwd);
             signUpJSON.put("user_nickname", userNickname);
@@ -48,7 +82,7 @@ public class ScrpRequest {
         }
 
         public JSONObject setLogInJSON(int requestID, String userID,
-                                                 String userPwd) {
+                                       String userPwd) {
             logInJSON = new JSONObject().put("req_id", requestID);
             logInJSON.put("method", "LOG_IN");
             logInJSON.put("user_id", userID);
@@ -65,7 +99,7 @@ public class ScrpRequest {
         }
 
         public JSONObject setDeleteUserJSON(int requestID,
-                                                      String userPwd) {
+                                            String userPwd) {
             deleteUserJSON = new JSONObject().put("req_id", requestID);
             deleteUserJSON.put("method", "DELETE_USER");
             deleteUserJSON.put("user_password", userPwd);
@@ -81,7 +115,7 @@ public class ScrpRequest {
         }
 
         public JSONObject setChangeUserPasswordJSON(int requestID,
-                                                     String oldPwd, String newPwd) {
+                                                    String oldPwd, String newPwd) {
             changeUserPasswordJSON = new JSONObject().put("req_id", requestID);
             changeUserPasswordJSON.put("method", "CHANGE_USER_PASSWORD");
             changeUserPasswordJSON.put("old_user_password", oldPwd);
@@ -98,7 +132,7 @@ public class ScrpRequest {
         }
 
         public JSONObject setChangeUserNicknameJSON(int requestID,
-                                                              String userNickname) {
+                                                    String userNickname) {
             changeUserNicknameJSON = new JSONObject().put("req_id", requestID);
             changeUserNicknameJSON.put("method", "CHANGE_USER_NICKNAME");
             changeUserNicknameJSON.put("user_nickname", userNickname);
@@ -128,8 +162,8 @@ public class ScrpRequest {
         }
 
         public JSONObject setCreateRoomJSON(int requestID, String roomID,
-                                                      String roomNickname,
-                                                      Utils.RoomAccessType roomAccess) {
+                                            String roomNickname,
+                                            Utils.RoomAccessType roomAccess) {
             createRoomJSON = new JSONObject().put("req_id", requestID);
             createRoomJSON.put("method", "CREATE_ROOM");
             createRoomJSON.put("room_id", roomID);
