@@ -39,7 +39,11 @@ public class ScrpRequest {
             return requestMethod;
         }
 
-        public abstract JSONObject createJSON();
+        public JSONObject createJSON() {
+            JSONObject json = new JSONObject().put("req_id", requestID);
+            json.put("method", requestMethod);
+            return json;
+        }
     }
 
     public static class SignUpRequest extends BaseRequest {
@@ -65,8 +69,7 @@ public class ScrpRequest {
 
         @Override
         public JSONObject createJSON() {
-            JSONObject signUpJSON = new JSONObject().put("req_id", getRequestID());
-            signUpJSON.put("method", getMethod());
+            JSONObject signUpJSON = super.createJSON();
             signUpJSON.put("user_id", userID);
             signUpJSON.put("user_password", userPwd);
             signUpJSON.put("user_nickname", userNickname);
@@ -74,98 +77,128 @@ public class ScrpRequest {
         }
     }
 
-    public static class LogInRequest {
-        public JSONObject logInJSON;
+    public static class LogInRequest extends BaseRequest {
+        private String userID;
+        private String userPwd;
 
-        public JSONObject getLogInJSON() {
-            return logInJSON;
+        public LogInRequest(int requestID, String userID,
+                            String userPwd) {
+            super(requestID, "LOG_IN");
+            this.userID = userID;
+            this.userPwd = userPwd;
         }
 
-        public JSONObject setLogInJSON(int requestID, String userID,
-                                       String userPwd) {
-            logInJSON = new JSONObject().put("req_id", requestID);
-            logInJSON.put("method", "LOG_IN");
+        public String getUserID() {
+            return userID;
+        }
+
+        @Override
+        public JSONObject createJSON() {
+            JSONObject logInJSON = super.createJSON();
             logInJSON.put("user_id", userID);
             logInJSON.put("user_password", userPwd);
             return logInJSON;
         }
     }
 
-    public static class DeleteUserRequest {
-        public JSONObject deleteUserJSON;
+    public static class DeleteUserRequest extends BaseRequest {
+        private String userPwd;
 
-        public JSONObject getDeleteUserJSON() {
-            return deleteUserJSON;
+        public DeleteUserRequest(int requestID, String userPwd) {
+            super(requestID, "DELETE_USER");
+            this.userPwd = userPwd;
         }
 
-        public JSONObject setDeleteUserJSON(int requestID,
-                                            String userPwd) {
-            deleteUserJSON = new JSONObject().put("req_id", requestID);
-            deleteUserJSON.put("method", "DELETE_USER");
+        @Override
+        public JSONObject createJSON() {
+            JSONObject deleteUserJSON = super.createJSON();
             deleteUserJSON.put("user_password", userPwd);
             return deleteUserJSON;
         }
     }
 
-    public static class ChangeUserPasswordRequest {
-        public JSONObject changeUserPasswordJSON;
+    public static class ChangeUserPasswordRequest extends BaseRequest {
+        private String oldPwd;
+        private String newPWd;
 
-        public JSONObject getChangeUserPasswordJSON() {
-            return changeUserPasswordJSON;
+        public ChangeUserPasswordRequest(int requestID, String oldPwd,
+                                         String newPWd) {
+            super(requestID, "CHANGE_USER_PASSWORD");
+            this.oldPwd = oldPwd;
+            this.newPWd = newPWd;
         }
 
-        public JSONObject setChangeUserPasswordJSON(int requestID,
-                                                    String oldPwd, String newPwd) {
-            changeUserPasswordJSON = new JSONObject().put("req_id", requestID);
-            changeUserPasswordJSON.put("method", "CHANGE_USER_PASSWORD");
+        @Override
+        public JSONObject createJSON() {
+            JSONObject changeUserPasswordJSON = super.createJSON();
             changeUserPasswordJSON.put("old_user_password", oldPwd);
-            changeUserPasswordJSON.put("new_user_password", newPwd);
+            changeUserPasswordJSON.put("new_user_password", newPWd);
             return changeUserPasswordJSON;
         }
     }
 
-    public static class ChangeUseNicknameRequest {
-        public JSONObject changeUserNicknameJSON;
+    public static class ChangeUserNicknameRequest extends BaseRequest {
+        private String userNickname;
 
-        public JSONObject getChangeUserNicknameJSON() {
-            return changeUserNicknameJSON;
+        public ChangeUserNicknameRequest(int requestID, String userNickname) {
+            super(requestID, "CHANGE_USER_NICKNAME");
+            this.userNickname = userNickname;
         }
 
-        public JSONObject setChangeUserNicknameJSON(int requestID,
-                                                    String userNickname) {
-            changeUserNicknameJSON = new JSONObject().put("req_id", requestID);
-            changeUserNicknameJSON.put("method", "CHANGE_USER_NICKNAME");
+        public String getUserNickname(){
+            return userNickname;
+        }
+
+        @Override
+        public JSONObject createJSON() {
+            JSONObject changeUserNicknameJSON = super.createJSON();
             changeUserNicknameJSON.put("user_nickname", userNickname);
             return changeUserNicknameJSON;
         }
     }
 
-    public static class GetTimeRequest {
-        public JSONObject getTimeJSON;
+    public static class GetTimeRequest extends BaseRequest {
 
-        public JSONObject getGetTimeJSON() {
-            return getTimeJSON;
+        public GetTimeRequest(int requestID){
+            super(requestID, "GET_TIME");
         }
 
-        public JSONObject setGetTimeJSON(int requestID) {
-            getTimeJSON = new JSONObject().put("req_id", requestID);
-            getTimeJSON.put("method", "GET_TIME");
-            return getTimeJSON;
+        @Override
+        public JSONObject createJSON() {
+            JSONObject getTimeJson = super.createJSON();
+            return getTimeJson;
         }
     }
 
-    public static class CreateRoomRequest {
-        public JSONObject createRoomJSON;
+    public static class CreateRoomRequest extends BaseRequest{
+        private String roomID;
+        private String roomNickname;
+        private Utils.RoomAccessType roomAccess;
 
-        public JSONObject getCreateRoomJSON() {
-            return createRoomJSON;
+        public CreateRoomRequest(int requestID, String roomID,
+                                 String roomNickname,
+                                 Utils.RoomAccessType roomAccess){
+            super(requestID,"CREATE_ROOM");
+            this.roomID = roomID;
+            this.roomNickname = roomNickname;
+            this.roomAccess = roomAccess;
         }
 
-        public JSONObject setCreateRoomJSON(int requestID, String roomID,
-                                            String roomNickname,
-                                            Utils.RoomAccessType roomAccess) {
-            createRoomJSON = new JSONObject().put("req_id", requestID);
-            createRoomJSON.put("method", "CREATE_ROOM");
+        public String getRoomID(){
+            return roomID;
+        }
+
+        public String getRoomNickname(){
+            return roomNickname;
+        }
+
+        public Utils.RoomAccessType getRoomAccess(){
+            return roomAccess;
+        }
+
+        @Override
+        public JSONObject createJSON() {
+            JSONObject createRoomJSON = super.createJSON();
             createRoomJSON.put("room_id", roomID);
             createRoomJSON.put("room_nickname", roomNickname);
             createRoomJSON.put("room_access", roomAccess);
