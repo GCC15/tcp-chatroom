@@ -16,12 +16,10 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import hashlib
 import os
 import sqlite3
 
 import env
-from . import utils
 import logger
 from .names import *
 from scrp.entity import *
@@ -57,6 +55,7 @@ def _do_upgrade():
 class Dao:
     def __init__(self):
         self.__conn = sqlite3.connect(_db_file_path)
+        self.__conn.row_factory = sqlite3.Row
 
     def commit(self):
         """Commit transaction so other connections know"""
@@ -138,8 +137,7 @@ class Dao:
         c.execute('PRAGMA user_version = {}'.format(version))
 
     def create_user(self, user: User):
-        salt = utils.generate_salt()
-        hashed_password = hashlib.md5(user.password + salt)
+        """Create a new user"""
         c = self.__conn.cursor()
         c.execute('''
             INSERT INTO {USER} (
@@ -169,26 +167,40 @@ class Dao:
             SIGN_UP_TIME=COL_USER_SIGN_UP_TIME,
             LAST_ACTIVITY_TIME=COL_USER_LAST_ACTIVITY_TIME,
             id=user.id_,
-            hashed_password=hashed_password,
-            salt=salt,
+            hashed_password=user.hashed_password,
+            salt=user.salt,
             nickname=user.nickname,
             description=user.description,
             sign_up_time=user.sign_up_time,
             last_activity_time=user.last_activity_time
         ))
 
-    def get_user(self, user_id: str) -> User:
-        if not User.is_valid_id(user_id):
-            return None
-
+    def find_user(self, user_id: str) -> User:
+        """
+        Return the user with given user_id; return None if not found.
+        user_id should be validated beforehand.
+        """
         c = self.__conn.cursor()
-        c.execute('''
-            SELECT * FROM {USER} WHERE {ID} = ?
-        '''.format(
+        c.execute(
+            'SELECT * FROM {USER} WHERE {ID} = ?'.format(
+                USER=TBL_USER
+            ), [user_id]
+        )
+        row = c.fetchone()
+        if not row:
+            return None
+        return User(
+            row[COL_USER_ID],
+            row[COL_USER_HASHED_PASSWORD],
+            row[COL_USER_NICKNAME],
+            row[COL_USER_DESCRIPTION],
+            row[COL_USER_SIGN_UP_TIME],
+            row[COL_USER_LAST_ACTIVITY_TIME],
+            row[COL_USER_SALT]
+        )
 
-        ), [
-            user_id
-        ])
+    def update_user(self, user: User):
+        c = self.__conn.cursor()
 
 
 _do_upgrade()

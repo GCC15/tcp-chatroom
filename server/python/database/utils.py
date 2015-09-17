@@ -16,6 +16,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import hashlib
 import random
 import string
 
@@ -26,3 +27,7 @@ def generate_salt() -> str:
     """Fixed-length alphanumeric salt"""
     return ''.join(random.choice(string.ascii_letters + string.digits) for
                    _ in range(env.get_salt_length()))
+
+
+def salted_hash(password: str, salt: str) -> str:
+    return hashlib.md5(password + salt)

@@ -20,6 +20,7 @@ SCRP entity representation and validation.
 
 import re
 
+from database import utils
 from .error import *
 
 
@@ -43,18 +44,27 @@ class User:
     def is_valid_description(description: str) -> bool:
         return len(description) <= 256
 
+    def is_password_correct(self, password: str) -> bool:
+        return utils.salted_hash(password, self.salt) == self.hashed_password
+
     def __init__(self, id_: str, password: str, nickname: str, description: str,
-                 sign_up_time: int, last_activity_time: int):
+                 sign_up_time: int, last_activity_time: int, salt: str = None):
+        """If password has been salt-hashed, also give the salt"""
         if not self.is_valid_id(id_):
             raise InvalidUserIdError()
-        if not self.is_valid_password(password):
+        if salt is None and not self.is_valid_password(password):
             raise InvalidUserPasswordError()
         if not self.is_valid_nickname(nickname):
             raise InvalidUserNicknameError()
         if not self.is_valid_description(description):
             raise InvalidUserDescriptionError()
         self.id_ = id_
-        self.password = password
+        if salt:
+            self.salt = salt
+            self.hashed_password = password
+        else:
+            self.salt = utils.generate_salt()
+            self.hashed_password = utils.salted_hash(password, self.salt)
         self.nickname = nickname
         self.description = description
         self.sign_up_time = sign_up_time
