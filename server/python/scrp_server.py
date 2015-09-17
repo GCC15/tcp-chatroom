@@ -19,6 +19,7 @@
 import socket
 import threading
 
+from database.dao import Dao
 import env
 import logger
 
@@ -105,6 +106,7 @@ class RequestHandlerThread(threading.Thread):
     def __init__(self, cht: ClientHandlerThread):
         super().__init__()
         self.__cht = cht
+        self.__dao = Dao()
 
     def run(self):
         logger.i('RequestHandlerThread {} started'.format(self.name))

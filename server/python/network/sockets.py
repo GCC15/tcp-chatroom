@@ -1,4 +1,11 @@
-"""Socket wrappers"""
+"""
+Socket wrapper classes for layered abstractions.
+
+socket
+BytesMessageSocketWrapper
+UnicodeSocketWrapper
+JsonSocketWrapper
+"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
@@ -125,7 +132,7 @@ class UnicodeSocketWrapper:
 
 
 class JsonParseError(ValueError):
-    """Error when parsing JSON"""
+    """Error when parsing JSON to Python dict"""
 
 
 class JsonSocketWrapper:
@@ -143,10 +150,10 @@ class JsonSocketWrapper:
         self.__unicode_sock.send_str(string)
 
     def receive_json(self) -> dict:
-        message = self.__unicode_sock.receive_str()
+        string = self.__unicode_sock.receive_str()
         try:
-            obj = json.loads(message)
-        except ValueError as e:
+            obj = json.loads(string)
+        except Exception as e:
             logger.e(str(e))
             raise JsonParseError()
         if type(obj) != dict:
