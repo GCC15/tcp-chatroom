@@ -175,7 +175,7 @@ class Dao:
             last_activity_time=user.last_activity_time
         ))
 
-    def find_user(self, user_id: str) -> User:
+    def find_user_by_id(self, user_id: str) -> User:
         """
         Return the user with given user_id; return None if not found.
         user_id should be validated beforehand.
@@ -187,17 +187,16 @@ class Dao:
             ), [user_id]
         )
         row = c.fetchone()
-        if not row:
-            return None
-        return User(
-            row[COL_USER_ID],
-            row[COL_USER_HASHED_PASSWORD],
-            row[COL_USER_NICKNAME],
-            row[COL_USER_DESCRIPTION],
-            row[COL_USER_SIGN_UP_TIME],
-            row[COL_USER_LAST_ACTIVITY_TIME],
-            row[COL_USER_SALT]
-        )
+        if row:
+            return User(
+                row[COL_USER_ID],
+                row[COL_USER_HASHED_PASSWORD],
+                row[COL_USER_NICKNAME],
+                row[COL_USER_DESCRIPTION],
+                row[COL_USER_SIGN_UP_TIME],
+                row[COL_USER_LAST_ACTIVITY_TIME],
+                row[COL_USER_SALT]
+            )
 
     def update_user(self, user: User):
         c = self.__conn.cursor()

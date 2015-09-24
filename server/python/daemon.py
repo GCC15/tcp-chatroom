@@ -26,7 +26,7 @@ import sys
 
 import env
 import logger
-import scrp_server
+from core.threads import ServerThread
 
 env.make_dirs(env.get_var_dir())
 _lock_file_path = os.path.join(env.get_var_dir(), env.get_lock_file())
@@ -76,7 +76,7 @@ def _start_daemon(args: tuple) -> subprocess.Popen:
 def main():
     """Entry point of the daemon process"""
     logger.i('Starting ServerThread')
-    scrp_server.ServerThread().start()
+    ServerThread().start()
 
 
 if __name__ == '__main__':

@@ -1,10 +1,12 @@
 """
-Socket wrapper classes for layered abstractions.
+Socket wrapper classes.
+NOT thread-safe.
 
 socket
 BytesMessageSocketWrapper
 UnicodeSocketWrapper
 JsonSocketWrapper
+ScrpSocketWrapper
 """
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
@@ -27,20 +29,26 @@ import json
 
 import env
 import logger
+from scrp.request import ScrpRequest
+from scrp.response import ScrpResponse
+from scrp.push import ScrpPush
 
 
-class SendBytesMessageError(IOError):
+class SocketError(IOError):
+    """Base class of all errors in this module"""
+
+
+class BytesMessageSendError(SocketError):
     """Fatal error when trying to send a bytes message"""
 
 
-class ReceiveBytesMessageError(IOError):
+class BytesMessageReceiveError(SocketError):
     """Fatal error when trying to receive a bytes message"""
 
 
 class BytesMessageSocketWrapper:
     """
     Bytes-message-oriented socket wrapper.
-    NOT thread-safe.
     """
 
     # Maximum buffer size of TCP receive
@@ -68,7 +76,7 @@ class BytesMessageSocketWrapper:
         except Exception as e:
             # Connection is broken
             logger.e(str(e))
-            raise SendBytesMessageError()
+            raise BytesMessageSendError
 
     def receive_bytes(self) -> bytes:
         """
@@ -88,15 +96,13 @@ class BytesMessageSocketWrapper:
         chunks = []
         received_length = 0
         while received_length < length:
-            chunk = self.__sock.recv(
-                min(
-                    length - received_length,
-                    BytesMessageSocketWrapper.MAX_BUFFER_SIZE
-                )
-            )
+            chunk = self.__sock.recv(min(
+                length - received_length,
+                BytesMessageSocketWrapper.MAX_BUFFER_SIZE
+            ))
             if not chunk:
                 # Connection is broken
-                raise ReceiveBytesMessageError()
+                raise BytesMessageReceiveError
             chunks.append(chunk)
             received_length += len(chunk)
         return b''.join(chunks)
@@ -110,10 +116,13 @@ class BytesMessageSocketWrapper:
         return int.from_bytes(b, 'big')
 
 
+class MessageDecodeError(SocketError):
+    """Error when decoding bytes into a Unicode message"""
+
+
 class UnicodeSocketWrapper:
     """
     Unicode-message-oriented socket wrapper.
-    NOT thread-safe.
     """
 
     def __init__(self, bytes_msg_sock: BytesMessageSocketWrapper):
@@ -126,35 +135,63 @@ class UnicodeSocketWrapper:
     def receive_str(self) -> str:
         """
         Receive a string message.
-        Raise UnicodeDecodeError if decoding failed.
+        Raise MessageDecodeError if decoding failed.
         """
-        return self.__bytes_msg_sock.receive_bytes().decode()
+        try:
+            return self.__bytes_msg_sock.receive_bytes().decode()
+        except UnicodeDecodeError as e:
+            logger.e(str(e))
+            raise MessageDecodeError
 
 
-class JsonParseError(ValueError):
+class JsonParseError(SocketError):
     """Error when parsing JSON to Python dict"""
 
 
 class JsonSocketWrapper:
     """
     JSON-object-oriented socket wrapper.
-    NOT thread-safe.
     """
 
     def __init__(self, unicode_sock: UnicodeSocketWrapper):
         self.__unicode_sock = unicode_sock
 
     def send_json(self, obj: dict):
+        """Send a dict as JSON"""
         assert type(obj) == dict
-        string = json.dumps(obj, separators=(',', ':'))
-        self.__unicode_sock.send_str(string)
+        s = json.dumps(obj, separators=(',', ':'))
+        self.__unicode_sock.send_str(s)
 
     def receive_json(self) -> dict:
-        string = self.__unicode_sock.receive_str()
+        """
+        Receive JSON as a dict.
+        Raise JsonParseError if parsing failed.
+        """
+        s = self.__unicode_sock.receive_str()
         try:
-            obj = json.loads(string)
+            obj = json.loads(s)
         except Exception as e:
             logger.e(str(e))
-            raise JsonParseError()
+            raise JsonParseError
         if type(obj) != dict:
-            raise JsonParseError()
+            raise JsonParseError
+        return obj
+
+
+class ScrpSocketWrapper:
+    """
+    SCRP-request/response/push-oriented socket wrapper.
+    """
+
+    def __init__(self, json_sock: JsonSocketWrapper):
+        self.__json_sock = json_sock
+
+    def receive_request(self):
+        req_dict = self.__json_sock.receive_json()
+        return ScrpRequest.from_dict(req_dict)
+
+    def send_response(self, response: ScrpResponse):
+        pass
+
+    def send_push(self, push: ScrpPush):
+        pass

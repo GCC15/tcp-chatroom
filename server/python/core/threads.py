@@ -1,4 +1,4 @@
-"""SCRP server core"""
+"""Threads to be used by the SCRP server"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
@@ -20,6 +20,10 @@ import socket
 import threading
 
 from database.dao import Dao
+from scrp.request import ScrpRequest, InvalidRequestDictError
+from scrp.push import ScrpPush
+from scrp.error import *
+from network.sockets import *
 import env
 import logger
 
@@ -44,20 +48,20 @@ class ServerThread(threading.Thread):
             self.__cht_set.add(cht)
 
     def run(self):
-        logger.i('ServerThread started')
+        logger.i('I started')
         # Start the control thread
         self.__ct.start()
         # Start listening
-        server_socket = socket.socket()
+        server_sock = socket.socket()
         server_port = env.get_server_port()
-        server_socket.bind(('', server_port))
-        server_socket.listen(env.get_tcp_listen_backlog())
+        server_sock.bind(('', server_port))
+        server_sock.listen(env.get_tcp_listen_backlog())
         logger.i('Listening on server port {}'.format(server_port))
         while True:
             logger.i('Waiting for a new client connection')
-            client_socket, address = server_socket.accept()
+            client_sock, address = server_sock.accept()
             logger.i('Connection established with client {}'.format(address))
-            cht = ClientHandlerThread(self, client_socket)
+            cht = ClientHandlerThread(self, client_sock)
             logger.i('Starting ClientHandlerThread {}'.format(cht.name))
             cht.start()
 
@@ -67,46 +71,77 @@ class ControlThread(threading.Thread):
     Receive control messages from controllers (scrpd.py)
     """
 
-    def __init__(self, server_thread: ServerThread):
+    def __init__(self, st: ServerThread):
         super().__init__(name='ControlThread')
-        self.__st = server_thread
+        self.__st = st
 
     def run(self):
-        logger.i('ControlThread started')
-        control_socket = socket.socket()
+        logger.i('I started')
+        control_sock = socket.socket()
         control_port = env.get_control_port()
         # Only allow control messages from localhost for security
-        control_socket.bind(('localhost', control_port))
-        control_socket.listen(env.get_tcp_listen_backlog())
+        control_sock.bind(('localhost', control_port))
+        control_sock.listen(env.get_tcp_listen_backlog())
         logger.i('Listening on control port {}'.format(control_port))
         while True:
             logger.i('Waiting for a new controller connection')
-            client_socket, address = control_socket.accept()
+            client_sock, address = control_sock.accept()
             logger.i('Connection established with controller {}'
                      .format(address))
             # TODO
 
 
 class ClientHandlerThread(threading.Thread):
-    """Handles a client"""
+    """Handle a client"""
 
-    def __init__(self, st: ServerThread, client_socket: socket.socket):
+    def __init__(self, st: ServerThread, client_sock: socket.socket):
         super().__init__()
         self.__st = st
-        self.__client_socket = client_socket
+        self.__client_sock = client_sock
+        self.__bytes_msg_sock = BytesMessageSocketWrapper(self.__client_sock)
+        self.__unicode_sock = UnicodeSocketWrapper(self.__bytes_msg_sock)
+        self.__json_sock = JsonSocketWrapper(self.__unicode_sock)
+        self.__scrp_sock = ScrpSocketWrapper(self.__json_sock)
+        self.__lock = threading.RLock()
 
     def run(self):
-        logger.i('ClientHandlerThread {} started'.format(self.name))
+        logger.i('I started')
         self.__st.cht_ready(self)
+        while True:
+            try:
+                request = self.__scrp_sock.receive_request()
+                rht = RequestHandlerThread(self, request)
+                rht.start()
+            except BytesMessageReceiveError as e:
+                # Connection is broken
+                break
+            except (MessageDecodeError,
+                    JsonParseError,
+                    InvalidRequestDictError) as e:
+                # Bad request
+                raise BadRequestError
+            except ScrpError as e:
+                logger.d(str(e))
+        logger.d("Thread terminate")
+
+    def send_response(self, response: ScrpResponse):
+        with self.__lock:
+            pass
+
+    def send_push(self, push: ScrpPush):
+        with self.__lock:
+            pass
 
 
 class RequestHandlerThread(threading.Thread):
-    """Handles a request"""
+    """Handle a given request"""
 
-    def __init__(self, cht: ClientHandlerThread):
+    def __init__(self, cht: ClientHandlerThread, request: ScrpRequest):
         super().__init__()
         self.__cht = cht
+        self.__req = request
         self.__dao = Dao()
 
     def run(self):
-        logger.i('RequestHandlerThread {} started'.format(self.name))
+        logger.i('I started')
+

@@ -1,4 +1,4 @@
-"""Errors in SCRP"""
+"""SCRP error representation"""
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
@@ -16,25 +16,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-ERR_BAD_REQUEST = 233
-ERR_USER_NOT_LOGGED_IN = 250
-ERR_USER_ALREADY_LOGGED_IN = 251
-ERR_INVALID_USER_ID = 300
-ERR_INVALID_ROOM_ID = 301
-ERR_INVALID_USER_PASSWORD = 310
-ERR_INVALID_ROOM_PASSWORD = 311
-ERR_INVALID_USER_NICKNAME = 320
-ERR_INVALID_ROOM_NICKNAME = 321
-ERR_INVALID_USER_DESCRIPTION = 330
-ERR_INVALID_ROOM_DESCRIPTION = 331
-ERR_INVALID_ROOM_ACCESS_TYPE = 340
-ERR_USER_ALREADY_EXISTS = 400
-ERR_ROOM_ALREADY_EXISTS = 401
-ERR_TOO_MANY_WRONG_ATTEMPTS = 402
-ERR_ID_PASSWORD_NOT_MATCH = 403
-ERR_FORBIDDEN = 801
-SUCCESS = 900
-ERR_UNKNOWN = 999
+
+from .names import *
 
 
 class ScrpError(Exception):
@@ -43,7 +26,24 @@ class ScrpError(Exception):
         super().__init__()
 
 
+class BadRequestError(ScrpError):
+    def __init__(self):
+        super().__init__(ERR_BAD_REQUEST)
+
+
+class UserNotLoggedInError(ScrpError):
+    def __init__(self):
+        super().__init__(ERR_USER_NOT_LOGGED_IN)
+
+
+class UserAlreadyLoggedInError(ScrpError):
+    def __init__(self):
+        super().__init__(ERR_USER_ALREADY_LOGGED_IN)
+
+
 class InvalidError(ScrpError):
+    """A value is invalid"""
+
     def __init__(self, error_number):
         super().__init__(error_number)
 
@@ -116,3 +116,13 @@ class IdPasswordNotMatchError(ScrpError):
 class ForbiddenError(ScrpError):
     def __init__(self):
         super().__init__(ERR_FORBIDDEN)
+
+
+class Success(ScrpError):
+    def __init__(self):
+        super().__init__(ERR_SUCCESS)
+
+
+class UnknownError(ScrpError):
+    def __init__(self):
+        super().__init__(ERR_UNKNOWN)

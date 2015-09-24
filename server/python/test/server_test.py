@@ -33,13 +33,15 @@ class ClientHandlerThread(threading.Thread):
         data = self.__s.recv(self.__recv_buffersize)
         print('[{}] Received {}'.format(self.name, len(data)))
         time.sleep(random.random() * 5)
-        print('[{}] Sent {}'.format(
-            self.name, self.__s.send(data * self.__k))
-        )
-        print('[{}] Sent {}'.format(
-            self.name, self.__s.send(data * self.__k))
-        )
-        self.__s.close()
+        # print('[{}] Sent {}'.format(
+        #     self.name, self.__s.send(data * self.__k))
+        # )
+        print(self.__s.recv(self.__recv_buffersize))
+        # print('[{}] Sent {}'.format(
+        #     self.name, self.__s.send(data * self.__k))
+        # )
+        # self.__s.close()
+        print('Thread terminate')
 
 
 if __name__ == '__main__':

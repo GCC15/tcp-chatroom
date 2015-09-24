@@ -1,5 +1,13 @@
 """
 SCRP entity representation and validation.
+
+An entity class, e.g. User, contains
+(1) Static methods for validating each fields (named validate_xxx).
+    Raise a subclass of ScrpError if the field is invalid.
+(2) A constructor.
+    Receives necessary fields to construct an instance object. A subclass of
+    ScrpError is raised if a field is invalid.
+(3) Other instance methods.
 """
 
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
@@ -29,20 +37,24 @@ class User:
     PATTERN_PASSWORD = re.compile(r'^[ -~]{6,64}$', re.A)
 
     @staticmethod
-    def is_valid_id(id_: str) -> bool:
-        return User.PATTERN_ID.match(id_)
+    def validate_id(id_: str):
+        if not User.PATTERN_ID.match(id_):
+            raise InvalidUserIdError
 
     @staticmethod
-    def is_valid_password(password: str) -> bool:
-        return User.PATTERN_PASSWORD.match(password)
+    def validate_password(password: str):
+        if not User.PATTERN_PASSWORD.match(password):
+            raise InvalidUserPasswordError
 
     @staticmethod
-    def is_valid_nickname(nickname: str) -> bool:
-        return 1 <= len(nickname) <= 32
+    def validate_nickname(nickname: str):
+        if not 1 <= len(nickname) <= 32:
+            raise InvalidUserNicknameError
 
     @staticmethod
-    def is_valid_description(description: str) -> bool:
-        return len(description) <= 256
+    def validate_description(description: str):
+        if not len(description) <= 256:
+            raise InvalidUserDescriptionError
 
     def is_password_correct(self, password: str) -> bool:
         return utils.salted_hash(password, self.salt) == self.hashed_password
@@ -50,14 +62,11 @@ class User:
     def __init__(self, id_: str, password: str, nickname: str, description: str,
                  sign_up_time: int, last_activity_time: int, salt: str = None):
         """If password has been salt-hashed, also give the salt"""
-        if not self.is_valid_id(id_):
-            raise InvalidUserIdError()
-        if salt is None and not self.is_valid_password(password):
-            raise InvalidUserPasswordError()
-        if not self.is_valid_nickname(nickname):
-            raise InvalidUserNicknameError()
-        if not self.is_valid_description(description):
-            raise InvalidUserDescriptionError()
+        self.validate_id(id_)
+        if salt is None:
+            self.validate_password(password)
+        self.validate_nickname(nickname)
+        self.validate_description(description)
         self.id_ = id_
         if salt:
             self.salt = salt

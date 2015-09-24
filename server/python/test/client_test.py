@@ -24,7 +24,7 @@ class ClientThread(threading.Thread):
         t0 = time.time()
         data = b's'*1000
 
-        print('[{}] Length {}'.format(self.name, len(data)))
+        # print('[{}] Length {}'.format(self.name, len(data)))
         print('[{}] Sent {}'.format(self.name, self.__s.send(data)))
 
         # data = self.__s.recv(800)
@@ -36,7 +36,7 @@ class ClientThread(threading.Thread):
         # data = self.__s.recv(800)
         # print('[{}] Received {}'.format(self.name, len(data)))
 
-        self.__s.close()
+        # self.__s.close()
         t1 = time.time()
         print('[{}] Time elapsed: {}'.format(self.name, t1 - t0))
 
