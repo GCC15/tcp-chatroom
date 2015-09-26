@@ -58,9 +58,11 @@ class ServerThread(threading.Thread):
         server_sock.listen(env.get_tcp_listen_backlog())
         logger.i('Listening on server port {}'.format(server_port))
         while True:
+            # Main loop
             logger.i('Waiting for a new client connection')
             client_sock, address = server_sock.accept()
-            logger.i('Connection established with client {}'.format(address))
+            logger.i('Connection established with {}'.format(address))
+            # Dispatch
             cht = ClientHandlerThread(self, client_sock)
             logger.i('Starting ClientHandlerThread {}'.format(cht.name))
             cht.start()
@@ -92,7 +94,7 @@ class ControlThread(threading.Thread):
 
 
 class ClientHandlerThread(threading.Thread):
-    """Handle a client"""
+    """Handle a client connection"""
 
     def __init__(self, st: ServerThread, client_sock: socket.socket):
         super().__init__()
@@ -102,15 +104,19 @@ class ClientHandlerThread(threading.Thread):
         self.__unicode_sock = UnicodeSocketWrapper(self.__bytes_msg_sock)
         self.__json_sock = JsonSocketWrapper(self.__unicode_sock)
         self.__scrp_sock = ScrpSocketWrapper(self.__json_sock)
-        self.__lock = threading.RLock()
+        # To avoid concurrent writes
+        self.__send_lock = threading.RLock()
 
     def run(self):
         logger.i('I started')
         self.__st.cht_ready(self)
         while True:
+            # Main loop for receiving requests
             try:
-                request = self.__scrp_sock.receive_request()
-                rht = RequestHandlerThread(self, request)
+                req = self.__scrp_sock.receive_request()
+                # Dispatch
+                rht = RequestHandlerThread(self, req)
+                logger.d('Starting RequestHandlerThread {}'.format(rht.name))
                 rht.start()
             except BytesMessageReceiveError as e:
                 # Connection is broken
@@ -121,27 +127,32 @@ class ClientHandlerThread(threading.Thread):
                 # Bad request
                 raise BadRequestError
             except ScrpError as e:
-                logger.d(str(e))
-        logger.d("Thread terminate")
+                logger.e(e)
+        logger.d('Thread terminate')
 
-    def send_response(self, response: ScrpResponse):
-        with self.__lock:
+    def send_response(self, resp: ScrpResponse):
+        with self.__send_lock:
             pass
 
     def send_push(self, push: ScrpPush):
-        with self.__lock:
+        with self.__send_lock:
             pass
 
 
 class RequestHandlerThread(threading.Thread):
     """Handle a given request"""
 
-    def __init__(self, cht: ClientHandlerThread, request: ScrpRequest):
+    def __init__(self, cht: ClientHandlerThread, req: ScrpRequest):
         super().__init__()
         self.__cht = cht
-        self.__req = request
-        self.__dao = Dao()
+        self.__req = req
 
     def run(self):
         logger.i('I started')
+        handler_cls = self.__req.get_handler_cls()
+        handler = handler_cls()
+        resp = handler.handle_request(self.__req)
+        self.__cht.send_response(resp)
+
+
 

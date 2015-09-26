@@ -39,11 +39,14 @@ ERR_UNKNOWN = 999
 
 # Fields
 KEY_METHOD = 'method'
+KEY_REQ_ID = 'req_id'
 KEY_USER_ID = 'user_id'
 KEY_USER_PASSWORD = 'user_password'
 KEY_USER_NICKNAME = 'user_nickname'
 KEY_OLD_USER_PASSWORD = 'old_user_password'
 KEY_NEW_USER_PASSWORD = 'new_user_password'
+KEY_ERR = 'err'
+KEY_TIME = 'time'
 
 # Request methods
 REQ_SIGN_UP = 'sign_up'

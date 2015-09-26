@@ -1,6 +1,5 @@
 """SCRP response representation"""
 
-
 # Copyright (C) 2015 Zhang NS, Zifan Li, Zichao Li
 #
 # This program is free software; you can redistribute it and/or modify
@@ -17,38 +16,70 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-class ScrpResponse:
+from abc import ABCMeta, abstractmethod
+
+from .names import *
+
+
+class ScrpResponse(metaclass=ABCMeta):
     """SCRP Response"""
 
-    def __init__(self, error_number: int):
-        self.err = error_number
+    def __init__(self, err: int):
+        self.err = err
+
+    @abstractmethod
+    def to_dict(self) -> dict:
+        """Represent the response as a dict"""
+        raise NotImplementedError
 
 
 class SignUpResponse(ScrpResponse):
-    def __init__(self, error_number: int):
-        super().__init__(error_number)
+    def __init__(self, err: int):
+        super().__init__(err)
+
+    def to_dict(self) -> dict:
+        return {KEY_ERR: self.err}
 
 
 class LogInResponse(ScrpResponse):
-    def __init__(self, error_number: int):
-        super().__init__(error_number)
+    def __init__(self, err: int):
+        super().__init__(err)
+
+    def to_dict(self) -> dict:
+        return {KEY_ERR: self.err}
 
 
 class DeleteUserResponse(ScrpResponse):
-    def __init__(self, error_number: int):
-        super().__init__(error_number)
+    def __init__(self, err: int):
+        super().__init__(err)
+
+    def to_dict(self) -> dict:
+        return {KEY_ERR: self.err}
 
 
 class ChangeUserPasswordResponse(ScrpResponse):
-    def __init__(self, error_number: int):
-        super().__init__(error_number)
+    def __init__(self, err: int):
+        super().__init__(err)
+
+    def to_dict(self) -> dict:
+        return {KEY_ERR: self.err}
 
 
 class GetTimeResponse(ScrpResponse):
-    def __init__(self, error_number: int):
-        super().__init__(error_number)
+    def __init__(self, time: float, err: int):
+        super().__init__(err)
+        self.time = time
+
+    def to_dict(self) -> dict:
+        return {
+            KEY_TIME: self.time,
+            KEY_ERR: self.err
+        }
 
 
 class CreateRoomResponse(ScrpResponse):
-    def __init__(self, error_number: int):
-        super().__init__(error_number)
+    def __init__(self, err: int):
+        super().__init__(err)
+
+    def to_dict(self) -> dict:
+        return {KEY_ERR: self.err}

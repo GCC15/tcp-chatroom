@@ -23,6 +23,42 @@ import time
 
 import env
 
+
+class Level(Enum):
+    debug = 'Debug'
+    info = 'Info'
+    warning = 'Warning'
+    error = 'Error'
+
+
+def d(message):
+    """Debug"""
+    _log(Level.debug, message)
+
+
+def i(message):
+    """Info"""
+    _log(Level.info, message)
+
+
+def w(message):
+    """Warning"""
+    _log(Level.warning, message)
+
+
+def e(message):
+    """Error"""
+    _log(Level.error, message)
+
+
+def clear():
+    """Clear and remove the log file"""
+    with _log_lock:
+        _close_log_file()
+        if os.path.isfile(_log_file_path):
+            os.remove(_log_file_path)
+
+
 _var_dir = env.get_var_dir()
 env.make_dirs(_var_dir)
 _log_file = env.get_log_file()
@@ -32,27 +68,7 @@ _f = None
 _log_lock = threading.Lock()
 
 
-def _open_log_file():
-    global _f
-    if _f is None or _f.closed:
-        _f = open(_log_file_path, 'a')
-    return _f
-
-
-def _close_log_file():
-    global _f
-    if _f is not None and not _f.closed:
-        _f.close()
-
-
-class Level(Enum):
-    debug = 'Debug'
-    info = 'Info'
-    warning = 'Warning'
-    error = 'Error'
-
-
-def _log(level: Level, message: str):
+def _log(level: Level, message):
     with _log_lock:
         s = '[{}] {}({}): {}'.format(
             time.ctime(),
@@ -66,32 +82,17 @@ def _log(level: Level, message: str):
         f.flush()
 
 
-def d(message: str):
-    """Debug"""
-    _log(Level.debug, message)
+def _open_log_file():
+    global _f
+    if _f is None or _f.closed:
+        _f = open(_log_file_path, 'a')
+    return _f
 
 
-def i(message: str):
-    """Info"""
-    _log(Level.info, message)
-
-
-def w(message: str):
-    """Warning"""
-    _log(Level.warning, message)
-
-
-def e(message: str):
-    """Error"""
-    _log(Level.error, message)
-
-
-def clear():
-    """Clear and remove the log file"""
-    with _log_lock:
-        _close_log_file()
-        if os.path.isfile(_log_file_path):
-            os.remove(_log_file_path)
+def _close_log_file():
+    global _f
+    if _f is not None and not _f.closed:
+        _f.close()
 
 
 def main():

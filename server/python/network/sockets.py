@@ -186,12 +186,12 @@ class ScrpSocketWrapper:
     def __init__(self, json_sock: JsonSocketWrapper):
         self.__json_sock = json_sock
 
-    def receive_request(self):
+    def receive_request(self) -> ScrpRequest:
         req_dict = self.__json_sock.receive_json()
         return ScrpRequest.from_dict(req_dict)
 
-    def send_response(self, response: ScrpResponse):
-        pass
+    def send_response(self, resp: ScrpResponse):
+        self.__json_sock.send_json(resp.to_dict())
 
     def send_push(self, push: ScrpPush):
         pass
